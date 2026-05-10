@@ -28,18 +28,18 @@ dependencies:
   json_annotation: ^4.9.0
   shared_preferences: ^2.5.3
   flex_color_scheme: ^8.3.1
+  flutter_launcher_icons: ^0.14.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.13.1
 
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/logo2.jpg"
+  image_path: "assets/images/log.png"
   adaptive_icon_background: "#00000000"
-  adaptive_icon_foreground: "assets/images/logo2.jpg"
+  adaptive_icon_foreground: "assets/images/log.png"
 
 
 
