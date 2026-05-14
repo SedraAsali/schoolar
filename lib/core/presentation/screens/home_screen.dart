@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:scholar/core/presentation/screens/profile.dart';
+import '../../constant.dart';
 import '../providers/home_navication.dart';
 import '../widgets/card.dart';
-import '../widgets/conist.dart';
-import '../widgets/theme_dialog.dart';
 import 'global_form.dart';
 
 
