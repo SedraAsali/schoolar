@@ -22,7 +22,7 @@ PageController();
 int currentPage = 0;
 
 void nextPage() {
-  //التقل بين شاشات الانبوردنغ
+  //التنقل بين شاشات الانبوردنغ
 if (currentPage < onboardingItems.length - 1) {
 
 _pageController.nextPage(
@@ -47,7 +47,7 @@ Widget build(BuildContext context) {
    child: Column(
          children: [
 
-/// الصفحات
+   /// الصفحات
     Expanded(
       child: PageView.builder(
         controller: _pageController,
@@ -55,8 +55,8 @@ Widget build(BuildContext context) {
              onPageChanged: (index) {
              setState(() {
              currentPage = index;
-});
-},
+   });
+   },
 
      itemCount: onboardingItems.length,
 
@@ -64,12 +64,12 @@ Widget build(BuildContext context) {
         return Column(
               children: [
 
-/// الصفحة نفسه         ا
+   /// الصفحة نفسه         ا
            Expanded(
                child: OnboardingPage(
                    item: onboardingItems[index],
-),
-),
+   ),
+   ),
 
           /// indicators
                    Row(
@@ -84,7 +84,7 @@ Widget build(BuildContext context) {
 
            const SizedBox(height: 25),
 
-/// زر التالي
+   /// زر التالي
                 Padding(
                     padding:
                  const EdgeInsets.symmetric(
@@ -102,8 +102,8 @@ Widget build(BuildContext context) {
                         backgroundColor:Theme.of(context).colorScheme.primary,
                          shape:
                       RoundedRectangleBorder(borderRadius: BorderRadius.circular(30),
-),
-),
+   ),
+   ),
 
                            child: Text(
                               currentPage == onboardingItems.length - 1
@@ -114,13 +114,13 @@ Widget build(BuildContext context) {
                                   fontWeight: FontWeight.bold,),),))),
 
                                   SizedBox(height: 30),
-],
-);
-},
-),
-),
-],
-),
+   ],
+   );
+   },
+   ),
+   ),
+   ],
+   ),
 ),
 );
 }
