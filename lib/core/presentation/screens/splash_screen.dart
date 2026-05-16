@@ -1,9 +1,9 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:scholar/core/presentation/screens/home_screen.dart';
 import 'package:scholar/core/presentation/screens/logIn.dart';
 import '../../constant.dart';
-import 'onbording_screen.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -101,7 +101,7 @@ class _SplashScreenState extends State<SplashScreen>
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>  LogIn(),
+          builder: (context) =>  HomeScreen(),
         ),
       );
     });
@@ -117,6 +117,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: Center(
         child: AnimatedBuilder(
           animation: _controller,
@@ -144,7 +145,7 @@ class _SplashScreenState extends State<SplashScreen>
                                   height: 220 * _pulseAnimation.value,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: gold.withOpacity(0.02),
+                                    color: gold.withOpacity(0.05),
                                   ),
                                 );
                               },
