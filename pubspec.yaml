@@ -1,7 +1,6 @@
 name: scholar
 description: "App Search for institutes .."
 
-
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -28,47 +27,27 @@ dependencies:
   json_annotation: ^4.9.0
   shared_preferences: ^2.5.3
   flex_color_scheme: ^8.3.1
-  flutter_launcher_icons: ^0.14.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-flutter_icons:
-  android: true
-  ios: true
-  image_path: "assets/images/log.png"
-  adaptive_icon_background: "#00000000"
-  adaptive_icon_foreground: "assets/images/log.png"
-
-
-
   flutter_lints: ^5.0.0
   build_runner: ^2.7.1
   freezed: ^3.2.3
   json_serializable: ^6.11.3
+  flutter_launcher_icons: ^0.14.4
 
-
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/iconn.jpg"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/images/iconn.jpg"
+  remove_alpha_ios: true
 
 flutter:
-
-
   uses-material-design: true
 
   assets:
     - assets/images/
-
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/to/font-from-package
