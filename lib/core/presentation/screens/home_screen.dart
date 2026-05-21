@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:scholar/core/presentation/screens/profile.dart';
 import '../../constant.dart';
+import '../providers/favorites_provider.dart';
 import '../providers/home_navication.dart';
 import '../widgets/card.dart';
 import 'global_form.dart';
@@ -190,27 +191,24 @@ class HomeScreen extends ConsumerWidget {
        const SizedBox(height: 20),
 
        instituteCard(
+        ref: ref,
         name: "معهد النخبة",
         location: "السبيل-قرب جامع الرحمن",
         rating: "4.0",
         image:
         "https://tse4.mm.bing.net/th/id/OIP.bTUquEP24f1MhL_EMSq0RgHaHf?rs=1&pid=ImgDetMain&o=7&rm=3",
+        context: context,
        ),
 
        instituteCard(
+           context: context,
         name: "أكاديمية رويال",
         location: "الفرقان-أمام باب الاقتصاد",
         rating: "2.3",
         image:
-            "https://th.bing.com/th/id/OIP.-7TM23FZ8KhK8h3V3rq8gAHaHa?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3"
-       ),
+            "https://th.bing.com/th/id/OIP.-7TM23FZ8KhK8h3V3rq8gAHaHa?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3",
+           ref: ref
 
-       instituteCard(
-           name: "معهد البكري",
-           location: "الحمدانية-الحي الرابع",
-           rating: "1.5",
-           image:
-           "https://images.unsplash.com/photo-1509062522246-3755977927d7",
        ),
 
        const SizedBox(height: 30),
@@ -218,9 +216,113 @@ class HomeScreen extends ConsumerWidget {
      ),
     ),
    ):
-   currentIndex==2?
-   ProfilePage():
-   Text('Sooon'),
+
+
+   currentIndex == 1
+       ? Consumer(
+    builder: (context, ref, _) {
+     final favorites = ref.watch(favoritesProvider);
+
+     return SafeArea(
+      child: favorites.isEmpty
+          ?  Center(
+       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+         Icon(Icons.favorite_border,
+             size: 80,
+          color: Theme.of(context).colorScheme.primary,
+     ),
+         SizedBox(height: 10),
+         Text("لا توجد معاهد مفضلة",
+         style: TextStyle(
+          fontSize: 19,
+          color:  Theme.of(context).colorScheme.primary
+         ),),
+        ],
+       ),
+      )
+          : Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: ListView.builder(
+                   padding: const EdgeInsets.all(12),
+                   itemCount: favorites.length,
+                   itemBuilder: (context, index) {
+                    final item = favorites[index];
+
+                    return Dismissible(
+                     key: Key(item['name']!),
+                     direction: DismissDirection.endToStart,
+                     onDismissed: (_) {
+            ref
+                .read(favoritesProvider.notifier)
+                .remove(item['name']!);
+                     },
+                     background: Container(
+            alignment: Alignment.centerLeft,
+            padding:  EdgeInsets.only(left: 20),
+            decoration: BoxDecoration(
+             color: Theme.of(context).colorScheme.error,
+             borderRadius: BorderRadius.circular(20),
+            ),
+            child:  Icon(Icons.delete,
+                color: Theme.of(context).colorScheme.surface),
+                     ),
+                     child: Container(
+            margin: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+             color: Colors.white,
+             borderRadius: BorderRadius.circular(16),
+             boxShadow: [
+              BoxShadow(
+               color: Theme.of(context).colorScheme.primary,
+               blurRadius: 4,
+               offset: const Offset(0, 3),
+              )
+             ],
+            ),
+            child: Row(
+             children: [
+               Icon(Icons.school,
+                  color: Theme.of(context).colorScheme.primary),
+              const SizedBox(width: 12),
+
+              Expanded(
+               child: Column(
+                crossAxisAlignment:
+                CrossAxisAlignment.start,
+                children: [
+                 Text(
+                  item['name']!,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold),
+                 ),
+                 Text(
+                     overflow: TextOverflow.ellipsis,
+                     maxLines: 1,
+                     item['location'] ?? ''),
+                ],
+               ),
+              ),
+
+               Icon(Icons.favorite,
+                  color:Theme.of(context).colorScheme.error,),
+             ],
+            ),
+                     ),
+                    );
+                   },
+                  ),
+          ),
+     );
+    },
+
+
+   ):
+   ProfilePage(),
 
 
    bottomNavigationBar:

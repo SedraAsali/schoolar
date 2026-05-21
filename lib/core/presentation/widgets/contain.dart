@@ -1,3 +1,4 @@
+//الازرار اللي بالبروفايل
 
 import 'package:flutter/material.dart';
 
@@ -6,6 +7,7 @@ Widget buildButton({
   required String text,
   required  Color color ,
   required VoidCallback onTap,
+  required BuildContext context,
 }) {
   return GestureDetector(
     onTap: onTap,
@@ -17,14 +19,14 @@ Widget buildButton({
       ),
       child: Row(
         children: [
-          Icon(icon, color: Colors.white),
+          Icon(icon, color: Theme.of(context).colorScheme.onSecondary),
           SizedBox(width: 15),
           Text(
             text,
-            style:  TextStyle(color: Colors.white, fontSize: 16),
+            style:  TextStyle(color: Theme.of(context).colorScheme.onSecondary, fontSize: 16),
           ),
           Spacer(),
-          Icon(Icons.arrow_forward_ios, color: Colors.white, size: 16),
+          Icon(Icons.arrow_forward_ios,color: Theme.of(context).colorScheme.onSecondary, size: 16),
         ],
       ),
     ),
