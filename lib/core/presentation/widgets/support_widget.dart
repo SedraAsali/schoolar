@@ -10,7 +10,7 @@ Widget buildSupportCard ({
   return Card(
     elevation: 2,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(20),
     ),
     child: ListTile(
       leading: Icon(icon, color:Theme.of(context).colorScheme.secondary),

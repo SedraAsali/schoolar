@@ -40,85 +40,89 @@ class LogIn extends StatelessWidget {
                         left: 25,
                         right: 25
                     ),
-                    child: Column(
-                      children: [
-                        Center(
-                            child: Text('تسجيل الدخول',
-                            style: TextStyle(fontSize: 23,
-                            color:  Theme.of(context).colorScheme.primary,
-                    ),)),
-                        SizedBox(height: 45,),
-                        ReactiveForm(
-                          formGroup: logFormGroup,
-                          child: Column(
-                            children: [
-                              // Email Field
-                              ReactiveTextField<String>(
-                                formControlName: 'logInEmail',
-                                decoration:  InputDecoration(
-                                  labelText: 'البريد الإلكتروني',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.only(topLeft:  Radius.circular(120)
+                    child: SingleChildScrollView(
+                      child: Column(
+
+                        children: [
+                          Center(
+                              child: Text('تسجيل الدخول',
+                              style: TextStyle(fontSize: 23,
+                              color:  Theme.of(context).colorScheme.primary,
+                      ),)),
+                          SizedBox(height: 45,),
+                          ReactiveForm(
+                            formGroup: logFormGroup,
+                            child: Column(
+                              children: [
+                                // Email Field
+                                ReactiveTextField<String>(
+                                  formControlName: 'logInEmail',
+                                  decoration:  InputDecoration(
+                                    labelText: 'البريد الإلكتروني',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.only(topLeft:  Radius.circular(120)
+                                      ),
                                     ),
                                   ),
+                                  validationMessages: {
+                                    ValidationMessage.required: (_) =>
+                                    'البريد الإلكتروني مطلوب',
+                                    ValidationMessage.email: (_) =>
+                                    'صيغة البريد الإلكتروني غير صحيحة',
+                                  },
                                 ),
-                                validationMessages: {
-                                  ValidationMessage.required: (_) =>
-                                  'البريد الإلكتروني مطلوب',
-                                  ValidationMessage.email: (_) =>
-                                  'صيغة البريد الإلكتروني غير صحيحة',
-                                },
-                              ),
+                                const SizedBox(height: 25),
+                                // Password Field
+                                ReactiveTextField<String>(
+                                  formControlName: 'logInPassword',
+                                  obscureText: true,
+                                  decoration: const InputDecoration(
+                                    labelText: 'كلمة المرور',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.only(topLeft:  Radius.circular(120)),
 
-                              const SizedBox(height: 25),
-
-                              // Password Field
-                              ReactiveTextField<String>(
-                                formControlName: 'logInPassword',
-                                obscureText: true,
-                                decoration: const InputDecoration(
-                                  labelText: 'كلمة المرور',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.only(topLeft:  Radius.circular(120)),
-
+                                    ),
                                   ),
+                                  validationMessages: {
+                                    ValidationMessage.required: (_) =>
+                                    'كلمة المرور مطلوبة',
+                                    ValidationMessage.minLength: (_) =>
+                                    'كلمة المرور يجب أن تكون 8 أحرف على الأقل',
+                                  },
                                 ),
-                                validationMessages: {
-                                  ValidationMessage.required: (_) =>
-                                  'كلمة المرور مطلوبة',
-                                  ValidationMessage.minLength: (_) =>
-                                  'كلمة المرور يجب أن تكون 8 أحرف على الأقل',
-                                },
-                              ),
-                              const SizedBox(height: 60),
-                              // Login Button
-                              ReactiveFormConsumer(
-                                builder: (context, formGroup, child) {
-                                  return ElevatedButton(
+                                TextButton(onPressed: (){},
+                                    child: Text('هل نسيت كلمة المرور !؟',)),
 
-                                    onPressed: formGroup.valid
-                                        ? () {
-                                      final email =
-                                          formGroup.control('logInEmail').value;
-                                      final password =
-                                          formGroup.control('logInPassword').value;
+                                const SizedBox(height: 40),
+                                // Login Button
+                                ReactiveFormConsumer(
+                                  builder: (context, formGroup, child) {
+                                    return ElevatedButton(
 
-                                      debugPrint('Email: $email');
-                                      debugPrint('Password: $password');
-                                    }
-                                        : null,
-                                    child: const Text('تسجيل الدخول'),
-                                  );
-                                },
-                              ),
-                              const SizedBox(height: 20),
-                              TextButton(onPressed: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=> SignUp()));
-                              }, child: Text('إذا كنت لا تمتلك حساب مسبق ؟ انقر هنا ..'))
-                            ],
+                                      onPressed: formGroup.valid
+                                          ? () {
+                                        final email =
+                                            formGroup.control('logInEmail').value;
+                                        final password =
+                                            formGroup.control('logInPassword').value;
+
+                                        debugPrint('Email: $email');
+                                        debugPrint('Password: $password');
+                                      }
+                                          : null,
+                                      child: const Text('تسجيل الدخول'),
+                                    );
+                                  },
+                                ),
+                                const SizedBox(height: 20),
+                                TextButton(onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=> SignUp()));
+                                }, child: Text('إذا كنت لا تمتلك حساب مسبق ؟ انقر هنا ..'))
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 )

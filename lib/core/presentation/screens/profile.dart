@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:scholar/core/presentation/screens/logIn.dart';
 import 'package:scholar/core/presentation/screens/support_screen.dart';
 import '../widgets/contain.dart';
 import '../widgets/prof_info_card.dart';
 import '../widgets/theme_dialog.dart';
+import 'editProfileScreen.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
@@ -84,7 +86,14 @@ class ProfilePage extends StatelessWidget {
                       color: Theme.of(context).colorScheme.primary,
                       text: "تعديل الحساب",
                       onTap: () {
-                
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>  EditProfilePage(),
+                            ),
+                          );
+
+
                       },
                     ),
 
@@ -206,7 +215,14 @@ class ProfilePage extends StatelessWidget {
                       icon: Icons.logout,
                       text: "تسجيل خروج",
                       color: Theme.of(context).colorScheme.primary,
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) =>  LogIn(),
+                          ),
+                        );
+                      },
                     ),
                     SizedBox(height: 5),
 
