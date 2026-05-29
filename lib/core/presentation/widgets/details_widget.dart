@@ -1,7 +1,21 @@
 class Teacher {
+
   final String name;
-  Teacher(this.name);
+
+  double rating;
+
+  final String description;
+
+  Teacher(
+
+      this.name, {
+
+        this.rating = 4,
+
+        this.description = "مدرس ذو خبرة عالية",
+      });
 }
+
 
 class Subject {
   final String name;

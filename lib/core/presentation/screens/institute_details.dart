@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../constant.dart';
 import '../../domain/models/details_model.dart';
@@ -58,7 +59,7 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
                   children: [
                     Icon(
                       Icons.location_on,
-                      color: Colors.grey,
+                      color: Theme.of(context).colorScheme.outlineVariant,
                       size: 18,
                     ),
                     const SizedBox(width: 5),
@@ -66,8 +67,8 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
                     Expanded(
                       child: Text(
                         institute.location,
-                        style: const TextStyle(
-                          color: Colors.grey,
+                        style:  TextStyle(
+                          color: Theme.of(context).colorScheme.outlineVariant,
                           fontSize: 14,
                         ),
                       ),
@@ -175,7 +176,30 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
             itemBuilder: (context, index) {
               final subject = department.subjects[index];
 
-              return Container(
+              return TweenAnimationBuilder(
+
+                  duration: Duration(
+                  milliseconds: 400 + (index * 150),
+              ),
+
+              tween: Tween<double>(begin: 0, end: 1),
+
+              builder: (context, value, child) {
+
+              return Transform.translate(
+
+              offset: Offset(0, 50 * (1 - value)),
+
+              child: Opacity(
+
+              opacity: value,
+
+              child: child,
+              ),
+              );
+              },
+
+              child: Container(
                 margin: const EdgeInsets.only(bottom: 18),
                 padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
@@ -216,28 +240,213 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
                       spacing: 8,
                       runSpacing: 8,
                       children: subject.teachers.map((teacher) {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 6,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.secondaryFixedDim,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            teacher.name,
-                            style:  TextStyle(
-                              color:Theme.of(context).colorScheme.primary,
+                        return  InkWell(
+
+                          borderRadius: BorderRadius.circular(20),
+
+                          onTap: () {
+
+                            showModalBottomSheet(
+
+                              context: context,
+
+                              isScrollControlled: true,
+
+                              shape: const RoundedRectangleBorder(
+
+                                borderRadius: BorderRadius.vertical(
+
+                                  top: Radius.circular(30),
+                                ),
+                              ),
+
+                              builder: (context) {
+
+                                return StatefulBuilder(
+
+                                  builder: (context, setModalState) {
+
+                                    return Padding(
+
+                                      padding: const EdgeInsets.all(20),
+
+                                      child: Column(
+
+                                        mainAxisSize: MainAxisSize.min,
+
+                                        children: [
+
+                                          Container(
+
+                                            width: double.infinity,
+                                            height: 5,
+
+                                            decoration: BoxDecoration(
+
+                                              color: Theme.of(context).colorScheme.outlineVariant,
+
+                                              borderRadius:
+                                              BorderRadius.circular(20),
+                                            ),
+                                          ),
+
+                                          const SizedBox(height: 20),
+
+                                          CircleAvatar(
+
+                                            radius: 40,
+
+                                            backgroundColor:
+                                            Theme.of(context).colorScheme.primary,
+
+                                            child: Text(
+
+                                              teacher.name[0],
+
+                                              style:  TextStyle(
+
+                                                color:  Theme.of(context).colorScheme.surface,
+
+                                                fontSize: 30,
+                                              ),
+                                            ),
+                                          ),
+
+                                          const SizedBox(height: 15),
+
+                                          Text(
+
+                                            teacher.name,
+
+                                            style:  TextStyle(
+
+                                              fontSize: 22,
+                                              color:  Theme.of(context).colorScheme.primary,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+
+                                          const SizedBox(height: 10),
+
+                                          Text(
+
+                                            teacher.description,
+
+                                            textAlign: TextAlign.center,
+
+                                            style: TextStyle(
+
+                                              color: Theme.of(context).colorScheme.outlineVariant,
+                                            ),
+                                          ),
+
+                                          const SizedBox(height: 20),
+
+                                           Text(
+
+                                            "التقييم",
+
+                                            style: TextStyle(
+                                              color:  Theme.of(context).colorScheme.primary,
+                                              fontWeight: FontWeight.bold,
+
+                                              fontSize: 16,
+                                            ),
+                                          ),
+
+                                          const SizedBox(height: 10),
+
+                                          RatingBar.builder(
+
+                                            initialRating: teacher.rating,
+
+                                            minRating: 0.5,
+
+                                            allowHalfRating: true,
+
+                                            itemCount: 5,
+
+                                            itemSize: 35,
+
+                                            itemBuilder: (context, _) {
+
+                                              return Icon(
+
+                                                Icons.star,
+
+                                                color: gold,
+                                              );
+                                            },
+
+                                            onRatingUpdate: (rating) {
+
+                                              setModalState(() {
+
+                                                teacher.rating = rating;
+                                              });
+
+                                              setState(() {});
+                                            },
+                                          ),
+
+                                          const SizedBox(height: 10),
+
+                                          Text(
+
+                                            teacher.rating.toStringAsFixed(1),
+
+                                            style:  TextStyle(
+
+                                              fontSize: 18,
+                                              color: Theme.of(context).colorScheme.primary,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+
+                                          const SizedBox(height: 20),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          },
+
+                          child: AnimatedContainer(
+
+                            duration: const Duration(milliseconds: 300),
+
+                            padding: const EdgeInsets.symmetric(
+
+                              horizontal: 13,
+                              vertical: 6,
+                            ),
+
+                            decoration: BoxDecoration(
+                            border: BoxBorder.all(color: Theme.of(context).colorScheme.primary),
+                              color: Theme.of(context).colorScheme.secondaryFixedDim,
+
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+
+                            child: Text(
+
+                              teacher.name,
+
+                              style: TextStyle(
+                                 color: Theme.of(context).colorScheme.primary,
+
                               fontSize: 12,
                             ),
                           ),
+                        ),
                         );
                       }).toList(),
                     ),
                   ],
                 ),
-              );
+              ));
             },
           ),
         ),

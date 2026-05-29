@@ -56,10 +56,15 @@ class LogIn extends StatelessWidget {
                               children: [
                                 // Email Field
                                 ReactiveTextField<String>(
+                                  style: TextStyle(color: Theme.of(context).colorScheme.surface),
                                   formControlName: 'logInEmail',
                                   decoration:  InputDecoration(
+                                    fillColor: Theme.of(context).colorScheme.primary,
+                                    filled: true,
                                     labelText: 'البريد الإلكتروني',
+                                    labelStyle: TextStyle(color: Theme.of(context).colorScheme.surface),
                                     border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
                                       borderRadius: BorderRadius.only(topLeft:  Radius.circular(120)
                                       ),
                                     ),
@@ -74,11 +79,16 @@ class LogIn extends StatelessWidget {
                                 const SizedBox(height: 25),
                                 // Password Field
                                 ReactiveTextField<String>(
+                                  style: TextStyle(color: Theme.of(context).colorScheme.surface),
                                   formControlName: 'logInPassword',
                                   obscureText: true,
-                                  decoration: const InputDecoration(
+                                  decoration:  InputDecoration(
+                                    fillColor: Theme.of(context).colorScheme.primary,
+                                    filled: true,
+                                    labelStyle: TextStyle(color: Theme.of(context).colorScheme.surface),
                                     labelText: 'كلمة المرور',
                                     border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
                                       borderRadius: BorderRadius.only(topLeft:  Radius.circular(120)),
 
                                     ),
@@ -98,11 +108,19 @@ class LogIn extends StatelessWidget {
                                 ReactiveFormConsumer(
                                   builder: (context, formGroup, child) {
                                     return ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Theme.of(context).colorScheme.primary,
+                                        foregroundColor: Theme.of(context).colorScheme.surface,
+
+                                        disabledBackgroundColor: Theme.of(context).colorScheme.outline,
+                                        disabledForegroundColor:Theme.of(context).colorScheme.surface,
+                                      ),
 
                                       onPressed: formGroup.valid
                                           ? () {
                                         final email =
                                             formGroup.control('logInEmail').value;
+
                                         final password =
                                             formGroup.control('logInPassword').value;
 
@@ -110,6 +128,7 @@ class LogIn extends StatelessWidget {
                                         debugPrint('Password: $password');
                                       }
                                           : null,
+
                                       child: const Text('تسجيل الدخول'),
                                     );
                                   },

@@ -12,28 +12,42 @@ final institute = Institute(
       subjects: [
         Subject(
           name: "الرياضيات",
-          teachers: [Teacher("أ. أحمد"), Teacher("أ. سامي")],
+          teachers: [Teacher(
+  "أ. أحمد",
+  rating: 4.5,
+  description: "مدرس رياضيات بخبرة 10 سنوات",
+         ),
+            Teacher(
+              "أ. سارة",
+              rating: 4.5,
+              description: "مدرس رياضيات بخبرة 10 سنوات",
+            ),],
         ),
         Subject(
           name: "الفيزياء",
-          teachers: [Teacher("أ. علي")],
+          teachers: [Teacher(
+            "أ. أحمد",
+            rating: 4.5,
+            description: "مدرس رياضيات بخبرة 10 سنوات",
+          ),],
         ),
         Subject(
           name: "العلوم",
-          teachers: [Teacher("أ. سوسن"), Teacher("أ. رامي")],
+          teachers: [Teacher(
+            "أ. أحمد",
+            rating: 4.5,
+            description: "مدرس رياضيات بخبرة 10 سنوات",
+          ),],
         ),
         Subject(
           name: "اللغة",
-          teachers: [Teacher("أ. عليا")],
+          teachers: [Teacher(
+            "أ. أحمد",
+            rating: 4.5,
+            description: "مدرس رياضيات بخبرة 10 سنوات",
+          ),],
         ),
-        Subject(
-          name: "الديانة",
-          teachers: [Teacher("أ. فاطمة")],
-        ),
-        Subject(
-          name: "الجغرافية",
-          teachers: [Teacher("أ. خالد")],
-        ),
+
       ],
     ),
     Department(
@@ -41,24 +55,24 @@ final institute = Institute(
       subjects: [
         Subject(
           name: "الكيمياء",
-          teachers: [Teacher("أ. نور"), Teacher("أ. ريم")],
+          teachers: [Teacher(
+            "أ. أحمد",
+            rating: 4.5,
+            description: "مدرس رياضيات بخبرة 10 سنوات",
+          ),
+            Teacher(
+              "أ. أحمد",
+              rating: 4.5,
+              description: "مدرس رياضيات بخبرة 10 سنوات",
+            ),
+            Teacher(
+              "أ. أحمد",
+              rating: 4.5,
+              description: "مدرس رياضيات بخبرة 10 سنوات",
+            ),
+          ],
         ),
-        Subject(
-          name: "الرياضيات",
-          teachers: [Teacher("أ. رغد"), Teacher("أ. محمد")],
-        ),
-        Subject(
-          name: "الفيزياء",
-          teachers: [Teacher("أ. فواز")],
-        ),
-        Subject(
-          name: "الديانة",
-          teachers: [ Teacher("أ. نور")],
-        ),
-        Subject(
-          name: "العربي",
-          teachers: [Teacher("أ. محمد"), Teacher("أ. أمينة")],
-        ),
+
       ],
     ),
   ],

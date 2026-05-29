@@ -1,4 +1,5 @@
 
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -18,12 +19,7 @@ class HomeScreen extends ConsumerWidget {
  Widget build(BuildContext context,ref) {
   var currentIndex= ref.watch(homeNavigationProvider);
   return Scaffold(
-
-  /* appBar: AppBar(
-    shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(90)),
-    ),
-   ),*/
+   extendBody: true,
    body:
    currentIndex==0?
    SafeArea(
@@ -325,28 +321,54 @@ class HomeScreen extends ConsumerWidget {
    ProfilePage(),
 
 
-   bottomNavigationBar:
+   bottomNavigationBar: CurvedNavigationBar(
 
-   BottomNavigationBar(
-    elevation: 0,
-    type: BottomNavigationBarType.shifting,
-    selectedItemColor: gold,
-    currentIndex:currentIndex,
-    selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-    onTap: (value)
-    {ref.read(homeNavigationProvider.notifier).state=value;
-    },
-    items: [
-     BottomNavigationBarItem(
-         icon: Icon(Icons.home,),
-         label: 'الرئيسية'),
+   backgroundColor: Colors.transparent,
 
-     BottomNavigationBarItem(icon: Icon(Icons.favorite),
-         label: 'المفضلة'),
+   color:   Theme.of(context).colorScheme.onInverseSurface,
 
-     BottomNavigationBarItem(icon: Icon(Icons.person),
-         label: 'الحساب'),
-    ], ),
+   buttonBackgroundColor: gold,
+
+   height: 60,
+
+   animationDuration: const Duration(milliseconds: 400),
+
+   index: currentIndex,
+
+   items: [
+
+    Icon(
+     size: 30,
+     Icons.home_filled,
+     color: currentIndex == 0
+         ? Theme.of(context).colorScheme.surface
+         : Theme.of(context).colorScheme.outlineVariant,
+    ),
+
+    Icon(
+     size: 30,
+     Icons.favorite,
+     color: currentIndex == 1
+         ? Theme.of(context).colorScheme.surface
+         : Theme.of(context).colorScheme.outlineVariant,
+    ),
+
+    Icon(
+     Icons.person,
+     size: 30,
+     color: currentIndex == 2
+         ? Theme.of(context).colorScheme.surface
+         : Theme.of(context).colorScheme.outlineVariant,
+    ),
+   ],
+
+   onTap: (index) {
+
+    ref.read(homeNavigationProvider.notifier).state = index;
+
+   },
+  ),
+
   );
  }
 }

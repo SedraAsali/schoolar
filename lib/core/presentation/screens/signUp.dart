@@ -51,10 +51,16 @@ class SignUp extends StatelessWidget {
                         child: Column(
                           children: [
                             ReactiveTextField<String>(
+                              style: TextStyle(color: Theme.of(context).colorScheme.surface),
+
                               formControlName: 'name',
                               decoration:  InputDecoration(
+                                fillColor: Theme.of(context).colorScheme.primary,
+                                filled: true,
                                 labelText: 'الاسم',
+                                labelStyle: TextStyle(color: Theme.of(context).colorScheme.surface,),
                                 border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
                                   borderRadius: BorderRadius.only(topLeft:  Radius.circular(120)
                                   ),
                                 ),
@@ -69,10 +75,16 @@ class SignUp extends StatelessWidget {
                             const SizedBox(height: 25),
                             // Email Field
                             ReactiveTextField<String>(
+                              style: TextStyle(color: Theme.of(context).colorScheme.surface),
+
                               formControlName: 'signUpEmail',
                               decoration:  InputDecoration(
+                                fillColor: Theme.of(context).colorScheme.primary,
+                                filled: true,
                                 labelText: 'البريد الإلكتروني',
+                                labelStyle: TextStyle(color: Theme.of(context).colorScheme.surface),
                                 border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
                                   borderRadius: BorderRadius.only(topLeft:  Radius.circular(120)
                                   ),
                                 ),
@@ -87,11 +99,17 @@ class SignUp extends StatelessWidget {
                             const SizedBox(height: 25),
                             // Password Field
                             ReactiveTextField<String>(
+                              style: TextStyle(color: Theme.of(context).colorScheme.surface),
+
                               formControlName: 'signUpPassword',
                               obscureText: true,
-                              decoration: const InputDecoration(
+                              decoration:  InputDecoration(
+                                fillColor: Theme.of(context).colorScheme.primary,
+                                filled: true,
                                 labelText: 'كلمة المرور',
+                                labelStyle: TextStyle(color: Theme.of(context).colorScheme.surface,),
                                 border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
                                   borderRadius: BorderRadius.only(topLeft:  Radius.circular(120)),
 
                                 ),
@@ -106,11 +124,17 @@ class SignUp extends StatelessWidget {
                             const SizedBox(height: 25),
                             // Confirm Field
                             ReactiveTextField<String>(
+                              style: TextStyle(color: Theme.of(context).colorScheme.surface),
+
                               formControlName: 'confirm',
                               obscureText: true,
-                              decoration: const InputDecoration(
+                              decoration:  InputDecoration(
+                                fillColor: Theme.of(context).colorScheme.primary,
+                                filled: true,
                                 labelText: 'التحقق من كلمة المرور',
+                                labelStyle: TextStyle(color: Theme.of(context).colorScheme.surface),
                                 border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
                                   borderRadius: BorderRadius.only(topLeft:  Radius.circular(120)),
 
                                 ),
@@ -129,12 +153,13 @@ class SignUp extends StatelessWidget {
                             ReactiveRadioListTile<String>(
                               formControlName: 'role',
                               value: 'user',
-                              title: Text('مستخدم عادي'),
+                              title: Text('مستخدم عادي', style: TextStyle(color: Theme.of(context).colorScheme.primary,),),
                             ),
                             ReactiveRadioListTile<String>(
                               formControlName: 'role',
                               value: 'admin',
-                              title: Text('مدير'),
+                              title: Text('مدير',
+                                style: TextStyle(color: Theme.of(context).colorScheme.primary,),),
                             ),
 
                             const SizedBox(height: 25),
@@ -142,7 +167,13 @@ class SignUp extends StatelessWidget {
                             ReactiveFormConsumer(
                               builder: (context, formGroup, child) {
                                 return ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Theme.of(context).colorScheme.primary,
+                                    foregroundColor: Theme.of(context).colorScheme.surface,
 
+                                    disabledBackgroundColor: Theme.of(context).colorScheme.outline,
+                                    disabledForegroundColor:Theme.of(context).colorScheme.surface,
+                                  ),
                                   onPressed: formGroup.valid
                                       ? () {
                                     final name =
