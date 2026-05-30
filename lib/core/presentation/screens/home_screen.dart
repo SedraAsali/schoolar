@@ -114,11 +114,11 @@ class HomeScreen extends ConsumerWidget {
          borderRadius: BorderRadius.circular(27),
          gradient: LinearGradient(
           colors: [
-           Theme.of(context).colorScheme.surface,
+           Theme.of(context).colorScheme.inverseSurface,
            Theme.of(context).colorScheme.primary,
+           Theme.of(context).colorScheme.inverseSurface,
            Theme.of(context).colorScheme.primary,
-           Theme.of(context).colorScheme.primary,
-           Theme.of(context).colorScheme.surface,
+           Theme.of(context).colorScheme.inverseSurface,
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -275,7 +275,10 @@ class HomeScreen extends ConsumerWidget {
           }
 
           return Column(
-           children: filteredInstitutes.map((item) {
+           children: filteredInstitutes.asMap().entries.map((entry) {
+            final index = entry.key;
+            final item = entry.value;
+
             return instituteCard(
              ref: ref,
              context: context,
@@ -283,6 +286,7 @@ class HomeScreen extends ConsumerWidget {
              location: item['location']!,
              rating: item['rating']!,
              image: item['image']!,
+             index: index,
             );
            }).toList(),
           );

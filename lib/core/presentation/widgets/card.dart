@@ -13,6 +13,7 @@ required String name,
 required String location,
 required String rating,
 required String image,
+ required int index,
 }) {
  final favorites = ref.watch(favoritesProvider);
  final isFav = favorites.any((e) => e['name'] == name);
@@ -191,12 +192,17 @@ required String image,
     ),
    ),
 
-  ).animate().fadeIn(
+  )).animate()
+     .fadeIn(
+  duration: 700.ms,
+  delay: (index * 120).ms,
+ )
+     .slideY(
+  begin: 0.5,
+  end: 0,
+  curve: Curves.easeOutCubic,
 
-   duration: 600.ms,
-  ).slideY(begin: 0.3, end: 0,
-   curve: Curves.easeOutQuart,
-  ),
+
  );
 }
 
