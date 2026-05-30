@@ -59,7 +59,7 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
                   children: [
                     Icon(
                       Icons.location_on,
-                      color: Theme.of(context).colorScheme.outlineVariant,
+                      color: Theme.of(context).colorScheme.surface.withAlpha(120),
                       size: 18,
                     ),
                     const SizedBox(width: 5),
@@ -68,7 +68,7 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
                       child: Text(
                         institute.location,
                         style:  TextStyle(
-                          color: Theme.of(context).colorScheme.outlineVariant,
+                          color: Theme.of(context).colorScheme.surface.withAlpha(120),
                           fontSize: 14,
                         ),
                       ),
@@ -105,12 +105,25 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
           // صورة المعهد
           ClipRRect(
             borderRadius: BorderRadius.circular(25),
-            child: Image.network(
-              institute.image,
+            child:  Image.network(
               width: 120,
               height: 120,
+              institute.image,
               fit: BoxFit.cover,
-            ),
+              errorBuilder: (_, _, _) {
+                return Container(
+                  color: Theme
+                      .of(context)
+                      .colorScheme
+                      .outlineVariant,
+                  child: Center(
+                    child: Icon(Icons.broken_image, size: 120,
+                      color: Theme.of(context).colorScheme.onInverseSurface,
+                    ),
+                  ),
+                );
+              },
+            )
           ),
         ],
       ),
@@ -203,13 +216,13 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
                 margin: const EdgeInsets.only(bottom: 18),
                 padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onInverseSurface,
                   borderRadius: BorderRadius.circular(25),
                   boxShadow:  [
                     BoxShadow(
                       color: Theme.of(context).colorScheme.primary,
-                      blurRadius: 5,
-                      offset: Offset(0, 3),
+                      blurRadius: 3,
+                      offset: Offset(0, 2),
                     ),
                   ],
                 ),
@@ -218,7 +231,8 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
                   children: [
                     Text(
                       subject.name,
-                      style: const TextStyle(
+                      style:  TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -425,7 +439,7 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
 
                             decoration: BoxDecoration(
                             border: BoxBorder.all(color: Theme.of(context).colorScheme.primary),
-                              color: Theme.of(context).colorScheme.secondaryFixedDim,
+                              color: Theme.of(context).colorScheme.secondary,
 
                               borderRadius: BorderRadius.circular(20),
                             ),
@@ -435,7 +449,7 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
                               teacher.name,
 
                               style: TextStyle(
-                                 color: Theme.of(context).colorScheme.primary,
+                                 color: Theme.of(context).colorScheme.surface,
 
                               fontSize: 12,
                             ),

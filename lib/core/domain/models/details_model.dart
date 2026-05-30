@@ -3,7 +3,7 @@ import '../../presentation/widgets/details_widget.dart';
 final institute = Institute(
   //النجوم
   rating: 4.0,
-  image: "https://tse4.mm.bing.net/th/id/OIP.bTUquEP24f1MhL_EMSq0RgHaHf?rs=1&pid=ImgDetMain&o=7&rm=3",
+  image: "h ttps://tse4.mm.bing.net/th/id/OIP.bTUquEP24f1MhL_EMSq0RgHaHf?rs=1&pid=ImgDetMain&o=7&rm=3",
   name: "معهد النخبة",
   location: "السبيل-قرب جامع الرحمن",
   departments: [

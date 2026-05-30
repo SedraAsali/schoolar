@@ -9,6 +9,7 @@ import '../../constant.dart';
 import '../providers/favorites_provider.dart';
 import '../providers/home_navication.dart';
 import '../widgets/card.dart';
+import 'favorite_screen.dart';
 import 'global_form.dart';
 
 
@@ -19,63 +20,105 @@ class HomeScreen extends ConsumerWidget {
  @override
  Widget build(BuildContext context,ref) {
   var currentIndex= ref.watch(homeNavigationProvider);
+  //لائحة المعاهد من اجل عملية فلترة البحث
+  final institutes = [
+   {
+    "name": "معهد النخبة",
+    "location": "السبيل-قرب جامع الرحمن",
+    "rating": "4.0",
+    "image":
+    "h ttps://tse4.mm.bing.net/th/id/OIP.bTUquEP24f1MhL_EMSq0RgHaHf?rs=1&pid=ImgDetMain&o=7&rm=3",
+   },
+   {
+    "name": "أكاديمية رويال",
+    "location": "الفرقان-أمام باب الاقتصاد",
+    "rating": "2.3",
+    "image":
+    "https://th.bing.com/th/id/OIP.-7TM23FZ8KhK8h3V3rq8gAHaHa?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3",
+   },
+  {
+    "name": " معهد التفوق",
+    "location": "حلب الجديدة",
+    "rating": "4.3",
+    "image":
+    "h ttps://th.bing.com/th/id/OIP.-7TM23FZ8KhK8h3V3rq8gAHaHa?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3",
+   },
+   {
+    "name": "معهد المتنبي",
+    "location": "الحمدانية_لحي 3",
+    "rating": "1.3",
+    "image":
+    "h ttps://th.bing.com/th/id/OIP.-7TM23FZ8KhK8h3V3rq8gAHaHa?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3",
+   },
+  ];
   return Scaffold(
    extendBody: true,
    body:
    currentIndex==0?
+
    SafeArea(
     child: SingleChildScrollView(
      padding: const EdgeInsets.all(18),
-     child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+     child: ReactiveForm(
+      formGroup: globalFormGroup,
+      child: Column(
+       crossAxisAlignment: CrossAxisAlignment.start,
+       children: [
 
-       //const SizedBox(height: 24),
+        Container(
+         padding: const EdgeInsets.symmetric(horizontal: 16),
+         decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.onInverseSurface,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+           BoxShadow(
+            color: Theme.of(context).colorScheme.primary,
+            blurRadius: 3,
+            offset: const Offset(0 ,2),
+           ),
+          ],
+         ),
+         child:
 
-       /// SEARCH BAR
-       Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        decoration: BoxDecoration(
-         color: Colors.white,
-         borderRadius: BorderRadius.circular(20),
-         boxShadow: [
-          BoxShadow(
-           color: Theme.of(context).colorScheme.primary,
-           blurRadius: 5,
-           offset: const Offset(2, 3),
+
+         ReactiveTextField<String>(
+          style: TextStyle(
+           color: Theme.of(context).colorScheme.outline,
           ),
-         ],
-        ),
-        child: ReactiveForm(
-          formGroup: globalFormGroup,
-          child: Column(
-            children: [
-              ReactiveTextField<String>(
-               formControlName: 'search',
-               decoration: InputDecoration(
-                fillColor: Colors.white,
-                border: InputBorder.none,
-                icon: Icon(Icons.search),
-                hintText: "ابحث عن معهد أو منطقة...",
-               ),
-              ),
-            ],
+          formControlName: 'search',
+          decoration: InputDecoration(
+           hintText: "أدخل اسم المنطقة أو المعهد..",
+         fillColor:   Theme.of(context).colorScheme.onInverseSurface,
+           border: InputBorder.none,
+           prefixIcon:  Icon(Icons.search,color: Theme.of(context).colorScheme.secondary,),
+           suffixIcon: globalFormGroup.control('search').value.toString().isNotEmpty
+               ? IconButton(
+            icon:  Icon(Icons.close,
+            color: Theme.of(context).colorScheme.secondary ,),
+            onPressed: () {
+             globalFormGroup.control('search').value = '';
+            },
+           )
+               : null,
           ),
+         ),
         ),
-       ),
-       const SizedBox(height: 25),
 
-       /// TOP BANNER
-       Container(
+        const SizedBox(height: 25),
+
+        /// TOP BANNER
+
+    Container(
         height: 210,
         decoration: BoxDecoration(
          borderRadius: BorderRadius.circular(27),
          gradient: LinearGradient(
           colors: [
-           darkBlue,
-           const Color(0xFF163B68),
-           const Color(0xFF163B68),
-           darkBlue,
+           Theme.of(context).colorScheme.surface,
+           Theme.of(context).colorScheme.primary,
+           Theme.of(context).colorScheme.primary,
+           Theme.of(context).colorScheme.primary,
+           Theme.of(context).colorScheme.surface,
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -121,20 +164,21 @@ class HomeScreen extends ConsumerWidget {
                overflow: TextOverflow.ellipsis,
                style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
                ),
               ),
              ),
 
              const SizedBox(height: 18),
 
-             const Text(
+              Text(
               "اكتشف أفضل المعاهد\nفي منطقتك",
               maxLines:2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
+
                fontSize: 28,
-               color: Colors.white,
+             color:  Theme.of(context).colorScheme.surface,
+
                fontWeight: FontWeight.bold,
                height: 1.4,
               ),
@@ -142,12 +186,12 @@ class HomeScreen extends ConsumerWidget {
 
              const SizedBox(height: 10),
 
-             const Text(
+              Text(
               "تعليم أكاديمي احترافي بأفضل التقييمات",
               maxLines:1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-               color: Colors.white70,
+               color:  Theme.of(context).colorScheme.surface.withOpacity(0.6),
                fontSize: 15,
               ),
              ),
@@ -185,234 +229,75 @@ class HomeScreen extends ConsumerWidget {
          ),
         ],
        ),
-       const SizedBox(height: 20),
 
-       instituteCard(
-        ref: ref,
-        name: "معهد النخبة",
-        location: "السبيل-قرب جامع الرحمن",
-        rating: "4.0",
-        image:
-        "https://tse4.mm.bing.net/th/id/OIP.bTUquEP24f1MhL_EMSq0RgHaHf?rs=1&pid=ImgDetMain&o=7&rm=3",
-        context: context,
-       ),
 
-       instituteCard(
-           context: context,
-        name: "أكاديمية رويال",
-        location: "الفرقان-أمام باب الاقتصاد",
-        rating: "2.3",
-        image:
-            "https://th.bing.com/th/id/OIP.-7TM23FZ8KhK8h3V3rq8gAHaHa?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3",
-           ref: ref
+        const SizedBox(height: 20),
 
-       ),
+        ReactiveValueListenableBuilder<String>(
+         formControlName: 'search',
+         builder: (context, control, child) {
+          final search =
+          (control.value ?? '')
+              .trim()
+              .toLowerCase();
 
-       const SizedBox(height: 30),
-      ],
+          final filteredInstitutes =
+          institutes.where((item) {
+           final name =
+           item['name']!.toLowerCase();
+
+           final location =
+           item['location']!.toLowerCase();
+
+           return search.isEmpty ||
+               name.contains(search) ||
+               location.contains(search);
+          }).toList();
+
+          if (filteredInstitutes.isEmpty) {
+           return Padding(
+            padding: const EdgeInsets.symmetric(
+             vertical: 100,
+            ),
+            child: Center(
+             child: Text(
+              "لا توجد نتائج مطابقة ل ' $search ' ",
+              style: TextStyle(
+               fontSize: 18,
+               fontWeight: FontWeight.bold,
+               color: Theme.of(context)
+                   .colorScheme
+                   .primary,
+              ),
+             ),
+            ),
+           );
+          }
+
+          return Column(
+           children: filteredInstitutes.map((item) {
+            return instituteCard(
+             ref: ref,
+             context: context,
+             name: item['name']!,
+             location: item['location']!,
+             rating: item['rating']!,
+             image: item['image']!,
+            );
+           }).toList(),
+          );
+         },
+        ),
+       ],
+      ),
      ),
     ),
-   ):
-
-
+   )
+       :
    currentIndex == 1
-       ? Consumer(
-    builder: (context, ref, _) {
-     final favorites = ref.watch(favoritesProvider);
-
-
-     return SafeArea(
-      child: favorites.isEmpty
-          ?  Center(
-       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-
-         Icon(
-          Icons.favorite_border_rounded,
-          size: 90,
-          color: Theme.of(context).colorScheme.primary,
-         )
-             .animate(
-          onPlay: (controller) =>
-              controller.repeat(reverse: true),
-         )
-             .scale(
-          begin: const Offset(1.2, 1.2),
-          end: const Offset(1.1, 1.1),
-          duration: 500.ms,
-         ),
-
-         const SizedBox(height: 15),
-
-         Text(
-          "لا توجد معاهد مفضلة",
-          style: TextStyle(
-           fontSize: 20,
-           fontWeight: FontWeight.bold,
-           color: Theme.of(context).colorScheme.primary,
-          ),
-         ).animate().fadeIn(duration: 1100.ms),
-        ],
-       ),
-      )
-          :Padding(
-     padding: const EdgeInsets.only(top: 10),
-     child: ListView.builder(
-     padding: const EdgeInsets.all(12),
-     itemCount: favorites.length,
-     itemBuilder: (context, index) {
-     final item = favorites[index];
-
-     return Dismissible(
-     key: Key(item['name']!),
-     direction: DismissDirection.endToStart,
-
-     onDismissed: (_) {
-     ref
-         .read(favoritesProvider.notifier)
-         .remove(item['name']!);
-     },
-
-     background: Container(
-     alignment: Alignment.centerLeft,
-     padding: const EdgeInsets.only(left: 20),
-     decoration: BoxDecoration(
-     color: Theme.of(context).colorScheme.error,
-     borderRadius: BorderRadius.circular(20),
-     ),
-     child: Icon(
-     Icons.delete_rounded,
-     size: 30,
-     color: Theme.of(context).colorScheme.surface,
-     ),
-     ),
-
-     child: TweenAnimationBuilder<double>(
-     duration: Duration(milliseconds: 500 + (index * 120)),
-     tween: Tween(begin: 0, end: 1),
-     curve: Curves.easeOutCubic,
-     builder: (context, value, child) {
-     return Opacity(
-     opacity: value,
-     child: Transform.translate(
-     offset: Offset(0, 50 * (1 - value)),
-     child: child,
-     ),
-     );
-     },
-
-     child: Material(
-     color: Colors.transparent,
-     child: InkWell(
-     borderRadius: BorderRadius.circular(16),
-     onTap: () {},
-
-     child: Container(
-     margin: const EdgeInsets.only(bottom: 14),
-     padding: const EdgeInsets.all(14),
-     decoration: BoxDecoration(
-     color: Theme.of(context).colorScheme.surface,
-     borderRadius: BorderRadius.circular(18),
-     boxShadow: [
-     BoxShadow(
-     color: Theme.of(context)
-         .colorScheme
-         .primary
-         .withOpacity(.15),
-     blurRadius: 15,
-     spreadRadius: 1,
-     offset: const Offset(0, 8),
-     ),
-     ],
-     ),
-
-     child: Row(
-     children: [
-     Container(
-     padding: const EdgeInsets.all(10),
-     decoration: BoxDecoration(
-     color: Theme.of(context)
-         .colorScheme
-         .primary
-         .withOpacity(.12),
-     borderRadius: BorderRadius.circular(12),
-     ),
-     child: Icon(
-     Icons.school_rounded,
-     color: Theme.of(context).colorScheme.primary,
-     ),
-     ),
-
-     const SizedBox(width: 14),
-
-     Expanded(
-     child: Column(
-     crossAxisAlignment: CrossAxisAlignment.start,
-     children: [
-     Text(
-     item['name']!,
-     maxLines: 1,
-     overflow: TextOverflow.ellipsis,
-     style: const TextStyle(
-     fontWeight: FontWeight.bold,
-     fontSize: 16,
-     ),
-     ),
-
-     const SizedBox(height: 4),
-
-     Text(
-     item['location'] ?? '',
-     maxLines: 1,
-     overflow: TextOverflow.ellipsis,
-     style: TextStyle(
-     color: Colors.grey.shade600,
-     ),
-     ),
-     ],
-     ),
-     ),
-      Icon(
-     Icons.favorite,
-     color: Theme.of(context).colorScheme.error,
-     )
-         .animate(
-     onPlay: (controller) =>
-     controller.repeat(reverse: true),
-     )
-         .scale(
-     begin: const Offset(1.4, 1.4),
-     end: const Offset(1, 1),
-     duration: 900.ms,
-     ),
-     ],
-     ),
-     ),
-     ),
-     ),
-     ),
-     )
-         .animate()
-         .fadeIn(
-     duration: 600.ms,
-     delay: (index * 100).ms,
-     )
-         .slideY(
-     begin: 0.3,
-     end: 0,
-     curve: Curves.easeOutQuart,
-     );
-     },
-     ),
-     )
-     );
-
-
-    },
-
-
-   ):
+       ?
+   FavoritesPage()
+       :
    ProfilePage(),
 
 
