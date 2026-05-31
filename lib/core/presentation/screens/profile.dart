@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:scholar/core/presentation/screens/logIn.dart';
 import 'package:scholar/core/presentation/screens/support_screen.dart';
+import '../providers/favorites_provider.dart';
 import '../widgets/contain.dart';
 import '../widgets/prof_info_card.dart';
 import '../widgets/theme_dialog.dart';
 import 'editProfileScreen.dart';
-
-class ProfilePage extends StatelessWidget {
-  ProfilePage({super.key});
+class ProfilePage extends ConsumerWidget {
+  const ProfilePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final favorites = ref.watch(favoritesProvider);
     return Scaffold(
       body: Stack(
         clipBehavior: Clip.none,
@@ -71,10 +73,16 @@ class ProfilePage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-
-                        buildInfoCard("12", "المفضلة",context
+                        buildInfoCard(
+                          favorites.length.toString(),
+                          "المفضلة",
+                          context,
                         ),
-                        buildInfoCard("5", "تمت زيارتها",context),
+                        buildInfoCard(
+                          "0",
+                          "تمت زيارتها",
+                          context,
+                        ),
                       ],
                     ),
                 

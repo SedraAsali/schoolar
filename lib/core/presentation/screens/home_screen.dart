@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:scholar/core/presentation/providers/showInistut_provider.dart';
 import 'package:scholar/core/presentation/screens/profile.dart';
 import '../../constant.dart';
 import '../providers/favorites_provider.dart';
@@ -20,6 +21,7 @@ class HomeScreen extends ConsumerWidget {
  @override
  Widget build(BuildContext context,ref) {
   var currentIndex= ref.watch(homeNavigationProvider);
+  final showAll=ref.watch(showAllProvider);
   //لائحة المعاهد من اجل عملية فلترة البحث
   final institutes = [
    {
@@ -203,36 +205,7 @@ class HomeScreen extends ConsumerWidget {
        ),
        const SizedBox(height: 20),
 
-       /// SECTION TITLE
-       Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-         Text(
-          "المعاهد من الأكثر تقيماً",
-          style: TextStyle(
-           color: Theme.of(context).colorScheme.primary,
-           fontSize: 22,
-           fontWeight: FontWeight.bold,
-          ),
-         ),
-         InkWell(
-          onTap: (){
-
-          },
-           child: Text(
-            "عرض الكل",
-            style: TextStyle(
-             color: gold,
-             fontWeight: FontWeight.bold,
-            ),
-           ),
-         ),
-        ],
-       ),
-
-
-        const SizedBox(height: 20),
-
+       //فلترة النصحسب البحث
         ReactiveValueListenableBuilder<String>(
          formControlName: 'search',
          builder: (context, control, child) {
@@ -241,54 +214,119 @@ class HomeScreen extends ConsumerWidget {
               .trim()
               .toLowerCase();
 
-          final filteredInstitutes =
-          institutes.where((item) {
+          final hasSearch = search.isNotEmpty;
+
+          final filteredInstitutes = hasSearch
+              ? institutes.where((item) {
            final name =
            item['name']!.toLowerCase();
-
            final location =
            item['location']!.toLowerCase();
 
-           return search.isEmpty ||
-               name.contains(search) ||
+           return name.contains(search) ||
                location.contains(search);
-          }).toList();
-
-          if (filteredInstitutes.isEmpty) {
-           return Padding(
-            padding: const EdgeInsets.symmetric(
-             vertical: 100,
-            ),
-            child: Center(
-             child: Text(
-              "لا توجد نتائج مطابقة ل ' $search ' ",
-              style: TextStyle(
-               fontSize: 18,
-               fontWeight: FontWeight.bold,
-               color: Theme.of(context)
-                   .colorScheme
-                   .primary,
-              ),
+          }).toList()
+              : showAll
+              ? institutes
+              : [...institutes]
+           ..sort(
+                (a, b) => double.parse(
+             b['rating']!,
+            ).compareTo(
+             double.parse(
+              a['rating']!,
              ),
             ),
            );
-          }
 
           return Column(
-           children: filteredInstitutes.asMap().entries.map((entry) {
-            final index = entry.key;
-            final item = entry.value;
+           children: [
+            Row(
+             mainAxisAlignment:
+             MainAxisAlignment.spaceBetween,
+             children: [
+              Text(
+               hasSearch
+                   ? "نتائج البحث"
+                   : showAll
+                   ? "كل المعاهد"
+                   : "المعاهد الأكثر تقييماً",
+               style: TextStyle(
+                color: Theme.of(context)
+                    .colorScheme
+                    .primary,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+               ),
+              ),
+              if (!hasSearch)
+               InkWell(
+                onTap: () {
+                 ref
+                     .read(
+                  showAllProvider.notifier,
+                 )
+                     .state = !showAll;
+                },
+                child: Text(
+                 showAll
+                     ? "إخفاء"
+                     : "عرض الكل",
+                 style: TextStyle(
+                  color: gold,
+                  fontWeight:
+                  FontWeight.bold,
+                 ),
+                ),
+               ),
+             ],
+            ),
 
-            return instituteCard(
-             ref: ref,
-             context: context,
-             name: item['name']!,
-             location: item['location']!,
-             rating: item['rating']!,
-             image: item['image']!,
-             index: index,
-            );
-           }).toList(),
+            const SizedBox(height: 20),
+
+            if (filteredInstitutes.isEmpty)
+             Padding(
+              padding:
+              const EdgeInsets.symmetric(
+               vertical: 100,
+              ),
+              child: Center(
+               child: Text(
+                "لا توجد نتائج مطابقة لـ '$search'",
+                style: TextStyle(
+                 fontSize: 18,
+                 fontWeight:
+                 FontWeight.bold,
+                 color: Theme.of(context)
+                     .colorScheme
+                     .primary,
+                ),
+               ),
+              ),
+             )
+            else
+             Column(
+              children:
+              filteredInstitutes
+                  .asMap()
+                  .entries
+                  .map((entry) {
+               final index = entry.key;
+               final item = entry.value;
+
+               return instituteCard(
+                ref: ref,
+                context: context,
+                name: item['name']!,
+                location:
+                item['location']!,
+                rating: item['rating']!,
+                image: item['image']!,
+                index: index,
+               );
+              }).toList(),
+             ),
+           ],
           );
          },
         ),
