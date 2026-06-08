@@ -33,17 +33,22 @@ class LogInBloc extends Bloc<LogInEvent, LogInState> {
         emit(LogInFailed());
       }
 
-      else if (response.status == "notAuth") {
+      else if (response.statusCode == 401) {
         showMessage("اسم مستخدم أو كلمة مرور خاطئة", true);
         emit(LogInFailed());
       }
 
-      else if (response.status == "shortPassword") {
-        showMessage("كلمة المرور قصيرة", true);
+      else if (response.statusCode == 404) {
+        showMessage("البريد مسجل مسبقا", true);
         emit(LogInFailed());
       }
-
+      else if (response.statusCode == 400) {
+        showMessage("لرابط انتهت صلاحيته", true);
+        emit(LogInFailed());
+      }
       else if (response.status == "success") {
+        showMessage("نجحت عملية الدخول", true);
+
         emit(LogInDone(response));
       }
     });

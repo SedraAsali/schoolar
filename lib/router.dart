@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:scholar/core/presentation/screens/logIn.dart';
+import 'core/feature_login/presentation/LogInView.dart' show LogInView;
 import 'core/presentation/screens/home_screen.dart';
 import 'core/presentation/screens/onbording_screen.dart';
 import 'core/presentation/screens/splash_screen.dart';
@@ -8,7 +9,7 @@ final router = GoRouter(
 
   //الشاشة المبدئية التي ستظهر اول مانعمل run السؤول هو السطر 10 الي تحتي مباشرة
 
-  initialLocation: '/splashScreen',
+  initialLocation: '/LogInView',//splashScreen
 
 
   routes: [
@@ -26,8 +27,8 @@ final router = GoRouter(
       builder: (context, state) => HomeScreen(),
     ),
     GoRoute(
-      path: '/login',
-      builder: (context, state) => LogIn(),
+      path: '/LogInView', //login
+      builder: (context, state) => LogInView(),
     ),
   ],
 );

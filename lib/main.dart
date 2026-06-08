@@ -1,13 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart' hide ChangeNotifierProvider;
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:scholar/core/presentation/providers/theme_provider.dart';
 import 'package:scholar/router.dart';
 import 'package:scholar/theme.dart';
 
+import 'core/feature_login/presentation/bloc/log_in_bloc.dart';
+import 'helper/text_field_provider.dart';
+
 void main() {
-  runApp(ProviderScope(child: MyApp()));
+  runApp(
+    ProviderScope(
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => LogInBloc()..add(LogInInit()),
+          ),
+        ],
+        child: MultiProvider(
+          providers: [
+            ChangeNotifierProvider(
+              create: (_) => TextFieldProvider(),
+            ),
+          ],
+          child: MyApp(),
+        ),
+      ),
+    ),
+  );
 }
 
 class MyApp extends ConsumerWidget {
