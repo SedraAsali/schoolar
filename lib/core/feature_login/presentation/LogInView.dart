@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:scholar/core/feature_signup/presentation/SignUpView.dart';
 //import 'package:restorant/Helper/ConfigClass.dart';
 //import 'package:restorant/Helper/SharedPreferencesHelper.dart';
 //import 'package:restorant/Widget/constant.dart';
@@ -13,7 +14,6 @@ import 'package:reactive_forms/reactive_forms.dart';
 import '../../../helper/text_field_provider.dart';
 import '../../feature_login/presentation/login_form.dart' show logFormGroup;
 import '../../presentation/screens/home_screen.dart';
-import '../../presentation/screens/signUp.dart';
 import 'bloc/log_in_bloc.dart';
 
 class LogInView extends StatefulWidget {
@@ -94,15 +94,7 @@ class _LogInViewState extends State<LogInView>  {
                   ),
                 )
 
-                // BlocBuilder<LogInBloc, LogInState>(
-                //   builder: (_, state) {
-                //     print('state ${state}');
-                //     if (state is LogInDone) {
-                //       return logInDoneState(context);
-                //     } else
-                //       return credentialsInput();
-                //   },
-                // ),
+
               ],
             ),
         ),
@@ -111,28 +103,7 @@ class _LogInViewState extends State<LogInView>  {
     );
   }
   
-  // Widget signInDoneState(BuildContext context){
-  //   if (globalVariableProvider.configClass.userLogin.data.phoneVerifiedAt!=null)
-  //     Timer(Duration(milliseconds: 100), () {
-  //       Provider.of<GlobalVariableProvider>(context, listen: false)
-  //         ..setSignInValues(true);
-  //       Navigator.of(context).pushAndRemoveUntil(
-  //           MaterialPageRoute(builder: (context) => Home()),
-  //               (Route<dynamic> route) => false);
-  //     });
-  //   else {
-  //
-  //     Timer(Duration(milliseconds: 100), () {
-  //       Provider.of<GlobalVariableProvider>(context, listen: false)
-  //         ..setSignInValues(true);
-  //       Navigator.of(context).pushAndRemoveUntil(
-  //           MaterialPageRoute(builder: (context) => PhoneNotVerified()),
-  //               (Route<dynamic> route) => false);
-  //     });
-  //   }
-  //   BlocProvider.of<SignInBloc>(context)..add(SignInInit());
-  //   return Container();
-  // }
+
   Widget credentialsInput(){
     return Container(
       height: 460,
@@ -253,7 +224,7 @@ class _LogInViewState extends State<LogInView>  {
                     logInButton(),
                     const SizedBox(height: 20),
                     TextButton(onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> SignUp()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> SignUpView()));
                     }, child: Text('إذا كنت لا تمتلك حساب مسبق ؟ انقر هنا ..'))
                   ],
                 ),
@@ -306,24 +277,6 @@ class _LogInViewState extends State<LogInView>  {
     );
   }
 
-  // void signInPressed(){
-  //   final email =
-  //       formGroup.control('logInEmail').value;
-  //
-  //   final password =
-  //       formGroup.control('logInPassword').value;
-  //
-  //   debugPrint('Email11: $email');
-  //   debugPrint('Password: $password');
-  //   if (passwordController.text.isNotEmpty &&
-  //       phoneNumberController.text.isNotEmpty) {
-  //     BlocProvider.of<SignInBloc>(context)
-  //       ..add(SignInCall(
-  //           context,
-  //           passwordController.text,
-  //           phoneNumberController.text,
-  //           countryCode));
-  //   }
-  // }
+
 
 }
