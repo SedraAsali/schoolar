@@ -27,9 +27,13 @@ class LogInApi {
     try {
       print("hi starting");
        LoadingDialog.showLoadingDialog(context, _keyLoader);
-      var response = await http.post(Uri.parse(url)   , body: params, headers: {
+       print("Req before");
+      var response = await http.post(Uri.parse(url)   ,
+          body: params, headers: {
+
         HttpHeaders.acceptHeader: "application/json"
-      }).timeout(const Duration(seconds: 30));
+      }).timeout(const Duration(seconds: 90));
+      print("Req after");
       print("LogInApi response.statusCode ${response.statusCode}");
       print("LogInApi response.body ${response.body}");
       if (response.statusCode == 200) {
@@ -73,8 +77,8 @@ class LogInApi {
         print("LogInApi response.statusCode ${response.statusCode}");
         return LogInModel(status: "failed");
       }
-    } on TimeoutException catch (_) {
-      print("LogInApi TimeOut Exception error ");
+    } on TimeoutException catch (a) {
+      print("LogInApi TimeOut Exception error $a ");
 
         Navigator.of(_keyLoader.currentContext!, rootNavigator: true).pop();
 

@@ -38,7 +38,7 @@ dependencies:
   http: ^1.6.0
   flutter_bloc: ^9.1.1
   equatable: ^2.0.8
-  fluttertoast: ^9.1.0
+  flutter_styled_toast: ^2.3.0
 
 
 dev_dependencies:

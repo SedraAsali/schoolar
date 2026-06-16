@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 
-showMessage(String msg , bool isError) {
-  Fluttertoast.showToast(
-      msg: msg,
-      backgroundColor:isError ? Colors.blue : Colors.deepPurple,
-      textColor: Colors.white,
-      fontSize: 16.0);
+void showMessage(
+    BuildContext context,
+    String msg,
+    bool isError,
+    ) {
+  showToast(
+    msg,
+    context: context,
+    backgroundColor: isError ? Colors.red : Colors.green,
+    textStyle: const TextStyle(
+      color: Colors.white,
+      fontSize: 16,
+    ),
+  );
 }
