@@ -38,6 +38,11 @@ class LogInModel {
     "message": message,
     "user": user?.toJson(),
   };
+
+  @override
+  String toString() {
+    return 'LogInModel{status: $status, statusCode: $statusCode, token: $token, message: $message, user: $user}';
+  }
 }
 
 class User {
@@ -78,4 +83,9 @@ class User {
     "active": active,
     "createdAt": createdAt?.toIso8601String(),
   };
+
+  @override
+  String toString() {
+    return 'User{id: $id, name: $name, email: $email, photo: $photo, role: $role, active: $active, createdAt: $createdAt}';
+  }
 }

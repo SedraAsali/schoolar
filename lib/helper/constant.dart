@@ -13,13 +13,15 @@ final Color gold = const Color(0xFFD4AF37);
 
 class AppAssets {
 
-  static final String baseUrl = 'http://192.168.1.7:7000/api/v1.0.0/users/';
+  static final String baseUrl = 'http://192.168.1.7:7000/api/v1.0.0/users/';//192.168.0.59
   // use not localhost ,but ip of computer  win+R --> ipconfig --> ip4
   static const student = 'assets/images/student.svg';
 
   static const search = 'assets/images/search.svg';
 
   static const science = 'assets/images/science.svg';
+
+  static String deviceId="";
 
   static Map<String, String> getHeader(dynamic token)  {
 

@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:scholar/core/feature_signup/presentation/bloc/sign_up_bloc.dart';
 import 'package:scholar/core/presentation/providers/theme_provider.dart';
+import 'package:scholar/helper/global_variable_provide.dart';
 import 'package:scholar/router.dart';
 import 'package:scholar/theme.dart';
 
@@ -28,6 +29,9 @@ void main() {
           providers: [
             ChangeNotifierProvider(
               create: (_) => TextFieldProvider(),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => GlobalVariableProvider(),
             ),
           ],
           child: MyApp(),

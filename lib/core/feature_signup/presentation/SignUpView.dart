@@ -6,11 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:scholar/core/feature_login/presentation/LogInView.dart';
 import 'package:scholar/core/feature_signup/presentation/signUp_form.dart';
-//import 'package:restorant/Helper/ConfigClass.dart';
-//import 'package:restorant/Helper/SharedPreferencesHelper.dart';
-//import 'package:restorant/Widget/constant.dart';
-
-//import 'package:restorant/providers/global_variable_provide.dart';
+import 'package:scholar/helper/ConfigClass.dart';
+import 'package:scholar/helper/global_variable_provide.dart';
 
 import '../../../helper/text_field_provider.dart';
 import '../../feature_login/presentation/login_form.dart' show logFormGroup;
@@ -25,14 +22,13 @@ class SignUpView extends StatefulWidget {
 class _SignUpViewState extends State<SignUpView>  {
 
 
- // GlobalVariableProvider globalVariableProvider;
- // ConfigClass configClass = ConfigClass();
+  late GlobalVariableProvider globalVariableProvider;
+  ConfigClass configClass = ConfigClass();
   @override
   void initState() {
     super.initState();
     BlocProvider.of<SignUpBloc>(context).add(SignUpInit());
-   // globalVariableProvider =
-      //  Provider.of<GlobalVariableProvider>(context, listen: false);
+    globalVariableProvider =Provider.of<GlobalVariableProvider>(context, listen: false);
   }
   @override
   Widget build(BuildContext context) {
@@ -54,89 +50,56 @@ class _SignUpViewState extends State<SignUpView>  {
         child:  Padding(
           padding: const EdgeInsets.only(top: 30),
           child: Column(
-              children: <Widget>[
-                ClipRRect(
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    heightFactor: 0.3,
-                    child:
-                    Image.asset('assets/images/log.png',
-                      height:560,
-                      fit: BoxFit.cover,
-                    ),
+            children: <Widget>[
+              ClipRRect(
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  heightFactor: 0.3,
+                  child:
+                  Image.asset('assets/images/log.png',
+                    height:560,
+                    fit: BoxFit.cover,
                   ),
                 ),
-               // credentialsInput()
-                BlocListener<SignUpBloc, SignUpState>(
-                  listener: (context, state) {
-                    if (state is SignUpDone) {
+              ),
+              // credentialsInput()
+              BlocListener<SignUpBloc, SignUpState>(
+                listener: (context, state) {
+                  if (state is SignUpDone) {
 
-                 // Provider.of<GlobalVariableProvider>(context, listen: false)
-                  //  ..setSignInValues(true);
+                    Provider.of<GlobalVariableProvider>(context, listen: false).setSignInValues(true);
 
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
-                              (Route<dynamic> route) => false);
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                            (Route<dynamic> route) => false);
                     BlocProvider.of<SignUpBloc>(context).add(SignUpInit());
-                   //    Navigator.pushReplacement(
-                   //      context,
-                   //      MaterialPageRoute(builder: (_) => HomeScreen()),
-                   //    );
-                    }
+
+                  }
+                },
+                child: BlocBuilder<SignUpBloc, SignUpState>(
+                  builder: (context, state) {
+                    return Stack(
+                      children: [
+                        credentialsInput(),
+
+                        if (state is Loading)
+                          Container(),
+                      ],
+                    );
                   },
-                  child: BlocBuilder<SignUpBloc, SignUpState>(
-                    builder: (context, state) {
-                      return Stack(
-                        children: [
-                          credentialsInput(),
+                ),
+              )
 
-                          if (state is Loading)
-                            Container(),
-                        ],
-                      );
-                    },
-                  ),
-                )
 
-                // BlocBuilder<LogInBloc, LogInState>(
-                //   builder: (_, state) {
-                //     print('state ${state}');
-                //     if (state is LogInDone) {
-                //       return logInDoneState(context);
-                //     } else
-                //       return credentialsInput();
-                //   },
-                // ),
-              ],
-            ),
+            ],
+          ),
         ),
 
       ),
     );
   }
 
-  // Widget signInDoneState(BuildContext context){
-  //   if (globalVariableProvider.configClass.userLogin.data.phoneVerifiedAt!=null)
-  //     Timer(Duration(milliseconds: 100), () {
-  //       Provider.of<GlobalVariableProvider>(context, listen: false)
-  //         ..setSignInValues(true);
-  //       Navigator.of(context).pushAndRemoveUntil(
-  //           MaterialPageRoute(builder: (context) => Home()),
-  //               (Route<dynamic> route) => false);
-  //     });
-  //   else {
-  //
-  //     Timer(Duration(milliseconds: 100), () {
-  //       Provider.of<GlobalVariableProvider>(context, listen: false)
-  //         ..setSignInValues(true);
-  //       Navigator.of(context).pushAndRemoveUntil(
-  //           MaterialPageRoute(builder: (context) => PhoneNotVerified()),
-  //               (Route<dynamic> route) => false);
-  //     });
-  //   }
-  //   BlocProvider.of<SignInBloc>(context)..add(SignInInit());
-  //   return Container();
-  // }
+
   Widget credentialsInput(){
     return   Container(
       height: 760,
@@ -264,7 +227,7 @@ class _SignUpViewState extends State<SignUpView>  {
 
                   // اختيار مستخدم او مدير
                   Material(
-                     type: MaterialType.transparency,
+                    type: MaterialType.transparency,
                     child: ReactiveRadioListTile<String>(
                       formControlName: 'role',
                       value: 'USER',
@@ -283,7 +246,7 @@ class _SignUpViewState extends State<SignUpView>  {
 
                   const SizedBox(height: 25),
                   // Login Button
-                   SignupButton(),
+                  SignupButton(),
                   const SizedBox(height: 25),
                   TextButton(onPressed: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=> LogInView()));
@@ -325,12 +288,12 @@ class _SignUpViewState extends State<SignUpView>  {
             debugPrint('Role: $role');
 
             if (name.isNotEmpty && email.isNotEmpty && password.isNotEmpty && role.isNotEmpty) {
-                          BlocProvider.of<SignUpBloc>(context)
-                            .add(SignUpCall(
-                                context,name,email,
-                                password, role
-                                ));
-                        }
+              BlocProvider.of<SignUpBloc>(context)
+                  .add(SignUpCall(
+                  context,name,email,
+                  password, role
+              ));
+            }
           }
               : null,
           child: const Text('إنشاء الحساب'),
@@ -339,46 +302,7 @@ class _SignUpViewState extends State<SignUpView>  {
     );
   }
 
-  // Widget logInButton(){
-  //   return  ReactiveFormConsumer(
-  //     builder: (context, formGroup, child) {
-  //       return ElevatedButton(
-  //         style: ElevatedButton.styleFrom(
-  //           backgroundColor: Theme.of(context).colorScheme.primary,
-  //           foregroundColor: Theme.of(context).colorScheme.surface,
-  //
-  //           disabledBackgroundColor: Theme.of(context).colorScheme.outline,
-  //           disabledForegroundColor:Theme.of(context).colorScheme.surface,
-  //         ),
-  //
-  //         onPressed: formGroup.valid
-  //             ?
-  //             () {
-  //           final email =
-  //               formGroup.control('logInEmail').value;
-  //
-  //           final password =
-  //               formGroup.control('logInPassword').value;
-  //
-  //           debugPrint('Email11: $email');
-  //           debugPrint('Password: $password');
-  //           if (email.isNotEmpty &&
-  //               password.isNotEmpty) {
-  //               BlocProvider.of<LogInBloc>(context)
-  //                 .add(LogInCall(
-  //                     context,
-  //                     password,
-  //                   email,
-  //                     ));
-  //             }
-  //         }
-  //             : null,
-  //
-  //         child: const Text('تسجيل الدخول'),
-  //       );
-  //     },
-  //   );
-  // }
+
 
 
 
