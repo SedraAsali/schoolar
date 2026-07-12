@@ -28,7 +28,7 @@ class GetProfileCubit extends Cubit<GetProfileState>  {
       print("userObject.status GetProfileCubit userObject.status ${userObject.status}");
 
       if (userObject.status == "success") {
-        Provider.of<ProfileProvider>(context).initialFirstPageProfile(context, userObject);
+        Provider.of<ProfileProvider>(context,listen: false).initialFirstPageProfile(context, userObject);
 
         emit(ProfileFetchSuccessState(userObject: userObject));
       } else {

@@ -56,7 +56,7 @@ class _ProfilePageViewState extends ConsumerState<ProfilePageView> {
   @override
   Widget build(BuildContext context) {
     _profileProvider = prov.Provider.of<ProfileProvider>(context);
-    print("_profileProvider.userObject.user?.name ${_profileProvider.userObject.user?.name ?? ""}");
+    //print("_profileProvider.userObject.user?.name ${_profileProvider.userObject.user?.name ?? ""}");
 
     final favorites = ref.watch(favoritesProvider);
     return Scaffold(

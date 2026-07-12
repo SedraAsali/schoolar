@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:scholar/core/feature_login/presentation/LogInView.dart';
+import 'package:scholar/core/feature_user_profile/provider/profile_provider.dart';
 import 'package:scholar/core/presentation/screens/onbording_screen.dart';
 import 'package:scholar/helper/SharedPreferencesHelper.dart';
 import 'package:scholar/helper/constant.dart';
@@ -53,6 +54,8 @@ class ProcessInitialProject {
       }
       else
       {
+        Provider.of<ProfileProvider>(context,listen: false).initialFirstPageProfile(context,
+            configClass.userLogin!);
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => HomeScreen()), (route) => false);
       }
