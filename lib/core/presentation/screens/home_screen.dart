@@ -7,6 +7,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:scholar/core/presentation/providers/showInistut_provider.dart';
 import 'package:scholar/core/presentation/screens/profile.dart';
 import '../../constant.dart';
+import '../../feature_user_profile/presentation/profile_view.dart';
 import '../providers/favorites_provider.dart';
 import '../providers/home_navication.dart';
 import '../widgets/card.dart';
@@ -340,7 +341,7 @@ class HomeScreen extends ConsumerWidget {
        ?
    FavoritesPage()
        :
-   ProfilePage(),
+   ProfilePageView(),
 
 
    bottomNavigationBar: CurvedNavigationBar(

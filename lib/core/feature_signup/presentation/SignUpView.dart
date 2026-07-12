@@ -24,11 +24,26 @@ class _SignUpViewState extends State<SignUpView>  {
 
   late GlobalVariableProvider globalVariableProvider;
   ConfigClass configClass = ConfigClass();
+  final FocusNode passwordFocus = FocusNode();
+  final FocusNode passwordConfirmFocus = FocusNode();
+
   @override
   void initState() {
     super.initState();
+    passwordFocus.addListener(() {
+      setState(() {});
+    });
+    passwordConfirmFocus.addListener(() {
+      setState(() {});
+    });
     BlocProvider.of<SignUpBloc>(context).add(SignUpInit());
     globalVariableProvider =Provider.of<GlobalVariableProvider>(context, listen: false);
+  }
+  @override
+  void dispose() {
+    passwordFocus.dispose();
+    passwordConfirmFocus.dispose();
+    super.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -174,16 +189,45 @@ class _SignUpViewState extends State<SignUpView>  {
                   ),
                   const SizedBox(height: 25),
                   // Password Field
-                  ReactiveTextField<String>(
-                    style: TextStyle(color: Theme.of(context).colorScheme.surface),
+                  Consumer<TextFieldProvider>(
+                    builder: (context, values, child) {
+
+                      return ReactiveValueListenableBuilder<String>(
+                        formControlName: 'signUpPassword',
+                        builder: (context, control, child){
+                           final hasText = (control.value?.isNotEmpty ?? false);
+
+                          return ReactiveTextField<String>(
+                         style: TextStyle(color: Theme.of(context).colorScheme.surface),
 
                     formControlName: 'signUpPassword',
-                    obscureText: true,
+                    obscureText: !values.passwordIsLookAtPassword,
+                   focusNode: passwordFocus,
                     decoration:  InputDecoration(
                       fillColor: Theme.of(context).colorScheme.primary,
                       filled: true,
                       labelText: 'كلمة المرور',
                       labelStyle: TextStyle(color: Theme.of(context).colorScheme.surface,),
+                      suffixIcon:passwordFocus.hasFocus || hasText? Padding(
+                        padding: const EdgeInsets.only(left:8.0),
+                        child: IconButton(
+                          onPressed: hasText
+                              ? () {
+                            values.changeBoolState(
+                              !values.passwordIsLookAtPassword,
+                              1,
+                            );
+                          }
+                              : null,
+                          icon: Icon(
+                            values.passwordIsLookAtPassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: hasText ? Colors.white : Colors.grey,
+                            size: 20,
+                          ),
+                        ),
+                      ):null,
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.only(topLeft:  Radius.circular(120)),
@@ -196,33 +240,66 @@ class _SignUpViewState extends State<SignUpView>  {
                       ValidationMessage.minLength: (_) =>
                       'كلمة المرور يجب أن تكون 8 أحرف على الأقل',
                     },
-                  ),
+                  );
+  },
+);
+  },
+),
                   const SizedBox(height: 25),
                   // Confirm Field
-                  ReactiveTextField<String>(
-                    style: TextStyle(color: Theme.of(context).colorScheme.surface),
+                  Consumer<TextFieldProvider>(
+                    builder: (context, values1, child){
+                   return    ReactiveValueListenableBuilder<String>(
+                       formControlName: 'confirm',
+                       builder: (context, control1, child) {
+                         final hasText = (control1.value?.isNotEmpty ?? false);
 
-                    formControlName: 'confirm',
-                    obscureText: true,
-                    decoration:  InputDecoration(
-                      fillColor: Theme.of(context).colorScheme.primary,
-                      filled: true,
-                      labelText: 'التحقق من كلمة المرور',
-                      labelStyle: TextStyle(color: Theme.of(context).colorScheme.surface),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.only(topLeft:  Radius.circular(120)),
+                         return ReactiveTextField<String>(
+                        style: TextStyle(color: Theme.of(context).colorScheme.surface),
 
-                      ),
+                        formControlName: 'confirm',
+                        obscureText: !values1.confirmIsLookAtPassword,
+                        focusNode: passwordConfirmFocus,
+                        decoration:  InputDecoration(
+                          fillColor: Theme.of(context).colorScheme.primary,
+                          filled: true,
+                          labelText: 'التحقق من كلمة المرور',
+                          labelStyle: TextStyle(color: Theme.of(context).colorScheme.surface),
+                          suffixIcon:passwordConfirmFocus.hasFocus || hasText? Padding(
+                            padding: const EdgeInsets.only(left:8.0),
+                            child: IconButton(
+                              onPressed: hasText
+                                  ? () {
+                                values1.changeBoolState(!values1.confirmIsLookAtPassword, 2);
+                              }
+                                  : null,
+                              icon: Icon(
+                                values1.confirmIsLookAtPassword
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: hasText ? Colors.white : Colors.grey,
+                                size: 20,
+                              ),
+                            ),
+                          ):null,
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.only(topLeft:  Radius.circular(120)),
 
-                    ),
-                    validationMessages: {
-                      ValidationMessage.required: (_) =>
-                      'التحقق مطلوب',
-                      ValidationMessage.mustMatch: (_) =>
-                      'كلمة المرور يجب أن تكون متطابقة',
-                    },
-                  ),
+                          ),
+
+                        ),
+                        validationMessages: {
+                          ValidationMessage.required: (_) =>
+                          'التحقق مطلوب',
+                          ValidationMessage.mustMatch: (_) =>
+                          'كلمة المرور يجب أن تكون متطابقة',
+                        },
+                                         );
+                     }
+                   );
+  },
+),
                   const SizedBox(height: 25),
 
                   // اختيار مستخدم او مدير

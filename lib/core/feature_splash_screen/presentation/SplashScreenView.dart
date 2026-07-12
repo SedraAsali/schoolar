@@ -31,6 +31,14 @@ class _SplashScreenViewState extends State<SplashScreenView>
   @override
   void initState() {
     super.initState();
+    print("************* ProcessInitialProject*************");
+    _processInitialProject = ProcessInitialProject( context);
+
+    _processInitialProject!.initProject()
+        .then((value) => Timer(Duration(seconds: 1), () {
+      _processInitialProject!.processGoto(context);
+    }));
+
     _pulseController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1400),
@@ -99,13 +107,7 @@ class _SplashScreenViewState extends State<SplashScreenView>
 
     _controller.forward();
 
-    print("************* ProcessInitialProject*************");
-    _processInitialProject = ProcessInitialProject( context);
 
-    _processInitialProject!.initProject()
-        .then((value) => Timer(Duration(seconds: 1), () {
-      _processInitialProject!.processGoto(context);
-    }));
 
     // Timer(const Duration(seconds: 10), () {
     //   if (!mounted) return;

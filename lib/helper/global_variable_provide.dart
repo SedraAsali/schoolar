@@ -7,13 +7,13 @@ import 'package:scholar/helper/ConfigClass.dart';
 class GlobalVariableProvider extends ChangeNotifier {
 
   bool signInDone=false;
-  late ConfigClass configClass;
+   ConfigClass? configClass;
 
 
 
 
 
-  String? get token => configClass.token;
+  String? get token => configClass?.token;
 
  // String get tokenFirebase => configClass.firebaseToken;
 
@@ -31,7 +31,7 @@ class GlobalVariableProvider extends ChangeNotifier {
 
   setToken(String token)
   {
-    configClass.token = token;
+    configClass?.token = token;
     notifyListeners();
   }
 
@@ -42,7 +42,7 @@ class GlobalVariableProvider extends ChangeNotifier {
   // }
 
   setUserObject (LogInModel userModel){
-    configClass.userLogin = userModel;
+    configClass?.userLogin = userModel;
     notifyListeners();
   }
 }

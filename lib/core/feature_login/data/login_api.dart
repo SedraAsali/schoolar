@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:scholar/core/feature_user_profile/provider/profile_provider.dart';
 import 'package:scholar/helper/ConfigClass.dart';
 import 'package:scholar/helper/SharedPreferencesHelper.dart';
 
@@ -37,19 +38,33 @@ class LogInApi {
       if (response.statusCode == 200 || response.statusCode == 201 ) {
         ConfigClass configClass = ConfigClass();
         configClass.userLogin = logInModelFromJson(response.body);
+        print("configClass.userLogin ${logInModelFromJson(response.body)}");
+
         configClass.token = logInModelFromJson(response.body).token;
 
         Provider.of<GlobalVariableProvider>(context , listen:  false).setConfigGlobalValue(configClass);
 
-        //  Provider.of<ProfileProvider>(context, listen: false).imagePath =
-        //      configClass.userLogin.data.profileImg ?? "";
-        //  Provider.of<ProfileProvider>(context,listen: false).isLogOut = false;
+         Provider.of<ProfileProvider>(context, listen: false).imagePath =
+             configClass.userLogin?.user?.photo ?? "";
+
+         print("login Api Provider.of<ProfileProvider>(context, listen: false).imagePath"
+             "${Provider.of<ProfileProvider>(context, listen: false).imagePath}");
+
+        Provider.of<ProfileProvider>(context,listen: false).initialFirstPageProfile(context,  configClass.userLogin!);
+
+         Provider.of<ProfileProvider>(context,listen: false).isLogOut = false;
+         print("login Api  Provider.of<ProfileProvider>(context,listen: false).isLogOut "
+             "${Provider.of<ProfileProvider>(context,listen: false).isLogOut}");
+
+
         print("LogInApi done!");
         print("LogInApi  response json ${response.body}");
         LogInModel xx = logInModelFromJson(response.body);
         print("LogInApi LogInModel  :: ${xx.user}");
         await SharedPreferencesHelper.setConfig(configClass);
-        Provider.of<GlobalVariableProvider>(context , listen:  false).setConfigGlobalValue(configClass);
+        print("PROVIDER TOKEN = ${Provider.of<GlobalVariableProvider>(context, listen: false,).configClass?.token}");
+
+        //  Provider.of<GlobalVariableProvider>(context , listen:  false).setConfigGlobalValue(configClass);
 
         Navigator.of(_keyLoader.currentContext!, rootNavigator: true).pop();
         return logInModelFromJson(response.body);

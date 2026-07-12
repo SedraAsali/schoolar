@@ -1,23 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart' as prov;
+import 'package:scholar/core/feature_user_profile/get_profile_cubit/get_profile_cubit.dart';
+import 'package:scholar/core/feature_user_profile/provider/profile_provider.dart';
+
+import 'package:scholar/core/feature_user_profile/widgets/build_button.dart';
 import 'package:scholar/core/presentation/screens/logIn.dart';
 import 'package:scholar/core/presentation/screens/support_screen.dart';
-import '../providers/favorites_provider.dart';
-import '../widgets/contain.dart';
-import '../widgets/prof_info_card.dart';
-import '../widgets/theme_dialog.dart';
-import 'editProfileScreen.dart';
-class ProfilePage extends ConsumerWidget {
-  const ProfilePage({super.key});
+import 'package:scholar/core/feature_favorites/provider/favorites_provider.dart';
+import 'package:scholar/core/feature_user_profile/widgets/prof_info_card.dart';
+import 'package:scholar/core/feature_user_profile/presentation/editProfileScreen.dart';
+import 'package:scholar/helper/ConfigClass.dart';
+import 'package:scholar/helper/SharedPreferencesHelper.dart';
+import 'package:scholar/helper/global_variable_provide.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../helper/widgets/theme_dialog.dart';
+
+class ProfilePageView extends ConsumerStatefulWidget {
+  const ProfilePageView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ProfilePageView> createState() => _ProfilePageViewState();
+}
+
+class _ProfilePageViewState extends ConsumerState<ProfilePageView> {
+  // late ConfigClass configClass;
+  late ProfileProvider _profileProvider;
+  String? name;
+  String? email;
+  @override
+  void initState() {
+    super.initState();
+    print("onnnnnnnnnnnnnnnnnne");
+    BlocProvider.of<GetProfileCubit>(context).getProfile(context);
+    print("finalllllllllllllllllllly");
+  //  loadUser();
+  }
+
+  Future<void> loadUser() async {
+    final configClass = await SharedPreferencesHelper.getConfig();
+    print(configClass.userLogin);
+    print(configClass.userLogin?.user);
+    print(configClass.userLogin?.user?.name);
+    print(configClass.userLogin?.user?.email);
+    setState(() {
+      name = configClass.userLogin?.user?.name;
+      email = configClass.userLogin?.user?.email;
+
+    });
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    _profileProvider = prov.Provider.of<ProfileProvider>(context);
+    print("_profileProvider.userObject.user?.name ${_profileProvider.userObject.user?.name ?? ""}");
+
     final favorites = ref.watch(favoritesProvider);
     return Scaffold(
       body: Stack(
         clipBehavior: Clip.none,
         children: [
-
           // الكونتينر
           Positioned(
             top: 120,
@@ -33,9 +78,7 @@ class ProfilePage extends ConsumerWidget {
               ),
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(150),
-                ),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(150)),
                 boxShadow: [
                   BoxShadow(
                     blurRadius: 20,
@@ -49,7 +92,7 @@ class ProfilePage extends ConsumerWidget {
                 child: Column(
                   children: [
                     Text(
-                      "اسم المستخدم",
+                      _profileProvider.userObject.user?.name ?? "", //$${configClass.userLogin?.user?.name}
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.primary,
                         fontSize: 20,
@@ -60,7 +103,7 @@ class ProfilePage extends ConsumerWidget {
                     const SizedBox(height: 10),
 
                     Text(
-                      "ScholarAppUser@gmail.com",
+                      _profileProvider.userObject.user?.email ?? "", //$${configClass.userLogin?.user?.email}
                       style: TextStyle(
                         fontSize: 14,
                         color: Theme.of(context).colorScheme.outline,
@@ -78,11 +121,7 @@ class ProfilePage extends ConsumerWidget {
                           "المفضلة",
                           context,
                         ),
-                        buildInfoCard(
-                          "0",
-                          "تمت زيارتها",
-                          context,
-                        ),
+                        buildInfoCard("0", "تمت زيارتها", context),
                       ],
                     ),
 
@@ -94,14 +133,10 @@ class ProfilePage extends ConsumerWidget {
                       color: Theme.of(context).colorScheme.primary,
                       text: "تعديل الحساب",
                       onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) =>  EditProfilePage(),
-                            ),
-                          );
-
-
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => EditProfilePage()),
+                        );
                       },
                     ),
 
@@ -132,66 +167,97 @@ class ProfilePage extends ConsumerWidget {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              title:  Text("حول التطبيق",
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary
+                              title: Text(
+                                "حول التطبيق",
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
                               ),
-                              ),
-                              content:  Column(
+                              content: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("📱 Scholar Institutes",
+                                  Text(
+                                    "📱 Scholar Institutes",
                                     style: TextStyle(
-                                        color: Theme.of(context).colorScheme.onSecondaryContainer
-                                    ),),
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSecondaryContainer,
+                                    ),
+                                  ),
                                   SizedBox(height: 8),
-                                  Text("الإصدار: 1.0.0",
+                                  Text(
+                                    "الإصدار: 1.0.0",
                                     style: TextStyle(
-                                        color: Theme.of(context).colorScheme.onSecondaryContainer
-                                    ),),
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSecondaryContainer,
+                                    ),
+                                  ),
                                   SizedBox(height: 8),
                                   Text(
                                     "تطبيق يساعد الطلاب في العثور على أفضل المعاهد التعليمية بسهولة.",
 
                                     style: TextStyle(
-                                        color: Theme.of(context).colorScheme.onSecondaryContainer
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSecondaryContainer,
                                     ),
                                   ),
                                   SizedBox(height: 12),
-                                  Text("🏫 المميزات:",
+                                  Text(
+                                    "🏫 المميزات:",
 
                                     style: TextStyle(
-                                        color: Theme.of(context).colorScheme.onSecondaryContainer
-                                    ),),
-                                  Text("- عرض المعاهد",
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSecondaryContainer,
+                                    ),
+                                  ),
+                                  Text(
+                                    "- عرض المعاهد",
 
                                     style: TextStyle(
-                                        color: Theme.of(context).colorScheme.onSecondaryContainer
-                                    ),),
-                                  Text("- المفضلة",
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSecondaryContainer,
+                                    ),
+                                  ),
+                                  Text(
+                                    "- المفضلة",
 
                                     style: TextStyle(
-                                        color: Theme.of(context).colorScheme.onSecondaryContainer
-                                    ),),
-                                  Text("- التقييم",
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSecondaryContainer,
+                                    ),
+                                  ),
+                                  Text(
+                                    "- التقييم",
 
                                     style: TextStyle(
-                                        color: Theme.of(context).colorScheme.onSecondaryContainer
-                                    ),),
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSecondaryContainer,
+                                    ),
+                                  ),
                                   SizedBox(height: 12),
-                                  Text("© 2026 جميع الحقوق محفوظة",
+                                  Text(
+                                    "© 2026 جميع الحقوق محفوظة",
 
                                     style: TextStyle(
-                                        color: Theme.of(context).colorScheme.onSecondaryContainer
-                                    ),),
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSecondaryContainer,
+                                    ),
+                                  ),
                                 ],
                               ),
                               actions: [
                                 TextButton(
                                   onPressed: () => Navigator.pop(context),
                                   child: const Text("إغلاق"),
-                                )
+                                ),
                               ],
                             );
                           },
@@ -207,12 +273,12 @@ class ProfilePage extends ConsumerWidget {
                       color: Theme.of(context).colorScheme.primary,
                       text: "دعم",
                       onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const SupportPage(),
-                            ),
-                          );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const SupportPage(),
+                          ),
+                        );
                       },
                     ),
 
@@ -226,14 +292,11 @@ class ProfilePage extends ConsumerWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (_) =>  LogIn(),
-                          ),
+                          MaterialPageRoute(builder: (_) => LogIn()),
                         );
                       },
                     ),
                     SizedBox(height: 5),
-
 
                     Text(
                       "الإصدار 1.0.0",
@@ -242,13 +305,11 @@ class ProfilePage extends ConsumerWidget {
                         fontSize: 12,
                       ),
                     ),
-                    SizedBox(height: 50,)
+                    SizedBox(height: 50),
                   ],
                 ),
               ),
-
             ),
-
           ),
 
           // الصورة

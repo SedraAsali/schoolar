@@ -41,7 +41,8 @@ dependencies:
   flutter_styled_toast: ^2.3.0
   tuple: ^2.0.2
   device_info_plus: ^13.1.0
-
+  connectivity_plus: ^7.2.0
+  image_picker: ^1.2.2
 
 dev_dependencies:
   flutter_test:

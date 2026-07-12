@@ -5,16 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:scholar/core/feature_signup/presentation/SignUpView.dart';
-//import 'package:restorant/Helper/ConfigClass.dart';
-//import 'package:restorant/Helper/SharedPreferencesHelper.dart';
-//import 'package:restorant/Widget/constant.dart';
-
-//import 'package:restorant/providers/global_variable_provide.dart';
-
+import 'package:scholar/helper/global_variable_provide.dart';
 import '../../../helper/text_field_provider.dart';
 import '../../feature_login/presentation/login_form.dart' show logFormGroup;
 import '../../presentation/screens/home_screen.dart';
 import 'bloc/log_in_bloc.dart';
+
 
 class LogInView extends StatefulWidget {
   @override
@@ -23,17 +19,26 @@ class LogInView extends StatefulWidget {
 class _LogInViewState extends State<LogInView>  {
 
 
-
+  late GlobalVariableProvider globalVariableProvider;
+  final FocusNode passwordFocus = FocusNode();
 
   @override
   void initState() {
     super.initState();
+    passwordFocus.addListener(() {
+      setState(() {});
+    });
     BlocProvider.of<LogInBloc>(context).add(LogInInit());
 
-  }///
+  }
+  @override
+  void dispose() {
+    passwordFocus.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
-    //globalVariableProvider=Provider.of<GlobalVariableProvider>(context);
+    globalVariableProvider=Provider.of<GlobalVariableProvider>(context);
     return logInView(context);
   }
   Widget logInView(BuildContext context){
@@ -67,8 +72,8 @@ class _LogInViewState extends State<LogInView>  {
                   listener: (context, state) {
                     if (state is LogInDone) {
 
-                 // Provider.of<GlobalVariableProvider>(context, listen: false)
-                  //  ..setSignInValues(true);
+                  Provider.of<GlobalVariableProvider>(context, listen: false)
+                    .setSignInValues(true);
 
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(builder: (context) => HomeScreen()),
@@ -167,6 +172,7 @@ class _LogInViewState extends State<LogInView>  {
                               style: TextStyle(
                                 color: Theme.of(context).colorScheme.surface,
                               ),
+                              focusNode: passwordFocus,
                               formControlName: 'logInPassword',
                               obscureText: !values.passwordIsLookAtPassword,
                               decoration: InputDecoration(
@@ -182,22 +188,26 @@ class _LogInViewState extends State<LogInView>  {
                                   minHeight: 48,
                                 ),
 
-                                suffixIcon: IconButton(
-                                  onPressed: hasText
-                                      ? () {
-                                    values.changeBoolState(
-                                      !values.passwordIsLookAtPassword,
-                                      1,
-                                    );
-                                  }
-                                      : null,
-                                  icon: Icon(
-                                    values.passwordIsLookAtPassword
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                    color: hasText ? Colors.white : Colors.grey,
+                                suffixIcon:passwordFocus.hasFocus? Padding(
+                                  padding: const EdgeInsets.only(left:8.0),
+                                  child: IconButton(
+                                    onPressed: hasText
+                                        ? () {
+                                      values.changeBoolState(
+                                        !values.passwordIsLookAtPassword,
+                                        1,
+                                      );
+                                    }
+                                        : null,
+                                    icon: Icon(
+                                      values.passwordIsLookAtPassword
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                      color: hasText ? Colors.white : Colors.grey,
+                                      size: 20,
+                                    ),
                                   ),
-                                ),
+                                ):null,
 
                                 border: const OutlineInputBorder(
                                   borderSide: BorderSide.none,

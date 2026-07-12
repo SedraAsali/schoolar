@@ -20,6 +20,7 @@ class ProcessInitialProject {
   ProcessInitialProject( BuildContext context) {
     WidgetsFlutterBinding.ensureInitialized();
 
+
     disableRotateApp();
   }
 

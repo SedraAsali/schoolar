@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 //import 'package:restorant/Helper/SharedPreferencesHelper.dart';
 import 'package:http/http.dart' as http;
 import 'package:scholar/core/feature_login/data/login_model.dart';
+import 'package:scholar/core/feature_user_profile/provider/profile_provider.dart';
 import 'package:scholar/helper/ConfigClass.dart';
 import 'package:scholar/helper/SharedPreferencesHelper.dart';
 //import 'package:restorant/providers/global_variable_provide.dart';
@@ -45,12 +46,19 @@ class SignUpApi {
         //
         Provider.of<GlobalVariableProvider>(context , listen:  false).setConfigGlobalValue(configClass);
 
-        // Provider.of<ProfileProvider>(context , listen:  false).imagePath = configClass.userLogin.data.profileImg ?? "" ;
-        //
-        // Provider.of<ProfileProvider>(context,listen: false).isLogOut = false;
-        //
+        Provider.of<ProfileProvider>(context, listen: false).imagePath =
+            configClass.userLogin?.user?.photo ?? "";
+
+        print("sign up Api Provider.of<ProfileProvider>(context, listen: false).imagePath"
+            "${Provider.of<ProfileProvider>(context, listen: false).imagePath}");
+        Provider.of<ProfileProvider>(context,listen: false).initialFirstPageProfile(context,  configClass.userLogin!);
+
+        Provider.of<ProfileProvider>(context,listen: false).isLogOut = false;
+        print("sign up Api  Provider.of<ProfileProvider>(context,listen: false).isLogOut "
+            "${Provider.of<ProfileProvider>(context,listen: false).isLogOut}");
+
         await SharedPreferencesHelper.setConfig(configClass);
-        Provider.of<GlobalVariableProvider>(context , listen:  false).setConfigGlobalValue(configClass);
+        //Provider.of<GlobalVariableProvider>(context , listen:  false).setConfigGlobalValue(configClass);
         print("SignUpApi done!");
         print("SignUpApi  response json ${response.body}");
         LogInModel xx = logInModelFromJson(response.body);

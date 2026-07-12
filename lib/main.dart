@@ -11,6 +11,9 @@ import 'package:scholar/router.dart';
 import 'package:scholar/theme.dart';
 
 import 'core/feature_login/presentation/bloc/log_in_bloc.dart';
+import 'core/feature_user_profile/cubit_profile/profile_cubit.dart';
+import 'core/feature_user_profile/get_profile_cubit/get_profile_cubit.dart';
+import 'core/feature_user_profile/provider/profile_provider.dart';
 import 'helper/text_field_provider.dart';
 
 void main() {
@@ -24,6 +27,12 @@ void main() {
           BlocProvider(
             create: (_) => SignUpBloc()..add(SignUpInit()),
           ),
+          BlocProvider<GetProfileCubit>(
+            create: (context) => GetProfileCubit(),
+          ),
+          BlocProvider<ProfileCubit>(
+            create: (context) => ProfileCubit(),
+          ),
         ],
         child: MultiProvider(
           providers: [
@@ -32,6 +41,9 @@ void main() {
             ),
             ChangeNotifierProvider(
               create: (context) => GlobalVariableProvider(),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => ProfileProvider(),
             ),
           ],
           child: MyApp(),
