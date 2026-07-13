@@ -8,6 +8,7 @@ import 'package:scholar/core/feature_user_profile/provider/profile_provider.dart
 import 'package:scholar/core/presentation/screens/onbording_screen.dart';
 import 'package:scholar/helper/SharedPreferencesHelper.dart';
 import 'package:scholar/helper/constant.dart';
+import 'package:scholar/helper/global_variable_provide.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/feature_on_boarding/presentation/OnbordingScreenView.dart';
@@ -56,6 +57,7 @@ class ProcessInitialProject {
       {
         Provider.of<ProfileProvider>(context,listen: false).initialFirstPageProfile(context,
             configClass.userLogin!);
+        Provider.of<GlobalVariableProvider>(context , listen:  false).setConfigGlobalValue(configClass);
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => HomeScreen()), (route) => false);
       }
