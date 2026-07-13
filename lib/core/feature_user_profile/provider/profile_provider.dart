@@ -76,7 +76,20 @@ class ProfileProvider extends ChangeNotifier {
 
   get isLogOut => _isLogOut;
 
+
+  showAnyDialog(BuildContext context, Function callBack,
+      {required Widget widgetReturn}) async {
+    await showDialog(
+        context: context,
+        builder: (context) {
+          _context = context;
+          return widgetReturn;
+        }).then((value) {
+      callBack();
+    });
+  }
   /// initial
+  ///
   ///
 
   initialFirstPageProfile(BuildContext context, LogInModel userObj) {

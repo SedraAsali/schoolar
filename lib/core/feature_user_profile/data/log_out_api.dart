@@ -13,15 +13,15 @@ class LogOutApi {
 
   static Future<int> logOut(BuildContext context) async {
 
-    var url = "${AppAssets.baseUrl}auth/logout";
+    var url = "${AppAssets.baseUrl}logout";
 
+    //
+    // Map params;
+    //   params={
+    //     "mobile_id":AppAssets.deviceId
+    //   };
 
-    Map params;
-      params={
-        "mobile_id":AppAssets.deviceId
-      };
-
-    print(params);
+   // print(params);
 
 
     ConfigClass? configClass = Provider.of<GlobalVariableProvider>(context , listen:  false).configClass;
@@ -32,19 +32,22 @@ class LogOutApi {
 
 
     try{
-      var response =await http.post(Uri.parse(url)  ,body: json.encode(params),headers: header).
+      print("urllogout ${url}");
+      var response =await http.get(Uri.parse(url)  ,headers: header).
       timeout(const Duration(seconds: 30));
 
-      print("response.statusCode  ${response.statusCode}");
+      print("response.statusCode logout ${response.statusCode}");
 
       print("response.body log out  ${response.body}");
 
       return response.statusCode;
-    } on TimeoutException catch (_){
+    } on TimeoutException catch (error){
+      print("TimeOut Exception error logout  $error");
       return 2;  //  TimeoutException status
     }
-    catch(e){
-      print("exception $e");
+    catch(e,stack){
+      print("catching error logout  $e");
+      print("STACK: $stack");
       return 0; // catch error status
     }
   }

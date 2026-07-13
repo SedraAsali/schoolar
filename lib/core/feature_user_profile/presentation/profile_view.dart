@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart' as prov;
+import 'package:scholar/core/feature_user_profile/cubit_profile/profile_cubit.dart';
 import 'package:scholar/core/feature_user_profile/get_profile_cubit/get_profile_cubit.dart';
 import 'package:scholar/core/feature_user_profile/presentation/editPassWord.dart';
 import 'package:scholar/core/feature_user_profile/provider/profile_provider.dart';
@@ -15,6 +16,7 @@ import 'package:scholar/core/feature_user_profile/presentation/editProfileScreen
 import 'package:scholar/helper/ConfigClass.dart';
 import 'package:scholar/helper/SharedPreferencesHelper.dart';
 import 'package:scholar/helper/global_variable_provide.dart';
+import 'package:scholar/helper/widgets/dialogs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../helper/widgets/theme_dialog.dart';
@@ -34,9 +36,7 @@ class _ProfilePageViewState extends ConsumerState<ProfilePageView> {
   @override
   void initState() {
     super.initState();
-    print("onnnnnnnnnnnnnnnnnne");
     BlocProvider.of<GetProfileCubit>(context).getProfile(context);
-    print("finalllllllllllllllllllly");
   //  loadUser();
   }
 
@@ -57,7 +57,6 @@ class _ProfilePageViewState extends ConsumerState<ProfilePageView> {
   @override
   Widget build(BuildContext context) {
     _profileProvider = prov.Provider.of<ProfileProvider>(context);
-    //print("_profileProvider.userObject.user?.name ${_profileProvider.userObject.user?.name ?? ""}");
 
     final favorites = ref.watch(favoritesProvider);
     return Scaffold(
@@ -305,12 +304,25 @@ class _ProfilePageViewState extends ConsumerState<ProfilePageView> {
                       icon: Icons.logout,
                       text: "تسجيل خروج",
                       color: Theme.of(context).colorScheme.primary,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => LogIn()),
-                        );
-                      },
+                        onTap: (){
+                          _profileProvider.showAnyDialog(context,(){
+                            },
+                              widgetReturn: DialogLeaveAndLogOut(
+                                isDialogLogOut: true,
+                                logOutFunction: (){
+                                  print("logout before ${_profileProvider.isLogOut}");
+                                  BlocProvider.of<ProfileCubit>(context).logOut(context);
+                                  print("logout after ${_profileProvider.isLogOut}");
+
+                                },//() => BlocProvider.of<ProfileCubit>(context).logOut(context)
+                              ));
+                        },
+                      // onTap: () {
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(builder: (_) => LogIn()),
+                      //   );
+                      // },
                     ),
                     SizedBox(height: 5),
 

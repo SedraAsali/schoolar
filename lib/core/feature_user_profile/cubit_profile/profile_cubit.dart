@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scholar/core/feature_login/data/login_model.dart';
+import 'package:scholar/core/feature_login/presentation/LogInView.dart';
 import 'package:scholar/core/feature_user_profile/data/log_out_api.dart';
 import 'package:scholar/core/feature_user_profile/provider/profile_provider.dart';
 import 'package:scholar/helper/ConfigClass.dart';
@@ -100,7 +101,7 @@ class ProfileCubit extends Cubit<ProfileState>  {
       emit(ProfileLoadingState());
       int statusCode = await LogOutApi.logOut(context);
 
-      if (statusCode == 240) {
+      if (statusCode == 200) {
         emit(ProfileSuccessLogOutState());
         Provider.of<GlobalVariableProvider>(context, listen: false)
           .setSignInValues(false);
@@ -111,22 +112,23 @@ class ProfileCubit extends Cubit<ProfileState>  {
 
         ConfigClass? configClass = Provider.of<GlobalVariableProvider>(context, listen: false).configClass;
 
-        await SharedPreferencesHelper.setConfig(configClass!);
+        await SharedPreferencesHelper.setConfig(ConfigClass.empty());
 
         print(
             " Provider.of<GlobalVariableProvider>(context , listen:  false).configClass ${Provider.of<GlobalVariableProvider>(context, listen: false).configClass}");
 
-        Provider.of<GlobalVariableProvider>(context, listen: false).setConfigGlobalValue(configClass!);
+        Provider.of<GlobalVariableProvider>(context, listen: false).setConfigGlobalValue(ConfigClass.empty());
 
         Provider.of<ProfileProvider>(context, listen: false)
           ..updateUserObject(LogInModel())
           ..imagePath = "";
-
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => LogInView()), (route) => false);
         showMessage(context,"نجح تسجيل الخروج",false);
       }
       else {
         emit(ProfileErrorLogOutState());
-        showMessage(context,"حدث خطب ما", true);
+        showMessage(context,"فشل تسجيل الخروج", true);
       }
     } else {
       showMessage(context,"تحقق من اتصال الإنترنت", true);
