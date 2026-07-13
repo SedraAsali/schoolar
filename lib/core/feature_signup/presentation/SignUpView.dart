@@ -136,7 +136,7 @@ class _SignUpViewState extends State<SignUpView>  {
                   style: TextStyle(fontSize: 23,
                     color:  Theme.of(context).colorScheme.primary,
                   ),)),
-            SizedBox(height: 35,),
+            SizedBox(height: 20,),
             ReactiveForm(
               formGroup: signFormGroup,
               child: Column(
@@ -163,7 +163,31 @@ class _SignUpViewState extends State<SignUpView>  {
                       'يسمح بالأحرف فقط',
                     },
                   ),
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 22),
+                  ReactiveTextField<String>(
+                    style: TextStyle(color: Theme.of(context).colorScheme.surface),
+
+                    formControlName: 'number',
+                    decoration:  InputDecoration(
+                      fillColor: Theme.of(context).colorScheme.primary,
+                      filled: true,
+                      labelText: 'الرقم',
+                      labelStyle: TextStyle(color: Theme.of(context).colorScheme.surface,),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.only(topLeft:  Radius.circular(120)
+                        ),
+                      ),
+                    ),
+                    validationMessages: {
+                      ValidationMessage.required: (_) =>
+                      'الرقم مطلوب',
+
+                      ValidationMessage.number: (_) =>
+                      'يسمح بالأرقام فقط',
+                    },
+                  ),
+                  const SizedBox(height: 22),
                   // Email Field
                   ReactiveTextField<String>(
                     style: TextStyle(color: Theme.of(context).colorScheme.surface),
@@ -187,7 +211,7 @@ class _SignUpViewState extends State<SignUpView>  {
                       'صيغة البريد الإلكتروني غير صحيحة',
                     },
                   ),
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 22),
                   // Password Field
                   Consumer<TextFieldProvider>(
                     builder: (context, values, child) {
@@ -245,7 +269,7 @@ class _SignUpViewState extends State<SignUpView>  {
 );
   },
 ),
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 22),
                   // Confirm Field
                   Consumer<TextFieldProvider>(
                     builder: (context, values1, child){
@@ -300,7 +324,7 @@ class _SignUpViewState extends State<SignUpView>  {
                    );
   },
 ),
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 22),
 
                   // اختيار مستخدم او مدير
                   Material(
@@ -321,10 +345,10 @@ class _SignUpViewState extends State<SignUpView>  {
                     ),
                   ),
 
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 20),
                   // Login Button
                   SignupButton(),
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 20),
                   TextButton(onPressed: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=> LogInView()));
                   }, child: Text('هل قمت بإنشاء حساب مسبقاً ؟ انقر هنا ..'))

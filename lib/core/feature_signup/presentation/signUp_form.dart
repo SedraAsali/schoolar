@@ -9,6 +9,13 @@ final signFormGroup= FormGroup(
           Validators.pattern(r'^[a-zA-Zأ-ي ]+$'),
         ],
       ),
+      'number':FormControl<String>
+        (
+        validators: [
+          Validators.required,
+          Validators.number(),
+        ],
+      ),
 
       'role': FormControl<String>(
         validators: [Validators.required],

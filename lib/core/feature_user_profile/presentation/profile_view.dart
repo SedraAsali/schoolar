@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart' as prov;
 import 'package:scholar/core/feature_user_profile/get_profile_cubit/get_profile_cubit.dart';
+import 'package:scholar/core/feature_user_profile/presentation/editPassWord.dart';
 import 'package:scholar/core/feature_user_profile/provider/profile_provider.dart';
 
 import 'package:scholar/core/feature_user_profile/widgets/build_button.dart';
@@ -136,6 +137,21 @@ class _ProfilePageViewState extends ConsumerState<ProfilePageView> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (_) => EditProfilePage()),
+                        );
+                      },
+                    ),
+
+                    SizedBox(height: 20),
+
+                    buildButton(
+                      context: context,
+                      icon: Icons.key,
+                      color: Theme.of(context).colorScheme.primary,
+                      text: "تغيير كلمة السر",
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => EditPassWord()),
                         );
                       },
                     ),
