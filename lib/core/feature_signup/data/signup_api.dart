@@ -17,7 +17,7 @@ import 'package:scholar/helper/loading_dialog.dart';
 
 class SignUpApi {
   static Future<LogInModel> signup(
-      BuildContext context, String name,String email, String password,String role) async {
+      BuildContext context, String name,String email,String phone ,String password,String role) async {
     final GlobalKey<State> _keyLoader = new GlobalKey<State>();
     print("signup");
     var url = "${AppAssets.baseUrl}signup";
@@ -25,6 +25,7 @@ class SignUpApi {
     final params = {
       "name":name,
       "email": email,
+      "phone": phone,
       "password": password,
       "role":role
     };
@@ -71,7 +72,7 @@ class SignUpApi {
         print("SignUpApi fail1!");
         print(" response.statusCode ${response.statusCode}");
         Navigator.of(_keyLoader.currentContext!, rootNavigator: true).pop();
-        return LogInModel(statusCode:response.statusCode,status: "Invalid role" );
+        return LogInModel(statusCode:response.statusCode,status: "User validation failed : Role OR Phone" );
       }    else if (response.statusCode == 400) {
         Navigator.of(_keyLoader.currentContext!, rootNavigator: true).pop();
         print("SignUpApi fail3!");

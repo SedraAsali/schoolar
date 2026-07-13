@@ -23,6 +23,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         event.context,
         event.name,
         event.email,
+        event.phone,
         event.password,
         event.role,
       );
@@ -32,7 +33,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         emit(SignUpFailed());
 
       } else if (response.statusCode == 500) {
-        showMessage(event.context, "نوع المستخدم غير موجود", true);
+        showMessage(event.context, "نوع المستخدم غير موجود أو رقم غير سوري", true);
         emit(SignUpFailed());
 
       } else if (response.statusCode == 400) {

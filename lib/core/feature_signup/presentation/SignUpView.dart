@@ -378,6 +378,8 @@ class _SignUpViewState extends State<SignUpView>  {
                 formGroup.control('name').value;
             final email =
                 formGroup.control('signUpEmail').value;
+            final phone =
+                formGroup.control('number').value;
             final password =
                 formGroup.control('signUpPassword').value;
             final role =
@@ -385,13 +387,14 @@ class _SignUpViewState extends State<SignUpView>  {
 
             debugPrint('Name: $name');
             debugPrint('Email: $email');
+            debugPrint('phone: $phone');
             debugPrint('Password: $password');
             debugPrint('Role: $role');
 
-            if (name.isNotEmpty && email.isNotEmpty && password.isNotEmpty && role.isNotEmpty) {
+            if (name.isNotEmpty && email.isNotEmpty && phone.isNotEmpty && password.isNotEmpty && role.isNotEmpty) {
               BlocProvider.of<SignUpBloc>(context)
                   .add(SignUpCall(
-                  context,name,email,
+                  context,name,email,phone,
                   password, role
               ));
             }

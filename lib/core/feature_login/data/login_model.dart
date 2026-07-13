@@ -49,6 +49,7 @@ class User {
   String? id;
   String? name;
   String? email;
+  String? phone;
   String? photo;
   String? role;
   bool? active;
@@ -58,6 +59,7 @@ class User {
     this.id,
     this.name,
     this.email,
+    this.phone,
     this.photo,
     this.role,
     this.active,
@@ -68,6 +70,7 @@ class User {
     id: json["_id"],
     name: json["name"],
     email: json["email"],
+    phone: json["phone"],
     photo: json["photo"],
     role: json["role"],
     active: json["active"],
@@ -78,6 +81,7 @@ class User {
     "_id": id,
     "name": name,
     "email": email,
+    "phone": phone,
     "photo": photo,
     "role": role,
     "active": active,
@@ -86,6 +90,6 @@ class User {
 
   @override
   String toString() {
-    return 'User{id: $id, name: $name, email: $email, photo: $photo, role: $role, active: $active, createdAt: $createdAt}';
+    return 'User{id: $id, name: $name, email: $email,phone:$phone, photo: $photo, role: $role, active: $active, createdAt: $createdAt}';
   }
 }

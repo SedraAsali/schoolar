@@ -16,10 +16,11 @@ class SignUpInit extends SignUpEvent {
 class SignUpCall extends SignUpEvent {
   String name;
   String email;
+  String phone;
   String password;
   String role;
   BuildContext context;
-  SignUpCall(this.context, this.name,this.email, this.password,this.role);
+  SignUpCall(this.context, this.name,this.email, this.phone,this.password,this.role);
   @override
-  List<Object> get props => [name,email, password,role];
+  List<Object> get props => [name,email, phone,password,role];
 }
