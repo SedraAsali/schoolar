@@ -10,6 +10,7 @@ import 'package:scholar/helper/SharedPreferencesHelper.dart';
 import 'package:scholar/helper/constant.dart';
 import 'package:scholar/core/feature_login/data/login_model.dart';
 import 'package:scholar/helper/global_variable_provide.dart';
+import 'package:scholar/helper/show_message.dart';
 import 'package:tuple/tuple.dart';
 
 class ProfileApi {
@@ -81,53 +82,63 @@ class ProfileApi {
   //   }
   // }
 
-  //  Future<int> changePassword(
-  //     String oldPassword, String newPassword , BuildContext context) async {
-  //   var url = Constant.baseUrl + "auth/password";
-  //
-  //   Map params;
-  //   params = {
-  //     "old_password": oldPassword,
-  //     "new_password": newPassword,
-  //   };
-  //
-  //   print(params);
-  //
-  //   ConfigClass configClass = Provider.of<GlobalVariableProvider>(context , listen:  false).configClass;
-  //
-  //   String token = configClass.token;
-  //
-  //   print(token);
-  //   Map<String, String> header = await Constant.getHeader(token);
-  //
-  //   try {
-  //     var response = await http
-  //         .post(url, body: json.encode(params), headers: header)
-  //         .timeout(const Duration(seconds: 30));
-  //
-  //     print("response.statusCode ${response.statusCode}");
-  //
-  //     print("signInModelFromJson(response.body) ${response.body}");
-  //
-  //     if(response.statusCode == 560)
-  //     {
-  //       showMessage(getTextLanguage(context.locale, "The new password is the same old password", "Das neue Passwort ist das gleiche alte Passwort", "Yeni şifre aynı eski şifredir", "كلمة المرور الجديدة هي نفس كلمة المرور القديمة"), true);
-  //         return response.statusCode;
-  //     }
-  //     else if(response.statusCode == 460)
-  //       {
-  //         showMessage(getTextLanguage(context.locale, "password mismatch", "Die Passwörter stimmen nicht überein", "şifre eşleşmiyor", "كلمة المرور غير متطابقة"), true);
-  //           return response.statusCode;
-  //       }
-  //     else
-  //     return response.statusCode;
-  //   } on TimeoutException catch (_) {
-  //     return 1; //  TimeoutException status
-  //   } catch (e) {
-  //     print("exception $e");
-  //     return 0; // catch error status
-  //   }
-  // }
+   Future<int> changePassword(
+      String oldPassword, String newPassword , BuildContext context) async {
+
+    var url = "${AppAssets.baseUrl}updateMyPassword";
+
+    print("url change password $url");
+    Map params;
+    params = {
+      "passwordCurrent": oldPassword,
+      "password": newPassword,
+    };
+
+    print(params);
+
+    ConfigClass? configClass = Provider.of<GlobalVariableProvider>(context , listen:  false).configClass;
+
+    String? token = configClass?.token;
+
+     print("token change password $token");
+    Map<String, String> header = await AppAssets.getHeader(token);
+
+    try {
+      var response = await http
+          .patch(Uri.parse(url), body: json.encode(params), headers: header)
+          .timeout(const Duration(seconds: 30));
+
+      print("response.statusCode update profile  ${response.statusCode}");
+
+      print("response.body update profile  ${response.body}");
+
+      if(response.statusCode == 560)
+      {
+        showMessage(context,"كلمة المرور الجديدة هي نفس كلمة المرور القديمة", true);
+          return response.statusCode;
+      }
+      else if(response.statusCode == 460)
+        {
+          showMessage(context, "كلمة المرور غير متطابقة", true);
+            return response.statusCode;
+        }
+      else if(response.statusCode == 500)
+      {
+        showMessage(context, "قشل تحديث كلمة المرور", true);
+        return response.statusCode;
+      }
+      else
+      return response.statusCode;
+    } on TimeoutException catch (error, stack) {
+      print("TimeoutException update profile  $error");
+      print("TimeoutException update profile  $stack");
+      return 1; //  TimeoutException status
+    } catch (error,stack) {
+      print("catch update profile $error");
+      print("catch update profile  $stack");
+      return 0; // catch error status
+    }
+  }
 
    Future<LogInModel> getProfile({ required BuildContext context}) async {
 

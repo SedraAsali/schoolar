@@ -15,6 +15,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:scholar/core/feature_login/data/login_model.dart';
 import 'package:scholar/helper/show_message.dart';
 
+import '../presentation/editProfile_form.dart';
+
 class ProfileProvider extends ChangeNotifier {
 
  // List<CardProfile> _cardsInfo;
@@ -135,53 +137,6 @@ class ProfileProvider extends ChangeNotifier {
 
 
 
-//   void fillCards(BuildContext context) {
-//     _cardsInfo.addAll([
-//       // CardProfile(
-//       //     svgCard: "lib/svgFiles/save_credit.svg",
-//       //     titleCard: "saved_cards",
-//       //     onTap: () {
-//       //       Navigator.of(context).push(MaterialPageRoute(
-//       //         builder: (context) => SavedCard()
-//       //       ));
-//       //     }),
-//       CardProfile(
-//           svgCard: "lib/svgFiles/Address.svg",
-//           titleCard: "addresses",
-//           onTap: () => showAnyModalBottomSheet(
-//             context,
-//                 () {},
-//             widgetBottomSheet: AddressBottomSheet(),
-//             isDismissible: true,
-//           )),
-//       CardProfile(
-//           svgCard: "lib/svgFiles/password.svg",
-//           titleCard: "change_password",
-//           onTap: () => showAnyModalBottomSheet(
-//             context,
-//                 () {},
-//             widgetBottomSheet: ChangePasswordBottomSheet(),
-//           )),
-// //      CardProfile(
-// //          svgCard: "lib/svgFiles/language.svg",
-// //          titleCard: "language",
-// //          onTap: () => showAnyDialog(
-// //            context,(){},
-// //            widgetReturn: LanguageDialog(),
-// //          )),
-//       CardProfile(
-//           svgCard: "lib/svgFiles/logout.svg",
-//           titleCard: "log_out",
-//           onTap: () => showAnyDialog(context,(){
-//             if(_isLogOut == true)
-//               Navigator.pop(context);
-//           },
-//               widgetReturn: DialogLeaveAndLogOut(
-//                 isDialogLogOut: true,
-//                 logOutFunction: () => BlocProvider.of<ProfileCubit>(context).logOut(context),
-//               ))),
-//     ]);
-//   }
 
 
   /// Functions
@@ -277,31 +232,6 @@ class ProfileProvider extends ChangeNotifier {
   //
   // }
 
-  // changePassword(BuildContext context) async {
-  //   var connectivityResult = await (Connectivity().checkConnectivity());
-  //   if (connectivityResult == ConnectivityResult.mobile ||
-  //       connectivityResult == ConnectivityResult.wifi) {
-  //
-  //     if (_editPasswordControllers[0].text.trim() == "")
-  //       showMessage(getTextLanguage(context.locale, "please enter old password", "Bitte geben Sie das alte Passwort ein", "lütfen eski şifreyi girin", "الرجاء إدخال كلمة المرور القديمة"), true);
-  //     else if (_editPasswordControllers[1].text.trim() == "")
-  //       showMessage(getTextLanguage(context.locale, "please enter new password", "Bitte geben Sie ein neues Passwort ein", "lütfen yeni şifre giriniz", "الرجاء إدخال كلمة المرور الجديدة"), true);
-  //     else if (_editPasswordControllers[2].text.trim() == "")
-  //       showMessage(getTextLanguage(context.locale, "please enter confirm password", "Bitte geben Sie das Passwort zur Bestätigung ein", "lütfen şifreyi girin", "الرجاء إدخال تأكيد كلمة المرور"), true);
-  //     else if (_editPasswordControllers[1].text.trim() !=
-  //         _editPasswordControllers[2].text.trim()) {
-  //       showMessage(getTextLanguage(context.locale, "The new password and confirm password is a mismatch", "Das neue Passwort und das Bestätigungspasswort stimmen nicht überein", "Yeni parola ve onay parolası uyuşmuyor", 'كلمة المرور الجديدة وتأكيد كلمة المرور غير متطابقين'), true);
-  //     } else
-  //       BlocProvider.of<ProfileCubit>(context).changePassword(context,
-  //           _editPasswordControllers[0].text, _editPasswordControllers[1].text);
-  //   }
-  //   else{
-  //     showMessage(getTextLanguage(context.locale, "check internet connection", "Überprüfen Sie die Internetverbindung", "internet bağlantısını kontrol et", "تحقق من اتصال الإنترنت"), true);
-  //   }
-  // }
-
-  /// setter
-  ///
 
   updateUserObject(LogInModel newInfo) {
     _userObject = newInfo;

@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:scholar/core/feature_login/data/login_model.dart';
 import 'package:scholar/core/feature_login/presentation/LogInView.dart';
 import 'package:scholar/core/feature_user_profile/data/log_out_api.dart';
+import 'package:scholar/core/feature_user_profile/data/profile_api.dart';
 import 'package:scholar/core/feature_user_profile/provider/profile_provider.dart';
 import 'package:scholar/helper/ConfigClass.dart';
 import 'package:scholar/helper/SharedPreferencesHelper.dart';
@@ -71,26 +72,22 @@ class ProfileCubit extends Cubit<ProfileState>  {
   //     emit(ProfileErrorState());
   // }
 
-  // changePassword(
-  //     BuildContext context, String oldPassword, String newPassword) async {
-  //   emit(ProfileLoadingState());
-  //
-  //   int statusCode =
-  //       await ProfileApi().changePassword(oldPassword, newPassword, context);
-  //   if (statusCode == 235) {
-  //     emit(ProfileSuccessChangePasswordState());
-  //     showMessage(
-  //         getTextLanguage(
-  //             context.locale,
-  //             "Password changed successfully",
-  //             "das Passwort wurde erfolgreich geändert",
-  //             "parola başarıyla değiştirildi",
-  //             "تم تغيير كلمة السر بنجاح"),
-  //         false);
-  //     Navigator.pop(context);
-  //   } else
-  //     emit(ProfileFailedChangePasswordState());
-  // }
+  changePassword(
+      BuildContext context, String oldPassword, String newPassword) async {
+    emit(ProfileLoadingState());
+
+    int statusCode =
+        await ProfileApi().changePassword(oldPassword, newPassword, context);
+
+    print("statusCode changePassword profile cubit $statusCode");
+    if (statusCode == 235) {
+      emit(ProfileSuccessChangePasswordState());
+      showMessage(context,"تم تغيير كلمة السر بنجاح",false);
+      //Navigator.pop(context);
+    } else {
+      emit(ProfileFailedChangePasswordState());
+    }
+  }
 
   logOut(BuildContext context) async {
     var connectivityResult = await Connectivity().checkConnectivity();
