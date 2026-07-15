@@ -37,6 +37,7 @@ class Institute {
   final String image;
   final double rating;
   final List<Department> departments;
+  final managerPhone;
 
   Institute({
     required this.name,
@@ -44,5 +45,6 @@ class Institute {
     required this.image,
     required this.rating,
     required this.departments,
+    required this.managerPhone,
   });
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
 import '../../constant.dart';
 import '../../domain/models/details_model.dart';
 
@@ -18,7 +17,6 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final department = institute.departments[selectedIndex];
-
     return Scaffold(
       body: SafeArea(
       child: Column(
@@ -77,7 +75,25 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
                 ),
 
                 const SizedBox(height: 15),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.phone,
+                      size: 18,
+                      color: Theme.of(context).colorScheme.surface.withAlpha(120),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      "مدير المعهد: ${institute.managerPhone}",
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.surface.withAlpha(120),
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
 
+                const SizedBox(height: 12),
                 Row(
                   children: [
                     Icon(
@@ -96,6 +112,7 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
 
                   ],
                 ),
+
               ],
             ),
           ),
@@ -131,9 +148,8 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
 
     ),
 
-    const SizedBox(height: 20),
-
-    SizedBox(
+        const SizedBox(height: 20),
+        SizedBox(
     height: 45,
     child: ListView.builder(
     scrollDirection: Axis.horizontal,
@@ -178,9 +194,7 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
     },
     ),
     ),
-
         const SizedBox(height: 10),
-
         //  Subjects List
         Expanded(
           child: ListView.builder(

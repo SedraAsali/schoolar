@@ -163,31 +163,49 @@ class _SignUpViewState extends State<SignUpView>  {
                       'يسمح بالأحرف فقط',
                     },
                   ),
-                  const SizedBox(height: 22),
+                  const SizedBox(height: 18),
+                  //phone
                   ReactiveTextField<String>(
-                    style: TextStyle(color: Theme.of(context).colorScheme.surface),
-
                     formControlName: 'number',
-                    decoration:  InputDecoration(
+                    keyboardType: TextInputType.phone,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.surface,
+                    ),
+                    decoration: InputDecoration(
                       fillColor: Theme.of(context).colorScheme.primary,
                       filled: true,
-                      labelText: 'الرقم',
-                      labelStyle: TextStyle(color: Theme.of(context).colorScheme.surface,),
+                      labelText: 'رقم الهاتف',
+                      labelStyle: TextStyle(
+                        color: Theme.of(context).colorScheme.surface,
+                      ),
+
+                      prefixIcon: Container(
+                        width: 95,
+                        alignment: Alignment.center,
+                        child: const Text(
+                          '🇸🇾 +963',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.only(topLeft:  Radius.circular(120)
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(120),
                         ),
                       ),
                     ),
                     validationMessages: {
-                      ValidationMessage.required: (_) =>
-                      'الرقم مطلوب',
-
-                      ValidationMessage.number: (_) =>
-                      'يسمح بالأرقام فقط',
+                      ValidationMessage.required: (_) => 'رقم الهاتف مطلوب',
+                      ValidationMessage.pattern: (_) =>
+                      'أدخل رقم هاتف سوري صحيح',
                     },
                   ),
-                  const SizedBox(height: 22),
+                  const SizedBox(height: 18),
                   // Email Field
                   ReactiveTextField<String>(
                     style: TextStyle(color: Theme.of(context).colorScheme.surface),
@@ -211,7 +229,7 @@ class _SignUpViewState extends State<SignUpView>  {
                       'صيغة البريد الإلكتروني غير صحيحة',
                     },
                   ),
-                  const SizedBox(height: 22),
+                  const SizedBox(height: 18),
                   // Password Field
                   Consumer<TextFieldProvider>(
                     builder: (context, values, child) {
@@ -269,7 +287,7 @@ class _SignUpViewState extends State<SignUpView>  {
 );
   },
 ),
-                  const SizedBox(height: 22),
+                  const SizedBox(height: 18),
                   // Confirm Field
                   Consumer<TextFieldProvider>(
                     builder: (context, values1, child){
@@ -324,7 +342,7 @@ class _SignUpViewState extends State<SignUpView>  {
                    );
   },
 ),
-                  const SizedBox(height: 22),
+                  const SizedBox(height: 18),
 
                   // اختيار مستخدم او مدير
                   Material(
@@ -345,10 +363,10 @@ class _SignUpViewState extends State<SignUpView>  {
                     ),
                   ),
 
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 18),
                   // Login Button
                   SignupButton(),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 18),
                   TextButton(onPressed: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=> LogInView()));
                   }, child: Text('هل قمت بإنشاء حساب مسبقاً ؟ انقر هنا ..'))
