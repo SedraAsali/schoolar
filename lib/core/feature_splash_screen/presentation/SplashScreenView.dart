@@ -41,7 +41,7 @@ class _SplashScreenViewState extends State<SplashScreenView>
 
     _pulseController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1400),
+      duration: const Duration(milliseconds: 2000),
     )..repeat(reverse: true);
 
     _pulseAnimation = Tween<double>(
