@@ -185,7 +185,7 @@ class _SignUpViewState extends State<SignUpView>  {
                         child: const Text(
                           '🇸🇾 +963',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 15,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
