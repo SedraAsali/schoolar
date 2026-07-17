@@ -110,11 +110,9 @@ class _EditProfilePageState extends State<EditPassWord> {
                   if (state is ProfileSuccessChangePasswordState)
                   {
                     print ("successsss");
-                    editProfileForm.patchValue({
-                      'oldPassword': '',
-                      'newPassword': '',
-                      'confirmPassword': '',
-                    });
+                    // editProfileForm.control('oldPassword')..reset()..markAsUntouched();
+                    // editProfileForm.control('newPassword')..reset()..markAsUntouched();
+                    // editProfileForm.control('confirmPassword')..reset()..markAsUntouched();
                     return  saveData(context,state);
                   }
                   print ("failedd");
@@ -158,7 +156,7 @@ class _EditProfilePageState extends State<EditPassWord> {
               final oldPassword = editProfileForm.control('oldPassword').value;
               final newPassword = editProfileForm.control('newPassword').value;
               final confirmPassword = editProfileForm.control('confirmPassword').value;
-              print("oldPassword $oldPassword");
+              print("oldPasswordoldPassword $oldPassword");
               print("newPassword$newPassword");
               print("confirmPassword $confirmPassword");
               BlocProvider.of<ProfileCubit>(context).changePassword(context,

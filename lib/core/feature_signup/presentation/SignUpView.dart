@@ -202,7 +202,7 @@ class _SignUpViewState extends State<SignUpView>  {
                     validationMessages: {
                       ValidationMessage.required: (_) => 'رقم الهاتف مطلوب',
                       ValidationMessage.pattern: (_) =>
-                      'أدخل رقم هاتف سوري صحيح',
+                      ' أدخل رقم هاتف سوري صحيح و لا يبدأ بالصفر',
                     },
                   ),
                   const SizedBox(height: 18),
@@ -397,7 +397,7 @@ class _SignUpViewState extends State<SignUpView>  {
             final email =
                 formGroup.control('signUpEmail').value;
             final phone =
-                formGroup.control('number').value;
+               "+963${formGroup.control('number').value}";
             final password =
                 formGroup.control('signUpPassword').value;
             final role =

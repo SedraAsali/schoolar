@@ -13,7 +13,7 @@ final Color gold = const Color(0xFFD4AF37);
 
 class AppAssets {
 
-  static final String baseUrl = 'http://192.168.1.6:7000/api/v1.0.0/users/';//192.168.1.6
+  static final String baseUrl = 'http://192.168.1.6:7000/api/v1.0.0/users/';//192.168.1.6 192.168.0.59
   // use not localhost ,but ip of computer  win+R --> ipconfig --> ip4
   static const student = 'assets/images/student.svg';
 

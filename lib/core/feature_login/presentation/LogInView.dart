@@ -28,7 +28,9 @@ class _LogInViewState extends State<LogInView>  {
     passwordFocus.addListener(() {
       setState(() {});
     });
-    BlocProvider.of<LogInBloc>(context).add(LogInInit());
+    logFormGroup.control('logInEmail')..reset()..markAsUntouched();
+    logFormGroup.control('logInPassword')..reset()..markAsUntouched();
+
 
   }
   @override

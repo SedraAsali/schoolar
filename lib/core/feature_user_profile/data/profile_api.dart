@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:scholar/core/feature_user_profile/provider/profile_provider.dart';
 import 'package:scholar/helper/ConfigClass.dart';
 import 'package:scholar/helper/SharedPreferencesHelper.dart';
 import 'package:scholar/helper/constant.dart';
@@ -82,8 +83,7 @@ class ProfileApi {
   //   }
   // }
 
-   Future<int> changePassword(
-      String oldPassword, String newPassword , BuildContext context) async {
+   Future<int> changePassword(String oldPassword, String newPassword , BuildContext context) async {
 
     var url = "${AppAssets.baseUrl}updateMyPassword";
 
@@ -100,21 +100,24 @@ class ProfileApi {
 
     String? token = configClass?.token;
 
-     print("token change password $token");
+     print("old token change password $token");
     Map<String, String> header = await AppAssets.getHeader(token);
 
     try {
       var response = await http
-          .patch(Uri.parse(url), body: json.encode(params), headers: header)
+          .patch(Uri.parse(url), body: json.encode(params),
+          headers: header
+      )
           .timeout(const Duration(seconds: 30));
 
       print("response.statusCode update profile  ${response.statusCode}");
 
       print("response.body update profile  ${response.body}");
 
-      if(response.statusCode == 560)
+      if(response.statusCode == 401)
       {
-        showMessage(context,"كلمة المرور الجديدة هي نفس كلمة المرور القديمة", true);
+     //   showMessage(context,"كلمة المرور الجديدة هي نفس كلمة المرور القديمة", true);
+        showMessage(context,"يرجى تسجيل دخول مرة اخرى", true);
           return response.statusCode;
       }
       else if(response.statusCode == 460)
@@ -125,6 +128,22 @@ class ProfileApi {
       else if(response.statusCode == 500)
       {
         showMessage(context, "قشل تحديث كلمة المرور", true);
+        return response.statusCode;
+      }
+      else if(response.statusCode == 200)
+      {
+        //showMessage(context, "قشل تحديث كلمة المرور", true);
+        ConfigClass configClass = ConfigClass();
+        configClass.userLogin = logInModelFromJson(response.body);
+        print("configClass.userLogin ${logInModelFromJson(response.body)}");
+
+        configClass.token = logInModelFromJson(response.body).token;
+        print("configClass.token update password new ${configClass.token}");
+        Provider.of<GlobalVariableProvider>(context , listen:  false).setConfigGlobalValue(configClass);
+        await SharedPreferencesHelper.setConfig(configClass);
+        //Provider.of<ProfileProvider>(context,listen: false).initialFirstPageProfile(context,  configClass.userLogin!);
+        print("PROVIDER TOKEN  update password = ${Provider.of<GlobalVariableProvider>(context, listen: false,).configClass?.token}");
+
         return response.statusCode;
       }
       else

@@ -80,10 +80,12 @@ class ProfileCubit extends Cubit<ProfileState>  {
         await ProfileApi().changePassword(oldPassword, newPassword, context);
 
     print("statusCode changePassword profile cubit $statusCode");
-    if (statusCode == 235) {
+    if (statusCode == 200) {
       emit(ProfileSuccessChangePasswordState());
+
       showMessage(context,"تم تغيير كلمة السر بنجاح",false);
-      //Navigator.pop(context);
+
+      Navigator.pop(context);
     } else {
       emit(ProfileFailedChangePasswordState());
     }
