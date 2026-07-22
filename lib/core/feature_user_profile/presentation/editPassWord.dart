@@ -2,12 +2,12 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:scholar/core/feature_user_profile/presentation/changePassword_form.dart';
 import 'package:scholar/core/feature_user_profile/provider/profile_provider.dart';
 import 'package:scholar/core/feature_user_profile/widgets/editProfile_widget.dart';
 import 'package:scholar/helper/show_message.dart';
 import 'package:scholar/helper/widgets/loading_view.dart';
 import '../cubit_profile/profile_cubit.dart';
-import 'editProfile_form.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class EditPassWord extends StatefulWidget {
@@ -26,11 +26,11 @@ class _EditProfilePageState extends State<EditPassWord> {
   @override
   void initState() {
     super.initState();
-    editProfileForm.control('oldPassword')..reset()..markAsUntouched();
+    changePasswordForm.control('oldPassword')..reset()..markAsUntouched();
 
-    editProfileForm.control('newPassword')..reset()..markAsUntouched();
+    changePasswordForm.control('newPassword')..reset()..markAsUntouched();
 
-    editProfileForm.control('confirmPassword')..reset()..markAsUntouched();
+    changePasswordForm.control('confirmPassword')..reset()..markAsUntouched();
   }
 
   @override
@@ -41,7 +41,7 @@ class _EditProfilePageState extends State<EditPassWord> {
       appBar: AppBar(title: const Text("تغيير كلمة السر"), centerTitle: true),
 
       body: ReactiveForm(
-        formGroup: editProfileForm,
+        formGroup: changePasswordForm,
 
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
@@ -110,9 +110,9 @@ class _EditProfilePageState extends State<EditPassWord> {
                   if (state is ProfileSuccessChangePasswordState)
                   {
                     print ("successsss");
-                    // editProfileForm.control('oldPassword')..reset()..markAsUntouched();
-                    // editProfileForm.control('newPassword')..reset()..markAsUntouched();
-                    // editProfileForm.control('confirmPassword')..reset()..markAsUntouched();
+                    // changePasswordForm.control('oldPassword')..reset()..markAsUntouched();
+                    // changePasswordForm.control('newPassword')..reset()..markAsUntouched();
+                    // changePasswordForm.control('confirmPassword')..reset()..markAsUntouched();
                     return  saveData(context,state);
                   }
                   print ("failedd");
@@ -149,20 +149,20 @@ class _EditProfilePageState extends State<EditPassWord> {
               connectivityResult.contains(ConnectivityResult.wifi) ||
               connectivityResult.contains(ConnectivityResult.ethernet))
           {
-            if (editProfileForm.valid) {
+            if (changePasswordForm.valid) {
               // ScaffoldMessenger.of(context).showSnackBar(
               //   const SnackBar(content: Text("تم حفظ التعديلات بنجاح")),
               // );
-              final oldPassword = editProfileForm.control('oldPassword').value;
-              final newPassword = editProfileForm.control('newPassword').value;
-              final confirmPassword = editProfileForm.control('confirmPassword').value;
-              print("oldPasswordoldPassword $oldPassword");
+              final oldPassword = changePasswordForm.control('oldPassword').value;
+              final newPassword = changePasswordForm.control('newPassword').value;
+              final confirmPassword = changePasswordForm.control('confirmPassword').value;
+              print("oldPassword $oldPassword");
               print("newPassword$newPassword");
               print("confirmPassword $confirmPassword");
               BlocProvider.of<ProfileCubit>(context).changePassword(context,
                   oldPassword, newPassword);
 
-              // editProfileForm.patchValue({
+              // changePasswordForm.patchValue({
               //   'oldPassword': '',
               //   'newPassword': '',
               //   'confirmPassword': '',
@@ -170,7 +170,7 @@ class _EditProfilePageState extends State<EditPassWord> {
               //  Navigator.pop(context);
             } else
             {
-              editProfileForm.markAllAsTouched();
+              changePasswordForm.markAllAsTouched();
             }
           }
           else{

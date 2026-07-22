@@ -19,35 +19,36 @@ final editProfileForm = FormGroup({
   ),
 
   'phone': FormControl<String>(
-    value: "0950062418",
+    value: "950062418",
     validators: [
       Validators.required,
       Validators.number(),
+      Validators.pattern(r'^9\d{8}$'),
     ],
   ),
 
-  'oldPassword': FormControl<String>(
-    validators: [
-      Validators.required,
-    ],
-  ),
+  // 'oldPassword': FormControl<String>(
+  //   validators: [
+  //     Validators.required,
+  //   ],
+  // ),
+  //
+  // 'newPassword': FormControl<String>(
+  //   validators: [
+  //     Validators.required,
+  //     Validators.minLength(8),
+  //   ],
+  // ),
 
-  'newPassword': FormControl<String>(
-    validators: [
-      Validators.required,
-      Validators.minLength(8),
-    ],
-  ),
-
-  'confirmPassword': FormControl<String>(
-    validators: [
-      Validators.required,
-    ],
-  ),
+  // 'confirmPassword': FormControl<String>(
+  //   validators: [
+  //     Validators.required,
+  //   ],
+  // ),
 },
 
 //  مقارنة كلمة المرور الصحيحة
-  validators: [
-    Validators.mustMatch('newPassword', 'confirmPassword'),
-  ],
+//   validators: [
+//     Validators.mustMatch('newPassword', 'confirmPassword'),
+//   ],
 );

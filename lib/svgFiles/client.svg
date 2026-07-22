@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+  <g id="اسم_المحاسب" data-name="اسم المحاسب" transform="translate(15311 -13245)">
+    <g id="Rectangle_2720" data-name="Rectangle 2720" transform="translate(-15311 13245)" fill="#fff" stroke="#707070" stroke-width="1" opacity="0">
+      <rect width="18" height="18" stroke="none"/>
+      <rect x="0.5" y="0.5" width="17" height="17" fill="none"/>
+    </g>
+    <g id="guard" transform="translate(-15311 13244.986)">
+      <path id="Path_16762" data-name="Path 16762" d="M18,365.116a.526.526,0,0,0-.32-.484l-2.816-1.2-2.643,3.029a.526.526,0,0,1-.847-.077l-1.536-2.236a5.416,5.416,0,0,1-.753.053,5.359,5.359,0,0,1-.9-.077l-1.553,2.26a.526.526,0,0,1-.847.077l-2.7-3.092L.309,364.639a.484.484,0,0,0-.306.448l0,2.983a.527.527,0,0,0,.527.527H17.473a.527.527,0,0,0,.527-.527Z" transform="translate(0 -350.584)" fill="#0e4bef" fill-rule="evenodd"/>
+      <path id="Path_16763" data-name="Path 16763" d="M117.087,337.146l-1.022.467,2.046,2.346.985-1.434-.094-.038a5.438,5.438,0,0,1-1.757-1.175Q117.165,337.23,117.087,337.146Z" transform="translate(-111.985 -325.28)" fill="#0e4bef" fill-rule="evenodd"/>
+      <path id="Path_16764" data-name="Path 16764" d="M313.641,341.979l-.93-.4-.009.009a5.434,5.434,0,0,1-1.983,1.265l.95,1.382Z" transform="translate(-299.795 -329.562)" fill="#0e4bef" fill-rule="evenodd"/>
+      <path id="Path_16765" data-name="Path 16765" d="M102.983,3.739h9.6l.62-1.176a.527.527,0,0,0-.281-.759L107.956.043a.524.524,0,0,0-.35,0L102.644,1.8h0a.526.526,0,0,0-.291.741Zm4.8-2.39a.527.527,0,1,1-.527.527A.528.528,0,0,1,107.781,1.349Z" transform="translate(-98.697 0)" fill="#0e4bef" fill-rule="evenodd"/>
+      <path id="Path_16766" data-name="Path 16766" d="M121.115,136.6l-.437-.607h-9.307l-.437.625a.525.525,0,0,0,.169.756,11.457,11.457,0,0,0,5.089,1.08,9.443,9.443,0,0,0,4.757-1.093A.527.527,0,0,0,121.115,136.6Z" transform="translate(-106.943 -131.196)" fill="#0e4bef" fill-rule="evenodd"/>
+      <path id="Path_16767" data-name="Path 16767" d="M141.9,219a4.343,4.343,0,0,0,1.279-3.077v-.608a9.461,9.461,0,0,1-1.521.45,13.037,13.037,0,0,1-2.669.259,15.476,15.476,0,0,1-3.1-.327,10.816,10.816,0,0,1-1.426-.4v.626A4.352,4.352,0,0,0,141.9,219Z" transform="translate(-129.74 -207.713)" fill="#0e4bef" fill-rule="evenodd"/>
+    </g>
+  </g>
+</svg>

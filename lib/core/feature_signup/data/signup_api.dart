@@ -84,8 +84,9 @@ class SignUpApi {
         print("SignUpApi response.statusCode ${response.statusCode}");
         return LogInModel(status: "failed");
       }
-    } on TimeoutException catch (_) {
-      print("SignUpApi TimeOut Exception error ");
+    } on TimeoutException catch (e,stack) {
+      print("SignUpApi TimeOut Exception error $e ");
+      print("SignUpApi TimeOut Exception stack $stack ");
 
       Navigator.of(_keyLoader.currentContext!, rootNavigator: true).pop();
 

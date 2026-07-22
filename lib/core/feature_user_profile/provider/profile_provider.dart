@@ -13,6 +13,7 @@ import 'package:image_picker/image_picker.dart';
 // import 'package:restorant/api/upload_image_api.dart';
 // import 'package:restorant/model/photo-model.dart';
 import 'package:scholar/core/feature_login/data/login_model.dart';
+import 'package:scholar/core/feature_user_profile/data/upload_image_api.dart';
 import 'package:scholar/helper/show_message.dart';
 
 import '../presentation/editProfile_form.dart';
@@ -145,7 +146,7 @@ class ProfileProvider extends ChangeNotifier {
   getImagePicker(ImageSourcePicker imageSourcePicker,
       BuildContext context) async {
 
-    final pickedFile = await picker.getImage(
+    final XFile? pickedFile = await picker.pickImage(
       source: imageSourcePicker == ImageSourcePicker.Camera
           ? ImageSource.camera
           : ImageSource.gallery,
@@ -155,53 +156,58 @@ class ProfileProvider extends ChangeNotifier {
       Navigator.pop(context);
     } else {
       Navigator.pop(context);
-      showMessage(context,"لم يتم تحديد صورة", false);
+      showMessage(context, "لم يتم تحديد صورة", false);
     }
+
+    print("getImagePicker _image $_image ");
     notifyListeners();
   }
 
-  // uploadImage(BuildContext context) async {
-  //   _isUploadingImage = true ;
-  //   UploadImageModel uploadImageApi = UploadImageModel();
-  //
-  //   await uploadImageApi.uploadImageProfile(_image,context, imageType: "profile")
-  //       .then((response) {
-  //         print("response is $response ${response == "0"}");
-  //         if(response != "0" && response != "1" )
-  //           {
-  //             response.stream.transform(utf8.decoder).listen((value) async {
-  //             print("value::: $value");
-  //
-  //             PhotosModel updateImage = photosModelFromJson(value);
-  //
-  //             print("path::: ${updateImage.data}");
-  //
-  //             if (updateImage.status == "OK") {
-  //               _image = null;
-  //               _imagePath = updateImage.data;
-  //               _isUploadingImage =false;
-  //               BlocProvider.of<ProfileCubit>(context).updateImageProfile(
-  //                   context,
-  //                   _userObject.data.id,
-  //                   _userObject.data.firstName,
-  //                   _userObject.data.lastName,
-  //                   _userObject.data.phone,
-  //                   _imagePath);
-  //             } else {
-  //               _isUploadingImage = false ;
-  //             }
-  //           });
-  //           }
-  //         else  /// failed upload
-  //           {
-  //             print("failed upload");
-  //             _isFailedUploadImage =true;
-  //             _isUploadingImage = false;
-  //             _updateImageProfile = true; // default is true
-  //           }
-  //   });
-  //   notifyListeners();
-  // }
+  uploadImage(BuildContext context) async {
+    _isUploadingImage = true ;
+
+    UploadImageModel uploadImageApi = UploadImageModel();
+
+    await uploadImageApi.uploadImageProfile(_image,context, imageType: "profile")
+        .then((response) {
+          print("uploadImage profile provider response is $response ${response == "0"}");
+          if(response != "0" && response != "1" )
+            {
+              response.stream.transform(utf8.decoder).listen((value) async {
+              print("value::: $value");
+
+            //  PhotosModel updateImage = photosModelFromJson(value);
+
+            //  print("path::: ${updateImage.data}");
+              //
+              // if (updateImage.status == "OK")
+              // {
+              //   _image = null;
+              //   _imagePath = updateImage.data;
+              //   _isUploadingImage =false;
+              //   BlocProvider.of<ProfileCubit>(context).updateImageProfile(
+              //       context,
+              //       _userObject.data.id,
+              //       _userObject.data.firstName,
+              //       _userObject.data.lastName,
+              //       _userObject.data.phone,
+              //       _imagePath);
+              // }
+              // else {
+              //   _isUploadingImage = false ;
+              // }
+            });
+            }
+          else  /// failed upload
+            {
+              print("failed upload");
+              _isFailedUploadImage =true;
+              _isUploadingImage = false;
+              _updateImageProfile = true; // default is true
+            }
+    });
+    notifyListeners();
+  }
 
 
 
@@ -289,63 +295,66 @@ class ProfileProvider extends ChangeNotifier {
   //   });
   // }
 
-  // showAnyModalBottomSheet(context, Function function,
-  //     {@required widgetBottomSheet, bool isDismissible , bool isScrollControlled}) {
-  //
-  //   print("isScrollControlled $isScrollControlled");
-  //
-  //   showModalBottomSheet(
-  //       context: context,
-  //       builder: (context) => widgetBottomSheet,
-  //       shape: RoundedRectangleBorder(
-  //         borderRadius: BorderRadius.only(
-  //           topRight: Radius.circular(15.0),
-  //           topLeft: Radius.circular(15.0),
-  //         ),
-  //       ),
-  //       isScrollControlled: isScrollControlled ?? true,
-  //       enableDrag: true,
-  //       isDismissible: isDismissible ?? false,
-  //       elevation: 4.0)
-  //       .then((value) {
-  //     function();
-  //   });
-  // }
+  showAnyModalBottomSheet(context, Function function,
+      {required widgetBottomSheet, bool? isDismissible , bool? isScrollControlled}) {
+
+    print("isScrollControlled $isScrollControlled");
+
+    showModalBottomSheet(
+        context: context,
+        builder: (context) => widgetBottomSheet,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(15.0),
+            topLeft: Radius.circular(15.0),
+          ),
+        ),
+        isScrollControlled: isScrollControlled ?? true,
+        enableDrag: true,
+        isDismissible: isDismissible ?? false,
+        elevation: 4.0)
+        .then((value) {
+      function();
+    });
+  }
   //
   //
   //
   // /// Widget
   // ///
   //
-  // Widget notch(context) {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.center,
-  //     children: [
-  //       Container(
-  //         height: 4,
-  //         alignment: Alignment.center,
-  //         decoration: BoxDecoration(
-  //             borderRadius: BorderRadius.circular(20.0), color: colorThemApp),
-  //         width: MediaQuery.of(context).size.width * 0.15,
-  //       ),
-  //     ],
-  //   );
-  // }
+  Widget notch(context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          height: 4,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0), color: Colors.orange),
+          width: MediaQuery.of(context).size.width * 0.15,
+        ),
+      ],
+    );
+  }
   //
-  // Widget space({double height}) {
-  //   return SizedBox(
-  //     height: height ?? 10,
-  //   );
-  // }
+  Widget space({double? height}) {
+    return SizedBox(
+      height: height ?? 10,
+    );
+  }
   //
-  // Widget title(String title, [Color textColor, double fontSize]) {
-  //   return Text(
-  //     title,
-  //     style: boldStyle(
-  //         fontSize ?? Constant.mediumFont + 1, textColor ?? firstColor),
-  //     textAlign: TextAlign.start,
-  //   );
-  // }
+  Widget title(String title, [Color? textColor, double? fontSize]) {
+    return Text(
+      title,
+      style:  TextStyle(
+        fontSize: fontSize ?? 16,
+        color: textColor ?? Colors.black,
+        fontWeight: FontWeight.bold,
+      ),
+      textAlign: TextAlign.start,
+    );
+  }
 
   @override
   void dispose() {

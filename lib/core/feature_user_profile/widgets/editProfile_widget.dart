@@ -8,6 +8,7 @@ Widget buildReactiveTextField({
   required IconData icon,
   bool isPassword = false,
   bool isVisible = false,
+  String prefixText = " ",
   VoidCallback? onToggleVisibility,
 }) {
   return ReactiveTextField<String>(
@@ -28,7 +29,7 @@ Widget buildReactiveTextField({
         icon,
         color: Theme.of(context).colorScheme.onSecondary,
       ),
-
+      prefixStyle: TextStyle(color:  Theme.of(context).colorScheme.onSecondary,fontSize: 16),
       suffixIcon: isPassword
           ? IconButton(
         onPressed: onToggleVisibility,
@@ -40,7 +41,7 @@ Widget buildReactiveTextField({
         ),
       )
           : null,
-
+       prefixText:prefixText ,
       filled: true,
       fillColor: Theme.of(context).colorScheme.primary,
 
@@ -57,7 +58,7 @@ Widget buildReactiveTextField({
       ValidationMessage.pattern: (_) => 'يسمح بالأحرف فقط',
       ValidationMessage.email: (_) => "أدخل بريد إلكتروني صحيح",
       ValidationMessage.minLength: (_) => "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
-      ValidationMessage.number:(_)=>"يجب أن يكون رقماً",
+      ValidationMessage.number:(_)=>" يجب أن يكون رقماً يبدأ بالرقم 9 ومؤلف من 9أرقام",
       ValidationMessage.mustMatch:(_)=>" كلمة المرور يجب أن تكون متطابقة"
     }
 

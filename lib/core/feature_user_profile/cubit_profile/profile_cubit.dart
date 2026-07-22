@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
@@ -21,59 +23,60 @@ part 'profile_state.dart';
 class ProfileCubit extends Cubit<ProfileState>  {
   ProfileCubit() : super(ProfileInitial());
 
-  // updateImageProfile(BuildContext context, int userId, String firstName,
-  //     String lastName, String phone, String profileImage) async {
+  // updateImageProfile(BuildContext context, String name,
+  //     String email, String phone, String profileImage) async {
   //   emit(ProfileLoadingState());
   //   Tuple2<LogInModel, int> response = await ProfileApi.updateProfile(
-  //       userId, firstName, lastName, phone, profileImage, context);
-  //   if (response.item2 == 235) {
-  //     Provider.of<ProfileProvider>(context, listen: false)
-  //         .updateUserObject(response.item1);
-  //     Provider.of<ProfileProvider>(context, listen: false).updateImageProfile =
-  //         false;
+  //        name, email, phone, profileImage , context);
+  //   print("updateImageProfile body ${response.item1}");
+  //   print("updateImageProfile status code ${response.item2}");
+  //
+  //   if (response.item2 == 200)
+  //   {
+  //     Provider.of<ProfileProvider>(context, listen: false).updateUserObject(response.item1);
+  //     Provider.of<ProfileProvider>(context, listen: false).updateImageProfile = false;
+  //     showMessage(context,"نجح تحديث الصوره", false);
   //     emit(ProfileImageSuccessEditState(response.item1));
-  //   } else {
-  //     showMessage(
-  //         getTextLanguage(
-  //             context.locale,
-  //             "Failed update info",
-  //             "Update-Informationen fehlgeschlagen",
-  //             "Başarısız güncelleme bilgisi",
-  //             "فشل تحديث المعلومات"),
-  //         true);
+  //   }
+  //   else
+  //   {
+  //     showMessage(context,"فشل تحديث الصوره", true);
   //     emit(ProfileImageUploadFailedState());
   //   }
   // }
 
-  // updateProfileInfo(BuildContext context, int userId, String firstName,
-  //     String lastName, String phone, String profileImage) async {
-  //   emit(ProfileLoadingState());
-  //   Tuple2<SignInModel, int> response = await ProfileApi.updateProfile(
-  //       userId, firstName, lastName, phone, profileImage, context);
-  //   if (response.item2 == 235) {
-  //     print(
-  //         "response.item2 ${response.item1}  ${response.item1.data.phoneVerifiedAt}");
-  //
-  //     Provider.of<ProfileProvider>(context, listen: false)
-  //         .updateUserObject(response.item1);
-  //     emit(ProfileSuccessEditState(response.item1));
-  //     showMessage(
-  //         getTextLanguage(context.locale, "update succeed",
-  //             "Update erfolgreich", "güncelleme başarılı", "نجح التحديث"),
-  //         false);
-  //     if (response.item1.data.phoneVerifiedAt == null)
-  //       Navigator.pushAndRemoveUntil(context,
-  //           MaterialPageRoute(builder: (context) => Home()), (route) => false);
-  //     else
-  //     Navigator.pop(context);
-  //
-  //
-  //   } else
-  //     emit(ProfileErrorState());
-  // }
+ Future<int> updateProfileInfo(BuildContext context, String name,
+      String email, String phone, File? profileImage) async {
 
-  changePassword(
-      BuildContext context, String oldPassword, String newPassword) async {
+    emit(ProfileLoadingState());
+    Tuple2<LogInModel, int> response = await ProfileApi.updateProfile(
+         name, email, phone, profileImage, context);
+    print("updateProfileInfo body ${response.item1}");
+    print("updateProfileInfo status code ${response.item2}");
+
+    if (response.item2 == 200) {
+      // print(
+      //     "response.item2 ${response.item1}  ${response.item1.data.phoneVerifiedAt}");
+
+      Provider.of<ProfileProvider>(context, listen: false).updateUserObject(response.item1);
+      emit(ProfileSuccessEditState(response.item1));
+      showMessage(context," نجح تحديث المعلومات", false);
+      // if (response.item1.data.phoneVerifiedAt == null)
+      //   Navigator.pushAndRemoveUntil(context,
+      //       MaterialPageRoute(builder: (context) => Home()), (route) => false);
+      // else
+
+      Navigator.pop(context);
+
+
+    } else {
+      showMessage(context,"فشل تحديث المعلومات", true);
+      emit(ProfileErrorState());
+    }
+    return response.item2;
+  }
+
+  changePassword(BuildContext context, String oldPassword, String newPassword) async {
     emit(ProfileLoadingState());
 
     int statusCode =
