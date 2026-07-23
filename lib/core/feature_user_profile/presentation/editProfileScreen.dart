@@ -139,6 +139,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return PopScope(
       canPop: false,
         onPopInvokedWithResult: (didPop, result) async {
+        print("_profileImage pop  $_profileImage");
           if (didPop) return;
           if (!hasChanges()) {
             Navigator.pop(context);
@@ -148,6 +149,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             context: context,
             builder: (BuildContext context) {
               return DialogConfirmExitExternal(profileImage: _profileImage,);
+             // return Container();
             },
 
           );

@@ -148,8 +148,8 @@ class _DialogLeaveAndLogOutState extends State<DialogLeaveAndLogOut> {
 
 // DialogConfirmExitExternal
 class DialogConfirmExitExternal extends StatefulWidget {
-  File? profileImage;
-  DialogConfirmExitExternal({required profileImage});
+ final File? profileImage;
+  const DialogConfirmExitExternal({super.key,required this.profileImage});
   @override
   _DialogConfirmExitExternalState createState() => _DialogConfirmExitExternalState();
 }
@@ -246,6 +246,7 @@ class _DialogConfirmExitExternalState extends State<DialogConfirmExitExternal> {
   }
 
   Widget saveData() {
+    print("_profileImage dialog ${widget.profileImage}");
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
 
@@ -278,7 +279,7 @@ class _DialogConfirmExitExternalState extends State<DialogConfirmExitExternal> {
                 print("email $email");
                 print("phone $phone");
 
-                print("_profileImage ${widget.profileImage}");
+                print("_profileImage dialog ${widget.profileImage}");
                 BlocProvider.of<ProfileCubit>(context).updateProfileInfo(
                     context, name, email, phone,
                     widget.profileImage ).then((value){
