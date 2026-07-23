@@ -11,8 +11,6 @@ import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:scholar/core/feature_login/data/login_model.dart';
 import 'package:scholar/core/feature_user_profile/presentation/editProfile_form.dart';
-import 'package:scholar/core/feature_user_profile/presentation/profile_image.dart';
-import 'package:scholar/core/feature_user_profile/presentation/select_image.dart';
 import 'package:scholar/core/feature_user_profile/widgets/editProfile_widget.dart';
 import 'package:scholar/helper/show_message.dart';
 import 'package:scholar/helper/widgets/cached_network_image_view.dart';
@@ -81,7 +79,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
       final XFile? compressedImage = await FlutterImageCompress.compressAndGetFile(
         image.path,
-        "${dir.path}/temp.jpg",
+        "${dir.path}/temp_${DateTime.now().millisecondsSinceEpoch}.jpg",
         quality: 60,
         minWidth: 640,
         minHeight: 480,
@@ -483,39 +481,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ),
     );
   }
-  Widget profileImage(
-      BuildContext context,
-      {required String imageUrl}) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Consumer<ProfileProvider>(
-              builder: (_, provider, __) {
-                return ProfileImage(
-                  imageUrl: imageUrl,
-                  onTap: () {
-                    _profileProvider.showAnyModalBottomSheet(
-                      context,
-                          () async {
-                        // if (provider.image != null) {
-                        //   _profileProvider.uploadImage(context);
-                        // }
-                      },
-                      widgetBottomSheet: SelectImageFormBottomSheet(),
-                      isDismissible: true,
-                    );
-                  },
-                );
-              },
-            )
-          ],
-        ),
 
-      ],
-    );
-  }
 
   Widget saveData(BuildContext context) {
     return   SizedBox(
