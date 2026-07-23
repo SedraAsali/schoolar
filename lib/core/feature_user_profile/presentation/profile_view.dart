@@ -6,6 +6,7 @@ import 'package:scholar/core/feature_user_profile/cubit_profile/profile_cubit.da
 import 'package:scholar/core/feature_user_profile/get_profile_cubit/get_profile_cubit.dart';
 import 'package:scholar/core/feature_user_profile/presentation/editPassWord.dart';
 import 'package:scholar/core/feature_user_profile/provider/profile_provider.dart';
+import 'package:scholar/helper/widgets/cached_network_image_view.dart';
 
 import 'package:scholar/core/feature_user_profile/widgets/build_button.dart';
 import 'package:scholar/core/presentation/screens/logIn.dart';
@@ -37,7 +38,7 @@ class _ProfilePageViewState extends ConsumerState<ProfilePageView> {
   void initState() {
     super.initState();
     BlocProvider.of<GetProfileCubit>(context).getProfile(context);
-  //  loadUser();
+    //  loadUser();
   }
 
   Future<void> loadUser() async {
@@ -49,10 +50,8 @@ class _ProfilePageViewState extends ConsumerState<ProfilePageView> {
     setState(() {
       name = configClass.userLogin?.user?.name;
       email = configClass.userLogin?.user?.email;
-
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +91,8 @@ class _ProfilePageViewState extends ConsumerState<ProfilePageView> {
                 child: Column(
                   children: [
                     Text(
-                      _profileProvider.userObject.user?.name ?? "", //$${configClass.userLogin?.user?.name}
+                      _profileProvider.userObject.user?.name ??
+                          "", //$${configClass.userLogin?.user?.name}
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.primary,
                         fontSize: 20,
@@ -101,9 +101,9 @@ class _ProfilePageViewState extends ConsumerState<ProfilePageView> {
                     ),
 
                     const SizedBox(height: 10),
-
                     Text(
-                      _profileProvider.userObject.user?.email ?? "", //$${configClass.userLogin?.user?.email}
+                      _profileProvider.userObject.user?.email ??
+                          "", //$${configClass.userLogin?.user?.email}
                       style: TextStyle(
                         fontSize: 14,
                         color: Theme.of(context).colorScheme.outline,
@@ -171,7 +171,6 @@ class _ProfilePageViewState extends ConsumerState<ProfilePageView> {
                     ),
 
                     SizedBox(height: 20),
-
                     buildButton(
                       context: context,
                       icon: Icons.info_outline,
@@ -249,7 +248,6 @@ class _ProfilePageViewState extends ConsumerState<ProfilePageView> {
                                   ),
                                   Text(
                                     "- التقييم",
-
                                     style: TextStyle(
                                       color: Theme.of(
                                         context,
@@ -304,19 +302,26 @@ class _ProfilePageViewState extends ConsumerState<ProfilePageView> {
                       icon: Icons.logout,
                       text: "تسجيل خروج",
                       color: Theme.of(context).colorScheme.primary,
-                        onTap: (){
-                          _profileProvider.showAnyDialog(context,(){
-                            },
-                              widgetReturn: DialogLeaveAndLogOut(
-                                isDialogLogOut: true,
-                                logOutFunction: (){
-                                  print("logout before ${_profileProvider.isLogOut}");
-                                  BlocProvider.of<ProfileCubit>(context).logOut(context);
-                                  print("logout after ${_profileProvider.isLogOut}");
-
-                                },//() => BlocProvider.of<ProfileCubit>(context).logOut(context)
-                              ));
-                        },
+                      onTap: () {
+                        _profileProvider.showAnyDialog(
+                          context,
+                          () {},
+                          widgetReturn: DialogLeaveAndLogOut(
+                            isDialogLogOut: true,
+                            logOutFunction: () {
+                              print(
+                                "logout before ${_profileProvider.isLogOut}",
+                              );
+                              BlocProvider.of<ProfileCubit>(
+                                context,
+                              ).logOut(context);
+                              print(
+                                "logout after ${_profileProvider.isLogOut}",
+                              );
+                            }, //() => BlocProvider.of<ProfileCubit>(context).logOut(context)
+                          ),
+                        );
+                      },
                       // onTap: () {
                       //   Navigator.push(
                       //     context,
@@ -339,25 +344,44 @@ class _ProfilePageViewState extends ConsumerState<ProfilePageView> {
               ),
             ),
           ),
-
           // الصورة
-          Positioned(
-            top: 50,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: CircleAvatar(
-                radius: 70,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(70),
-                  child: Image.asset(
-                    width: 140,
-                    'assets/images/profilee.jpg',
-                    fit: BoxFit.cover,
+          prov.Selector<ProfileProvider, String>(
+            selector: (context, listen) => listen.imagePath,
+            builder: (context, imagePath, _) {
+              print(
+                "profile view _profileProvider.userObject.user!.photo ${_profileProvider.userObject.user!.photo}",
+              );
+              return Positioned(
+                top: 50,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: CircleAvatar(
+                    radius: 70,
+                    backgroundColor: Colors.red,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(90),
+                      child:
+                          (_profileProvider.userObject.user!.photo!.isNotEmpty)
+                          ? ClipOval(
+                              child: SizedBox(
+                                width: 140,
+                                height: 140,
+                                child: CachedNetworkImageView(
+                                  url: _profileProvider.userObject.user!.photo,
+                                ),
+                              ),
+                            )
+                          : Image.asset(
+                              width: 140,
+                              'assets/images/profilee.jpg',
+                              fit: BoxFit.cover,
+                            ),
+                    ),
                   ),
                 ),
-              ),
-            ),
+              );
+            },
           ),
         ],
       ),
