@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:scholar/core/presentation/screens/logIn.dart';
+import 'core/feature_home/presentation/home_screen_view.dart';
 import 'core/feature_login/presentation/LogInView.dart' show LogInView;
 import 'core/feature_on_boarding/presentation/OnbordingScreenView.dart';
 import 'core/feature_splash_screen/presentation/SplashScreenView.dart';
@@ -26,7 +27,7 @@ final router = GoRouter(
     ),
     GoRoute(
       path: '/',
-      builder: (context, state) => HomeScreen(),
+      builder: (context, state) => HomeScreenView(),
     ),
     GoRoute(
       path: '/LogInView', //login

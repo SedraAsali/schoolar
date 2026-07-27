@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:scholar/core/presentation/screens/home_screen.dart';
 import 'package:scholar/core/presentation/screens/logIn.dart';
 import '../../constant.dart';
+import '../../feature_home/presentation/home_screen_view.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -101,7 +102,7 @@ class _SplashScreenState extends State<SplashScreen>
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>  HomeScreen(),
+          builder: (context) =>  HomeScreenView(),
         ),
       );
     });

@@ -10,6 +10,7 @@ import 'package:scholar/helper/ConfigClass.dart';
 import 'package:scholar/helper/global_variable_provide.dart';
 
 import '../../../helper/text_field_provider.dart';
+import '../../feature_home/presentation/home_screen_view.dart';
 import '../../feature_login/presentation/login_form.dart' show logFormGroup;
 import '../../presentation/screens/home_screen.dart';
 import '../../presentation/screens/signUp.dart';
@@ -85,7 +86,7 @@ class _SignUpViewState extends State<SignUpView>  {
                     Provider.of<GlobalVariableProvider>(context, listen: false).setSignInValues(true);
 
                     Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                        MaterialPageRoute(builder: (context) => HomeScreenView()),
                             (Route<dynamic> route) => false);
                     BlocProvider.of<SignUpBloc>(context).add(SignUpInit());
 

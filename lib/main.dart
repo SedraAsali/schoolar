@@ -10,6 +10,7 @@ import 'package:scholar/helper/global_variable_provide.dart';
 import 'package:scholar/router.dart';
 import 'package:scholar/theme.dart';
 
+import 'core/feature_home/presentation/academies_bloc/home_view_bloc.dart';
 import 'core/feature_login/presentation/bloc/log_in_bloc.dart';
 import 'core/feature_user_profile/cubit_profile/profile_cubit.dart';
 import 'core/feature_user_profile/get_profile_cubit/get_profile_cubit.dart';
@@ -27,12 +28,23 @@ void main() {
           BlocProvider(
             create: (_) => SignUpBloc()..add(SignUpInit()),
           ),
+          BlocProvider<HomeViewBloc>(
+            //PrefDetailBloc
+            create: (context) =>
+            HomeViewBloc()
+              ..add(LoadingHomeViewEvent(context: context)),
+          ),
           BlocProvider<GetProfileCubit>(
             create: (context) => GetProfileCubit(),
           ),
           BlocProvider<ProfileCubit>(
             create: (context) => ProfileCubit(),
           ),
+          // BlocProvider(
+          //   create: (_) => HomeViewBloc(),
+          // ),
+
+
         ],
         child: MultiProvider(
           providers: [

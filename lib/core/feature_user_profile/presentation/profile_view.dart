@@ -349,7 +349,7 @@ class _ProfilePageViewState extends ConsumerState<ProfilePageView> {
             selector: (context, listen) => listen.imagePath,
             builder: (context, imagePath, _) {
               print(
-                "profile view _profileProvider.userObject.user!.photo ${_profileProvider.userObject.user!.photo}",
+                "profile view _profileProvider.userObject.user!.photo ${_profileProvider.userObject.user?.photo}",
               );
               return Positioned(
                 top: 50,

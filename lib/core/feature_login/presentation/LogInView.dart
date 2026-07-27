@@ -7,6 +7,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:scholar/core/feature_signup/presentation/SignUpView.dart';
 import 'package:scholar/helper/global_variable_provide.dart';
 import '../../../helper/text_field_provider.dart';
+import '../../feature_home/presentation/home_screen_view.dart';
 import '../../feature_login/presentation/login_form.dart' show logFormGroup;
 import '../../presentation/screens/home_screen.dart';
 import 'bloc/log_in_bloc.dart';
@@ -78,7 +79,7 @@ class _LogInViewState extends State<LogInView>  {
                     .setSignInValues(true);
 
                       Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                          MaterialPageRoute(builder: (context) => HomeScreenView()),
                               (Route<dynamic> route) => false);
                     BlocProvider.of<LogInBloc>(context).add(LogInInit());
                    //    Navigator.pushReplacement(

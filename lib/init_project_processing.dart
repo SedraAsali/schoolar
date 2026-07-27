@@ -11,6 +11,7 @@ import 'package:scholar/helper/constant.dart';
 import 'package:scholar/helper/global_variable_provide.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'core/feature_home/presentation/home_screen_view.dart';
 import 'core/feature_on_boarding/presentation/OnbordingScreenView.dart';
 import 'core/presentation/screens/home_screen.dart';
 import 'helper/ConfigClass.dart';
@@ -59,7 +60,7 @@ class ProcessInitialProject {
             configClass.userLogin!);
         Provider.of<GlobalVariableProvider>(context , listen:  false).setConfigGlobalValue(configClass);
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => HomeScreen()), (route) => false);
+            MaterialPageRoute(builder: (context) => HomeScreenView()), (route) => false);
       }
 
     }
