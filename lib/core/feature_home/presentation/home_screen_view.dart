@@ -44,7 +44,7 @@ class _HomeScreenViewState extends ConsumerState<HomeScreenView> {
  @override
  Widget build(BuildContext context) {
   var currentIndex= ref.watch(homeNavigationProvider);
-  final showAll=ref.watch(showAllProvider);
+  final   showAll=ref.watch(showAllProvider);
   //لائحة المعاهد من اجل عملية فلترة البحث
   // final institutes = [
   //  {
@@ -228,14 +228,15 @@ class _HomeScreenViewState extends ConsumerState<HomeScreenView> {
         BlocBuilder<HomeViewBloc, HomeViewState>(
          builder: (context, state) {
           if (state is LoadingHomeViewState) {
-            return LoadingView();
+            return Center(child: LoadingView());
           }
           else if (state is ErrorHomeViewState)
            {
             return StateView(
              // imagePath:'lib/svgFiles/no_internet_connection.svg' ,
              imagePath:'lib/svgFiles/something_wrong.svg' ,
-           //  imageHeader: 'no_wifi_header',
+             imageHeader: 'حدث خطأ ما رجاءا إعادة المحاولة',
+             iconRefresh: true,
              //imageDescription: 'no_wifi_description',
              function: () {
               // BlocProvider.of<HomeViewBloc>(context)
@@ -251,129 +252,20 @@ class _HomeScreenViewState extends ConsumerState<HomeScreenView> {
            {
             print("state.homeViewModel.doc ${state.homeViewModel.doc}");
             List<Doc> academies = List.from(state.homeViewModel.doc ?? []);
-            return ReactiveValueListenableBuilder<String>(
-             formControlName: 'search',
-             builder: (context, control, child) {
-              final search =
-              (control.value ?? '')
-                  .trim()
-                  .toLowerCase();
-
-              final hasSearch = search.isNotEmpty;
-
-              final filteredInstitutes = hasSearch
-                  ? academies.where((academy) {
-               final name = academy.name?.toLowerCase();
-               final location = academy.location?.toLowerCase();
-
-               return name!.contains(search) ||
-                   location!.contains(search);
-              }).toList()
-                  : showAll
-                  ? academies
-                  : [...academies]
-               ..sort(
-                    (a, b) => double.parse(
-                "0",
-                ).compareTo(
-                 double.parse(
-                  "0",
-                 ),
-                ),
-               );
-
-              return Column(
-               children: [
-                Row(
-                 mainAxisAlignment:
-                 MainAxisAlignment.spaceBetween,
-                 children: [
-                  Text(
-                   hasSearch
-                       ? "نتائج البحث"
-                       : showAll
-                       ? "كل المعاهد"
-                       : "المعاهد الأكثر تقييماً",
-                   style: TextStyle(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .primary,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                   ),
-                  ),
-                  if (!hasSearch)
-                   InkWell(
-                    onTap: () {
-                     ref
-                         .read(
-                      showAllProvider.notifier,
-                     )
-                         .state = !showAll;
-                    },
-                    child: Text(
-                     showAll
-                         ? "إخفاء"
-                         : "عرض الكل",
-                     style: TextStyle(
-                      color: gold,
-                      fontWeight:
-                      FontWeight.bold,
-                     ),
-                    ),
-                   ),
-                 ],
-                ),
-
-                const SizedBox(height: 20),
-
-                if (filteredInstitutes.isEmpty)
-                 Padding(
-                  padding:
-                  const EdgeInsets.symmetric(
-                   vertical: 100,
-                  ),
-                  child: Center(
-                   child: Text(
-                    "لا توجد نتائج مطابقة لـ '$search'",
-                    style: TextStyle(
-                     fontSize: 18,
-                     fontWeight:
-                     FontWeight.bold,
-                     color: Theme.of(context)
-                         .colorScheme
-                         .primary,
-                    ),
-                   ),
-                  ),
-                 )
-                else
-                 Column(
-                  children:
-                  filteredInstitutes
-                      .asMap()
-                      .entries
-                      .map((entry) {
-                   final index = entry.key;
-                   final academy = entry.value;
-
-                   return instituteCard(
-                    ref: ref,
-                    context: context,
-                    name: academy.name??"",
-                    location:academy.location??"",
-                    rating: "0",
-                    image: academy.photo??"",
-                    index: index,
-                   );
-                  }).toList(),
-                 ),
-               ],
+            if(academies.isEmpty)
+             {
+              return StateView(
+               imagePath: 'lib/svgFiles/no_classes.svg',
+                imageHeader: 'لا يوجد معاهد',
+               // imageDescription: 'no_meal_description',
               );
-             },
-            );
+             }
+            else
+             {
+              return academyListCards(academies, showAll);
+             }
            }
-          return LoadingView();
+          return Center(child: LoadingView());
   },
 ),
        ],
@@ -439,6 +331,130 @@ class _HomeScreenViewState extends ConsumerState<HomeScreenView> {
 
   );
  }
+
+  Widget academyListCards(List<Doc> academies, bool showAll) {
+  return ReactiveValueListenableBuilder<String>(
+    formControlName: 'search',
+    builder: (context, control, child) {
+     final search =
+     (control.value ?? '')
+         .trim()
+         .toLowerCase();
+
+     final hasSearch = search.isNotEmpty;
+
+     final filteredInstitutes = hasSearch
+         ? academies.where((academy) {
+      final name = academy.name?.toLowerCase();
+      final location = academy.location?.toLowerCase();
+
+      return name!.contains(search) ||
+          location!.contains(search);
+     }).toList()
+         : showAll
+         ? academies
+         : [...academies]
+      ..sort(
+           (a, b) => double.parse(
+        "0",
+       ).compareTo(
+        double.parse(
+         "0",
+        ),
+       ),
+      );
+
+     return Column(
+      children: [
+       Row(
+        mainAxisAlignment:
+        MainAxisAlignment.spaceBetween,
+        children: [
+         Text(
+          hasSearch
+              ? "نتائج البحث"
+              : showAll
+              ? "كل المعاهد"
+              : "المعاهد الأكثر تقييماً",
+          style: TextStyle(
+           color: Theme.of(context)
+               .colorScheme
+               .primary,
+           fontSize: 22,
+           fontWeight: FontWeight.bold,
+          ),
+         ),
+         if (!hasSearch)
+          InkWell(
+           onTap: () {
+            ref
+                .read(
+             showAllProvider.notifier,
+            )
+                .state = !showAll;
+           },
+           child: Text(
+            showAll
+                ? "إخفاء"
+                : "عرض الكل",
+            style: TextStyle(
+             color: gold,
+             fontWeight:
+             FontWeight.bold,
+            ),
+           ),
+          ),
+        ],
+       ),
+
+       const SizedBox(height: 20),
+
+       if (filteredInstitutes.isEmpty)
+        Padding(
+         padding:
+         const EdgeInsets.symmetric(
+          vertical: 100,
+         ),
+         child: Center(
+          child: Text(
+           "لا توجد نتائج مطابقة لـ '$search'",
+           style: TextStyle(
+            fontSize: 18,
+            fontWeight:
+            FontWeight.bold,
+            color: Theme.of(context)
+                .colorScheme
+                .primary,
+           ),
+          ),
+         ),
+        )
+       else
+        Column(
+         children:
+         filteredInstitutes
+             .asMap()
+             .entries
+             .map((entry) {
+          final index = entry.key;
+          final academy = entry.value;
+
+          return instituteCard(
+           ref: ref,
+           context: context,
+           name: academy.name??"",
+           location:academy.location??"",
+           rating: "0",
+           image: academy.photo??"",
+           index: index,
+          );
+         }).toList(),
+        ),
+      ],
+     );
+    },
+   );
+  }
 }
 
 

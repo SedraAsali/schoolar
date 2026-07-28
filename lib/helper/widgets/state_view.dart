@@ -15,8 +15,10 @@ class StateView extends StatelessWidget {
  final String? imagePath;
  final String? imageDescription;
  final String? imageHeader;
+ final bool? iconRefresh;
 
- StateView({this.imageHeader,this.imageDescription , this.function,this.stateType = StateType.emptyState,this.imagePath});
+ StateView({this.imageHeader,this.imageDescription , this.function,this.stateType = StateType.emptyState,this.imagePath,
+ this.iconRefresh});
   @override
   Widget build(BuildContext context) {
 
@@ -44,15 +46,19 @@ class StateView extends StatelessWidget {
         padding:  EdgeInsets.only(left: 10,right: 10),
         child: Column(
           children: [
-            SvgPictureView(
-              svgPath:stateType == StateType.noInternet
-                  ? "lib/svgFiles/no_internet_connection.svg"
-                  : imagePath ?? "",
+            Container(
+             // color:Colors.red,
+              child: SvgPictureView(
+                svgPath:stateType == StateType.noInternet
+                    ? "lib/svgFiles/no_internet_connection.svg"
+                    : imagePath ?? "",
+              ),
             ),
-            space(height: 20),
+            //space(height: 20),
             text(imageHeader ?? "" , isBoldStyle: true ,fontSize: 20),
             space(),
-            text(imageDescription ?? "" , isBoldStyle: false )
+            // text(imageDescription ?? "" , isBoldStyle: false )
+            iconRefresh==true?Icon(Icons.refresh,color: Colors.black,size: 20,):Container()
           ],
         ),
       ),
