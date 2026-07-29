@@ -14,7 +14,11 @@ class ErrorHomeViewState extends HomeViewState{
   List<Object> get props => [];
 
 }
+class NoInternetHomeViewState extends HomeViewState{
+  @override
+  List<Object> get props => [];
 
+}
 class LoadingHomeViewState extends HomeViewState{
   @override
   List<Object> get props => [];

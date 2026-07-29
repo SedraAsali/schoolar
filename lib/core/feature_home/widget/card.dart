@@ -1,6 +1,7 @@
  import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:scholar/core/feature_home/presentation/institute_details.dart';
 import '../../../helper/constant.dart';
 import '../../feature_favorites/provider/favorites_provider.dart';
@@ -77,12 +78,15 @@ required String image,
                  .colorScheme
                  .outlineVariant,
              child: Center(
-              child: Icon(Icons.broken_image, size: 120,
-               color: Theme
-                   .of(context)
-                   .colorScheme
-                   .onInverseSurface,
-              ),
+              child:SvgPicture.asset('lib/svgFiles/school.svg',
+                  height: 120,
+                  semanticsLabel: 'school')
+              // Icon(Icons.broken_image, size: 120,
+              //  color: Theme
+              //      .of(context)
+              //      .colorScheme
+              //      .onInverseSurface,
+              // ),
              ),
             );
            },

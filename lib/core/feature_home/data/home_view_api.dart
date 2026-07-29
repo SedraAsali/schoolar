@@ -12,7 +12,7 @@ import '../../../helper/global_variable_provide.dart';
 class HomeViewApi {
   static Future<HomeViewModel> getAllAcademies(BuildContext context) async {
   //  String url = '${Constant.baseUrl}category/getMeal?restaurant_id=${Constant.restaurantId}';
-    String url = '${AppAssets.baseUrl}academies';
+    String url = '${AppAssets.UrlV}academies';
     try {
       print("url $url");
       final configClass = Provider.of<GlobalVariableProvider>(context,listen: false).configClass;

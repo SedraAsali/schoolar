@@ -1,10 +1,14 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:connectivity_plus/connectivity_plus.dart' show Connectivity, ConnectivityResult;
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:scholar/core/feature_home/data/home_view_api.dart';
 import 'package:scholar/core/feature_home/data/home_view_model.dart';
+
+import '../../../../helper/show_message.dart';
 part 'home_view_event.dart';
 part 'home_view_state.dart';
 
@@ -15,39 +19,59 @@ class HomeViewBloc extends Bloc<HomeViewEvent, HomeViewState> {
    print("bloc created");
     on<LoadingHomeViewEvent>((event, emit) async {
       print("event recived");
-      emit(LoadingHomeViewState());
+      var connectivityResult = await Connectivity().checkConnectivity();
 
-      try {
-        HomeViewModel homeViewModel =
-        await HomeViewApi.getAllAcademies(event.context);
+      if (connectivityResult.contains(ConnectivityResult.mobile) ||
+          connectivityResult.contains(ConnectivityResult.wifi) ||
+          connectivityResult.contains(ConnectivityResult.ethernet))
+        {
 
-        print("HomeViewBloc homeViewModel ${homeViewModel.status}");
 
-        if (homeViewModel.status == "success") {
+          emit(LoadingHomeViewState());
 
-          print("HomeViewBloc GetAllDataHomeViewState");
+          try {
+            HomeViewModel homeViewModel =
+            await HomeViewApi.getAllAcademies(event.context);
 
-          emit(
-            GetAllDataHomeViewState(
-              homeViewModel: homeViewModel,
-            ),
-          );
+            print("HomeViewBloc homeViewModel ${homeViewModel.status}");
 
-        } else {
+            if (homeViewModel.status == "success") {
 
-          print("HomeViewBloc ErrorHomeViewState");
+              print("HomeViewBloc GetAllDataHomeViewState");
 
-          emit(ErrorHomeViewState());
+              emit(
+                GetAllDataHomeViewState(
+                  homeViewModel: homeViewModel,
+                ),
+              );
 
+            } else {
+
+              print("HomeViewBloc ErrorHomeViewState");
+
+              emit(ErrorHomeViewState());
+
+            }
+
+          }
+          on SocketException {
+            print("HomeViewBloc SocketException NoInternetHomeViewState");
+
+            emit(NoInternetHomeViewState());
+          } on TimeoutException {
+            print("HomeViewBloc TimeoutException NoInternetHomeViewState");
+
+            emit(NoInternetHomeViewState());
+          } catch (e) {
+            print("HomeViewBloc catch ErrorHomeViewState $e ");
+            emit(ErrorHomeViewState());
+          }
         }
-
-      } catch (e) {
-
-        print("HomeViewBloc catch ErrorHomeViewState");
-
-        emit(ErrorHomeViewState());
-
-      }
+      else
+        {
+          showMessage(event.context,"تحقق من اتصال الإنترنت", true);
+          emit(NoInternetHomeViewState());
+        }
 
     });
 

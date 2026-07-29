@@ -1,9 +1,9 @@
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:scholar/core/feature_favorites/presentation/favorite_screen.dart';
 import 'package:scholar/core/feature_home/data/home_view_model.dart';
@@ -89,139 +89,10 @@ class _HomeScreenViewState extends ConsumerState<HomeScreenView> {
        crossAxisAlignment: CrossAxisAlignment.start,
        children: [
 
-        Container(
-         padding: const EdgeInsets.symmetric(horizontal: 16),
-         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onInverseSurface,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-           BoxShadow(
-            color: Theme.of(context).colorScheme.primary,
-            blurRadius: 3,
-            offset: const Offset(0 ,2),
-           ),
-          ],
-         ),
-         child: ReactiveTextField<String>(
-          style: TextStyle(
-           color: Theme.of(context).colorScheme.outline,
-          ),
-          formControlName: 'search',
-          decoration: InputDecoration(
-           hintText: "أدخل اسم المنطقة أو المعهد..",
-           fillColor:   Theme.of(context).colorScheme.onInverseSurface,
-           border: InputBorder.none,
-           prefixIcon:  Icon(Icons.search,color: Theme.of(context).colorScheme.secondary,),
-           suffixIcon: globalFormGroup.control('search').value.toString().isNotEmpty
-               ? IconButton(
-            icon:  Icon(Icons.close,
-             color: Theme.of(context).colorScheme.secondary ,),
-            onPressed: () {
-             globalFormGroup.control('search').value = '';
-            },
-           )
-               : null,
-          ),
-         ),
-        ),
+        search(),
 
         const SizedBox(height: 25),
-
-        /// TOP BANNER
-
-        Container(
-         height: 210,
-         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(27),
-          gradient: LinearGradient(
-           colors: [
-            Theme.of(context).colorScheme.inverseSurface,
-            Theme.of(context).colorScheme.primary,
-            Theme.of(context).colorScheme.inverseSurface,
-            Theme.of(context).colorScheme.primary,
-            Theme.of(context).colorScheme.inverseSurface,
-           ],
-           begin: Alignment.topLeft,
-           end: Alignment.bottomRight,
-          ),
-         ),
-         child: Stack(
-          children: [
-           Positioned(
-            left: -3,
-            bottom: -5,
-            child: CircleAvatar(
-             radius: 40,
-             backgroundColor: gold.withOpacity(0.1),
-            ),
-           ),
-           Positioned(
-            right: -20,
-            top: -6,
-            child: CircleAvatar(
-             radius: 80,
-             backgroundColor: gold.withOpacity(0.18),
-            ),
-           ),
-           Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-             crossAxisAlignment: CrossAxisAlignment.start,
-             mainAxisAlignment: MainAxisAlignment.center,
-             children: [
-
-              Container(
-               padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 6,
-               ),
-               decoration: BoxDecoration(
-                color: gold,
-                borderRadius: BorderRadius.circular(20),
-               ),
-               child: const Text(
-                "معاهد مشهورة",
-                maxLines:1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                 fontWeight: FontWeight.bold,
-                ),
-               ),
-              ),
-
-              const SizedBox(height: 18),
-
-              Text(
-               "اكتشف أفضل المعاهد\nفي منطقتك",
-               maxLines:2,
-               overflow: TextOverflow.ellipsis,
-               style: TextStyle(
-
-                fontSize: 28,
-                color:  Theme.of(context).colorScheme.surface,
-
-                fontWeight: FontWeight.bold,
-                height: 1.4,
-               ),
-              ),
-
-              const SizedBox(height: 10),
-
-              Text(
-               "تعليم أكاديمي احترافي بأفضل التقييمات",
-               maxLines:1,
-               overflow: TextOverflow.ellipsis,
-               style: TextStyle(
-                color:  Theme.of(context).colorScheme.surface.withOpacity(0.6),
-                fontSize: 15,
-               ),
-              ),
-             ],
-            ),
-           ),
-          ],
-         ),
-        ),
+         cardPopularAcademy(),
         const SizedBox(height: 20),
 
         //فلترة النصحسب البحث
@@ -248,6 +119,20 @@ class _HomeScreenViewState extends ConsumerState<HomeScreenView> {
              },
             );
            }
+          else if (state is NoInternetHomeViewState)
+          {
+           return StateView(
+             imagePath:'lib/svgFiles/no_internet_connection.svg' ,
+            function: () {
+             // BlocProvider.of<HomeViewBloc>(context)
+             //  .add(LoadingHomeViewEvent());
+             context.read<HomeViewBloc>().add(
+              LoadingHomeViewEvent(context: context),
+             );
+
+            },
+           );
+          }
           else if (state is GetAllDataHomeViewState)
            {
             print("state.homeViewModel.doc ${state.homeViewModel.doc}");
@@ -332,129 +217,255 @@ class _HomeScreenViewState extends ConsumerState<HomeScreenView> {
   );
  }
 
-  Widget academyListCards(List<Doc> academies, bool showAll) {
-  return ReactiveValueListenableBuilder<String>(
+
+
+ Widget search() {
+  return Container(
+   padding: const EdgeInsets.symmetric(horizontal: 16),
+   decoration: BoxDecoration(
+    color: Theme.of(context).colorScheme.onInverseSurface,
+    borderRadius: BorderRadius.circular(20),
+    boxShadow: [
+     BoxShadow(
+      color: Theme.of(context).colorScheme.primary,
+      blurRadius: 3,
+      offset: const Offset(0 ,2),
+     ),
+    ],
+   ),
+   child: ReactiveTextField<String>(
+    style: TextStyle(
+     color: Theme.of(context).colorScheme.outline,
+    ),
     formControlName: 'search',
-    builder: (context, control, child) {
-     final search =
-     (control.value ?? '')
-         .trim()
-         .toLowerCase();
+    decoration: InputDecoration(
+     hintText: "أدخل اسم المنطقة أو المعهد..",
+     fillColor:   Theme.of(context).colorScheme.onInverseSurface,
+     border: InputBorder.none,
+     prefixIcon:  Icon(Icons.search,color: Theme.of(context).colorScheme.secondary,),
+     suffixIcon: globalFormGroup.control('search').value.toString().isNotEmpty
+         ? IconButton(
+      icon:  Icon(Icons.close,
+       color: Theme.of(context).colorScheme.secondary ,),
+      onPressed: () {
+       globalFormGroup.control('search').value = '';
+      },
+     )
+         : null,
+    ),
+   ),
+  );
+ }
 
-     final hasSearch = search.isNotEmpty;
+ Widget cardPopularAcademy() {
+  return  Container(
+   height: 210,
+   decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(27),
+    gradient: LinearGradient(
+     colors: [
+      Theme.of(context).colorScheme.inverseSurface,
+      Theme.of(context).colorScheme.primary,
+      Theme.of(context).colorScheme.inverseSurface,
+      Theme.of(context).colorScheme.primary,
+      Theme.of(context).colorScheme.inverseSurface,
+     ],
+     begin: Alignment.topLeft,
+     end: Alignment.bottomRight,
+    ),
+   ),
+   child: Stack(
+    children: [
+     Positioned(
+      left: -3,
+      bottom: -5,
+      child: CircleAvatar(
+       radius: 40,
+       backgroundColor: gold.withValues(alpha: 0.1),
+      ),
+     ),
+     Positioned(
+      right: -20,
+      top: -6,
+      child: CircleAvatar(
+       radius: 80,
+       backgroundColor: gold.withValues(alpha: 0.18),
+      ),
+     ),
+     Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+       crossAxisAlignment: CrossAxisAlignment.start,
+       mainAxisAlignment: MainAxisAlignment.center,
+       children: [
 
-     final filteredInstitutes = hasSearch
-         ? academies.where((academy) {
-      final name = academy.name?.toLowerCase();
-      final location = academy.location?.toLowerCase();
-
-      return name!.contains(search) ||
-          location!.contains(search);
-     }).toList()
-         : showAll
-         ? academies
-         : [...academies]
-      ..sort(
-           (a, b) => double.parse(
-        "0",
-       ).compareTo(
-        double.parse(
-         "0",
-        ),
-       ),
-      );
-
-     return Column(
-      children: [
-       Row(
-        mainAxisAlignment:
-        MainAxisAlignment.spaceBetween,
-        children: [
-         Text(
-          hasSearch
-              ? "نتائج البحث"
-              : showAll
-              ? "كل المعاهد"
-              : "المعاهد الأكثر تقييماً",
+        Container(
+         padding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 6,
+         ),
+         decoration: BoxDecoration(
+          color: gold,
+          borderRadius: BorderRadius.circular(20),
+         ),
+         child: const Text(
+          "معاهد مشهورة",
+          maxLines:1,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
-           color: Theme.of(context)
-               .colorScheme
-               .primary,
-           fontSize: 22,
            fontWeight: FontWeight.bold,
           ),
          ),
-         if (!hasSearch)
-          InkWell(
-           onTap: () {
-            ref
-                .read(
-             showAllProvider.notifier,
-            )
-                .state = !showAll;
-           },
-           child: Text(
-            showAll
-                ? "إخفاء"
-                : "عرض الكل",
-            style: TextStyle(
-             color: gold,
-             fontWeight:
-             FontWeight.bold,
-            ),
-           ),
-          ),
-        ],
-       ),
+        ),
 
-       const SizedBox(height: 20),
+        const SizedBox(height: 18),
 
-       if (filteredInstitutes.isEmpty)
-        Padding(
-         padding:
-         const EdgeInsets.symmetric(
-          vertical: 100,
+        Text(
+         "اكتشف أفضل المعاهد\nفي منطقتك",
+         maxLines:2,
+         overflow: TextOverflow.ellipsis,
+         style: TextStyle(
+
+          fontSize: 28,
+          color:  Theme.of(context).colorScheme.surface,
+
+          fontWeight: FontWeight.bold,
+          height: 1.4,
          ),
-         child: Center(
+        ),
+
+        const SizedBox(height: 10),
+
+        Text(
+         "تعليم أكاديمي احترافي بأفضل التقييمات",
+         maxLines:1,
+         overflow: TextOverflow.ellipsis,
+         style: TextStyle(
+          color:  Theme.of(context).colorScheme.surface.withValues(alpha: 0.6),
+          fontSize: 15,
+         ),
+        ),
+       ],
+      ),
+     ),
+    ],
+   ),
+  );
+ }
+
+ Widget academyListCards(List<Doc> academies, bool showAll) {
+  return ReactiveValueListenableBuilder<String>(
+   formControlName: 'search',
+   builder: (context, control, child) {
+    final search =
+    (control.value ?? '')
+        .trim()
+        .toLowerCase();
+
+    final hasSearch = search.isNotEmpty;
+
+    final filteredInstitutes = hasSearch
+        ? academies.where((academy) {
+     final name = (academy.name??"").toLowerCase();
+     final location = (academy.location??"").toLowerCase();
+
+     return name.contains(search) ||
+         location.contains(search);
+    }).toList()
+        : showAll
+        ? academies
+        : [...academies]
+     ..sort(
+          (a, b) => double.parse(
+       "0",
+      ).compareTo(
+       double.parse(
+        "0",
+       ),
+      ),
+     );
+
+    return Column(
+     children: [
+      Row(
+       mainAxisAlignment:
+       MainAxisAlignment.spaceBetween,
+       children: [
+        Text(
+         hasSearch
+             ? "نتائج البحث"
+             : showAll
+             ? "كل المعاهد"
+             : "المعاهد الأكثر تقييماً",
+         style: TextStyle(
+          color: Theme.of(context)
+              .colorScheme
+              .primary,
+          fontSize: 22,
+          fontWeight: FontWeight.bold,
+         ),
+        ),
+        if (!hasSearch)
+         InkWell(
+          onTap: () {
+           ref
+               .read(
+            showAllProvider.notifier,
+           )
+               .state = !showAll;
+          },
           child: Text(
-           "لا توجد نتائج مطابقة لـ '$search'",
+           showAll
+               ? "إخفاء"
+               : "عرض الكل",
            style: TextStyle(
-            fontSize: 18,
+            color: gold,
             fontWeight:
             FontWeight.bold,
-            color: Theme.of(context)
-                .colorScheme
-                .primary,
            ),
           ),
          ),
-        )
-       else
-        Column(
-         children:
-         filteredInstitutes
-             .asMap()
-             .entries
-             .map((entry) {
-          final index = entry.key;
-          final academy = entry.value;
+       ],
+      ),
 
-          return instituteCard(
-           ref: ref,
-           context: context,
-           name: academy.name??"",
-           location:academy.location??"",
-           rating: "0",
-           image: academy.photo??"",
-           index: index,
-          );
-         }).toList(),
+      const SizedBox(height: 20),
+
+      if (filteredInstitutes.isEmpty)
+       Padding(
+        padding:
+        const EdgeInsets.symmetric(
+         vertical: 10,
         ),
-      ],
-     );
-    },
-   );
-  }
+        child: SvgPicture.asset('lib/svgFiles/no_search_results.svg',
+
+            semanticsLabel: 'school'),
+       )
+      else
+       Column(
+        children:
+        filteredInstitutes
+            .asMap()
+            .entries
+            .map((entry) {
+         final index = entry.key;
+         final academy = entry.value;
+
+         return instituteCard(
+          ref: ref,
+          context: context,
+          name: academy.name??"",
+          location:academy.location??"",
+          rating: "0",
+          image: "${academy.photo}"??"",
+          index: index,
+         );
+        }).toList(),
+       ),
+     ],
+    );
+   },
+  );
+ }
 }
 
 
