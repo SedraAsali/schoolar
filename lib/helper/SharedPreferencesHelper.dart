@@ -4,6 +4,8 @@ import 'package:scholar/helper/ConfigClass.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
 
+import '../core/feature_favorites/data/GetFavoriteModel.dart';
+
 
 class SharedPreferencesHelper {
 
@@ -36,6 +38,36 @@ class SharedPreferencesHelper {
 
 
 
+  ///Favorite
+  static Future<void> setFavorite(List<Favorite> value) async {
+    final prefs = await SharedPreferences.getInstance();
 
+    String data = jsonEncode(
+      value.map((e) => e.toJson()).toList(),
+    );
+
+    await prefs.setString("Favorite", data);
+
+    print('setFavorite $data');
+  }
+
+
+  static Future<List<Favorite>> getFavorite() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    String? data = prefs.getString("Favorite");
+
+    print('getFavorite $data');
+
+    if (data == null) {
+      return [];
+    }
+
+    List jsonList = jsonDecode(data);
+
+    return jsonList
+        .map((e) => Favorite.fromJson(e))
+        .toList();
+  }
 
 }

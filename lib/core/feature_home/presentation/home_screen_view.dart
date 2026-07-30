@@ -12,6 +12,7 @@ import 'package:scholar/core/feature_home/widget/card.dart';
 import 'package:scholar/helper/widgets/loading_view.dart' show LoadingView;
 import 'package:scholar/helper/widgets/state_view.dart' show StateView;
 import '../../../helper/constant.dart';
+import '../../feature_favorites/presentation/favorites_bloc/favorites_view_bloc.dart';
 import '../../feature_user_profile/presentation/profile_view.dart';
 import '../provider/home_navication.dart';
 import '../provider/showInistut_provider.dart';
@@ -161,7 +162,10 @@ class _HomeScreenViewState extends ConsumerState<HomeScreenView> {
        :
    currentIndex == 1
        ?
-   FavoritesPage()
+   BlocProvider(
+    create: (context) => FavoritesViewBloc(),
+    child: const FavoritesPage(),
+   )
        :
    ProfilePageView(),
 

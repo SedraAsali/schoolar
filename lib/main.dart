@@ -10,6 +10,7 @@ import 'package:scholar/helper/global_variable_provide.dart';
 import 'package:scholar/router.dart';
 import 'package:scholar/theme.dart';
 
+import 'core/feature_favorites/presentation/favorites_bloc/favorites_view_bloc.dart';
 import 'core/feature_home/presentation/academies_bloc/home_view_bloc.dart';
 import 'core/feature_login/presentation/bloc/log_in_bloc.dart';
 import 'core/feature_user_profile/cubit_profile/profile_cubit.dart';
@@ -31,8 +32,9 @@ void main() {
           BlocProvider<HomeViewBloc>(
             //PrefDetailBloc
             create: (context) =>
-            HomeViewBloc()
-              ..add(LoadingHomeViewEvent(context: context)),
+            HomeViewBloc()),
+          BlocProvider(
+            create: (context) => FavoritesViewBloc(),
           ),
           BlocProvider<GetProfileCubit>(
             create: (context) => GetProfileCubit(),
