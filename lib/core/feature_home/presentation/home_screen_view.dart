@@ -12,10 +12,12 @@ import 'package:scholar/core/feature_home/widget/card.dart';
 import 'package:scholar/helper/widgets/loading_view.dart' show LoadingView;
 import 'package:scholar/helper/widgets/state_view.dart' show StateView;
 import '../../../helper/constant.dart';
+import '../../../helper/global_variable_provide.dart';
 import '../../feature_favorites/presentation/favorites_bloc/favorites_view_bloc.dart';
 import '../../feature_user_profile/presentation/profile_view.dart';
 import '../provider/home_navication.dart';
 import '../provider/showInistut_provider.dart';
+import 'package:provider/provider.dart'as prov;
 import 'global_form.dart';
 
 class HomeScreenView extends ConsumerStatefulWidget {
@@ -32,9 +34,30 @@ class _HomeScreenViewState extends ConsumerState<HomeScreenView> {
   super.initState();
 
   WidgetsBinding.instance.addPostFrameCallback((_) {
+
    context.read<HomeViewBloc>().add(
     LoadingHomeViewEvent(context: context),
    );
+
+
+   final userId =
+      prov. Provider.of<GlobalVariableProvider>(
+        context,
+        listen: false,
+       ).configClass?.userLogin?.user?.id;
+
+
+   if(userId != null){
+
+    context.read<FavoritesViewBloc>().add(
+     LoadingFavoritesViewEvent(
+      context: context,
+      userID: userId,
+     ),
+    );
+
+   }
+
   });
  // BlocProvider.of<HomeViewBloc>(context).add(LoadingHomeViewEvent());
 
@@ -372,21 +395,17 @@ class _HomeScreenViewState extends ConsumerState<HomeScreenView> {
         ? academies.where((academy) {
      final name = (academy.name??"").toLowerCase();
      final location = (academy.location??"").toLowerCase();
+     final region = (academy.region??"").toLowerCase();
 
-     return name.contains(search) ||
+     return name.contains(search) ||region.contains(search) ||
          location.contains(search);
     }).toList()
         : showAll
         ? academies
         : [...academies]
      ..sort(
-          (a, b) => double.parse(
-       "0",
-      ).compareTo(
-       double.parse(
-        "0",
-       ),
-      ),
+          (a, b) => (b.ratingsAverage ?? 0)
+          .compareTo(a.ratingsAverage ?? 0),
      );
 
     return Column(
@@ -458,8 +477,9 @@ class _HomeScreenViewState extends ConsumerState<HomeScreenView> {
           ref: ref,
           context: context,
           name: academy.name??"",
-          location:academy.location??"",
-          rating: "0",
+          academyId: academy.id??"",
+          location: "${academy.region ?? ""} - ${academy.location ?? ""}",
+          rating: academy.ratingsAverage??0,
           image: "${academy.photo}"??"",
           index: index,
          );

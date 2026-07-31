@@ -39,8 +39,10 @@ class HomeViewModel {
 }
 
 class Doc {
+  int? ratingsAverage;
+  int? ratingsQuantity;
   String? id;
-  String? managerId;
+  ManagerId? managerId;
   String? photo;
   String? name;
   String? region;
@@ -49,6 +51,8 @@ class Doc {
   DateTime? updatedAt;
 
   Doc({
+    this.ratingsAverage,
+    this.ratingsQuantity,
     this.id,
     this.managerId,
     this.photo,
@@ -60,8 +64,10 @@ class Doc {
   });
 
   factory Doc.fromJson(Map<String, dynamic> json) => Doc(
+    ratingsAverage: json["ratingsAverage"],
+    ratingsQuantity: json["ratingsQuantity"],
     id: json["_id"],
-    managerId: json["managerId"],
+    managerId: json["managerId"] == null ? null : ManagerId.fromJson(json["managerId"]),
     photo: json["photo"],
     name: json["name"],
     region: json["region"],
@@ -71,8 +77,10 @@ class Doc {
   );
 
   Map<String, dynamic> toJson() => {
+    "ratingsAverage": ratingsAverage,
+    "ratingsQuantity": ratingsQuantity,
     "_id": id,
-    "managerId": managerId,
+    "managerId": managerId?.toJson(),
     "photo": photo,
     "name": name,
     "region": region,
@@ -83,8 +91,33 @@ class Doc {
 
   @override
   String toString() {
-    return 'Doc{id: $id, managerId: $managerId, photo: $photo, name: $name, region: $region, location: $location, createdAt: $createdAt, updatedAt: $updatedAt}';
+    return 'Doc{ratingsAverage: $ratingsAverage, ratingsQuantity: $ratingsQuantity, id: $id, managerId: $managerId, photo: $photo, name: $name, region: $region, location: $location, createdAt: $createdAt, updatedAt: $updatedAt}';
   }
 
+}
+
+class ManagerId {
+  String? id;
+  String? phone;
+
+  ManagerId({
+    this.id,
+    this.phone,
+  });
+
+  factory ManagerId.fromJson(Map<String, dynamic> json) => ManagerId(
+    id: json["_id"],
+    phone: json["phone"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "_id": id,
+    "phone": phone,
+  };
+
+  @override
+  String toString() {
+    return 'ManagerId{id: $id, phone: $phone}';
+  }
 
 }

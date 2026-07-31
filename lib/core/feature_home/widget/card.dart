@@ -5,13 +5,15 @@ import 'package:flutter_svg/svg.dart';
 import 'package:scholar/core/feature_home/presentation/institute_details.dart';
 import '../../../helper/constant.dart';
 import '../../feature_favorites/provider/favorites_provider.dart';
+import 'favorite_button.dart';
 
 Widget instituteCard({
 required BuildContext context,
 required WidgetRef ref,
+required String academyId,
 required String name,
 required String location,
-required String rating,
+required int rating,
 required String image,
  required int index,
 }) {
@@ -117,27 +119,31 @@ required String image,
             ),
            ),
 
-           IconButton(
-            onPressed: () {
-             ref
-                 .read(favoritesProvider.notifier)
-                 .toggle({
-              "name": name,
-              "location": location,
-              "rating": rating,
-              "image": image,
-             });
-            },
-            icon: Icon(
-             isFav
-                 ? Icons.favorite
-                 : Icons.favorite_border,
-             color: Theme
-                 .of(context)
-                 .colorScheme
-                 .error,
-            ),
+           FavoriteButton(
+            academyId: academyId,
+            context: context,
            ),
+           // IconButton(
+           //  onPressed: () {
+           //   ref
+           //       .read(favoritesProvider.notifier)
+           //       .toggle({
+           //    "name": name,
+           //    "location": location,
+           //    "rating": rating,
+           //    "image": image,
+           //   });
+           //  },
+           //  icon: Icon(
+           //   isFav
+           //       ? Icons.favorite
+           //       : Icons.favorite_border,
+           //   color: Theme
+           //       .of(context)
+           //       .colorScheme
+           //       .error,
+           //  ),
+           // ),
           ],
          ),
 
@@ -181,7 +187,7 @@ required String image,
            ),
            const SizedBox(width: 5),
            Text(
-            rating,
+           "$rating",
             style: const TextStyle(
              fontWeight: FontWeight.bold,
             ),

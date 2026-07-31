@@ -28,6 +28,12 @@ class GetFavoriteModel {
     );
   }
 
+  @override
+  String toString() {
+    return 'GetFavoriteModel{status: $status, message: $message, data: $data}';
+  }
+
+
 }
 
 
@@ -62,6 +68,12 @@ class Favorite {
       "__v": v,
     };
   }
+
+  @override
+  String toString() {
+    return 'Favorite{id: $id, academyId: $academyId, userId: $userId, v: $v}';
+  }
+
 }
 
 
@@ -111,4 +123,10 @@ class Academy {
       "updatedAt": updatedAt,
     };
   }
+
+  @override
+  String toString() {
+    return 'Academy{id: $id, managerId: $managerId, photo: $photo, name: $name, region: $region, location: $location, createdAt: $createdAt, updatedAt: $updatedAt}';
+  }
+
 }
