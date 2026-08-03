@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:scholar/core/feature_favorites/presentation/delete_favorite_bloc/delete_favorite_bloc.dart';
 import 'package:scholar/core/feature_user_profile/cubit_profile/profile_cubit.dart';
 import 'package:scholar/core/feature_user_profile/provider/profile_provider.dart';
 import 'package:scholar/helper/show_message.dart';
@@ -146,15 +147,15 @@ class _DialogLeaveAndLogOutState extends State<DialogLeaveAndLogOut> {
 }
 
 
-// DialogConfirmExitExternal
-class DialogConfirmExitExternal extends StatefulWidget {
+// DialogConfirmExitProfil
+class DialogConfirmExitProfile extends StatefulWidget {
  final File? profileImage;
-  const DialogConfirmExitExternal({super.key,required this.profileImage});
+  const DialogConfirmExitProfile({super.key,required this.profileImage});
   @override
-  _DialogConfirmExitExternalState createState() => _DialogConfirmExitExternalState();
+  _DialogConfirmExitProfileState createState() => _DialogConfirmExitProfileState();
 }
 
-class _DialogConfirmExitExternalState extends State<DialogConfirmExitExternal> {
+class _DialogConfirmExitProfileState extends State<DialogConfirmExitProfile> {
 
   Widget? titleConfirmExit;
 
@@ -301,6 +302,157 @@ class _DialogConfirmExitExternalState extends State<DialogConfirmExitExternal> {
 
 
           },)
+      ],
+    );
+  }
+
+
+}
+
+
+
+
+// DialogConfirmDeleteFavorite
+class DialogConfirmDeleteFavorite extends StatefulWidget {
+  final String? favoriteId;
+  const DialogConfirmDeleteFavorite({super.key,required this.favoriteId});
+  @override
+  _DialogConfirmDeleteFavoriteState createState() => _DialogConfirmDeleteFavoriteState();
+}
+
+class _DialogConfirmDeleteFavoriteState extends State<DialogConfirmDeleteFavorite> {
+
+  Widget? titleConfirmDelete;
+
+
+
+  @override
+  void initState() {
+    titleConfirmDelete = title("هل تريد حذف المعهد من قائمة المفضلة ؟");
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async{
+        return false;
+      },
+      child: Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        insetPadding: EdgeInsets.all(20.0),
+        child: body(),
+      ),
+    );
+  }
+
+  Widget body() {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 10.0, top: 15.0, right: 20, left: 20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(),
+          Center(child: SvgPicture.asset('lib/svgFiles/warning.svg')),
+          Container(),
+
+          titleConfirmDelete!,
+
+          BlocConsumer<DeleteFavoriteBloc, DeleteFavoriteState>(
+            listener: (context, state) {
+
+              if (state is SuccessDeleteFavoriteState ||
+                  state is ErrorDeleteFavoriteState) {
+
+                Navigator.pop(context);
+
+              }
+
+            },
+
+            builder: (context, state) {
+
+              if (state is LoadingDeleteFavoriteState) {
+                return LoadingView();
+              }
+
+              return saveData();
+
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget title(String title) {
+    return Center(
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 18,
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+        ),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+
+  Widget button({
+    String? buttonText,
+    Color? colorText,
+    VoidCallback? onPressed,
+  }) {
+    return TextButton(
+      onPressed: onPressed,
+      style: TextButton.styleFrom(
+        foregroundColor: colorText,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+      ),
+      child: Text(
+        buttonText ?? '',
+        style: TextStyle(
+          fontSize: 16,
+          color: colorText,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Widget saveData() {
+    print("widget.favoriteId dialog ${widget.favoriteId}");
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+
+      children: [
+        button(
+            buttonText: "cancel",
+            colorText: Colors.black,
+            onPressed: () {
+              Navigator.of(context).pop();
+            }),
+        button(
+          buttonText: "ok",
+          colorText: Colors.blue,
+          onPressed: () async {
+            if(widget.favoriteId != null){
+
+              context.read<DeleteFavoriteBloc>().add(
+                DeleteFavoriteViewEvent(
+                  context: context,
+                  favoriteId: widget.favoriteId!,
+                ),
+              );
+            }
+
+          },
+        ),
       ],
     );
   }

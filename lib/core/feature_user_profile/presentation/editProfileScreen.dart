@@ -148,7 +148,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return DialogConfirmExitExternal(profileImage: _profileImage,);
+              return DialogConfirmExitProfile(profileImage: _profileImage,);
              // return Container();
             },
 
