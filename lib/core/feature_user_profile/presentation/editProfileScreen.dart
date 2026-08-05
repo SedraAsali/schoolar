@@ -259,7 +259,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             // )
                           ],
                         )
-                            : (_profileProvider.userObject.user!.photo!.isNotEmpty )
+                            : (_profileProvider.userObject.user?.photo?.isNotEmpty?? false )
                             ? GestureDetector(
                           onTap: () => _profileProvider.showAnyDialog(context,(){},
                               widgetReturn: Scaffold(

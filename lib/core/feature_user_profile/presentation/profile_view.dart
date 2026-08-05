@@ -362,13 +362,13 @@ class _ProfilePageViewState extends ConsumerState<ProfilePageView> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(90),
                       child:
-                          (_profileProvider.userObject.user!.photo!.isNotEmpty)
+                          (_profileProvider.userObject.user?.photo?.isNotEmpty?? false)
                           ? ClipOval(
                               child: SizedBox(
                                 width: 140,
                                 height: 140,
                                 child: CachedNetworkImageView(
-                                  url: _profileProvider.userObject.user!.photo,
+                                  url: _profileProvider.userObject.user?.photo,
                                 ),
                               ),
                             )

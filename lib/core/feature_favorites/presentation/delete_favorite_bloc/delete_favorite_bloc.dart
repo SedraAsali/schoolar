@@ -46,7 +46,7 @@ class DeleteFavoriteBloc
         print("DeleteFavorite status => ${model.status}");
 
         if (model.status == "success") {
-          showMessage(event.context, model.message ?? "تم الحذف بنجاح", false);
+          showMessage(event.context,  "تم الحذف بنجاح", false);//model.message ??
 
           emit(SuccessDeleteFavoriteState(deleteFavoriteModel: model));
         } else {

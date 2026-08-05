@@ -105,82 +105,82 @@ class _HomeScreenViewState extends ConsumerState<HomeScreenView> {
    body: currentIndex==0?
 
    SafeArea(
-    child: SingleChildScrollView(
+    child: Padding(
      padding: const EdgeInsets.all(18),
-     child: ReactiveForm(
-      formGroup: globalFormGroup,
-      child: Column(
-       crossAxisAlignment: CrossAxisAlignment.start,
-       children: [
-
-        search(),
-
-        const SizedBox(height: 25),
-         cardPopularAcademy(),
-        const SizedBox(height: 20),
-
-        //فلترة النصحسب البحث
-        BlocBuilder<HomeViewBloc, HomeViewState>(
-         builder: (context, state) {
-          if (state is LoadingHomeViewState) {
-            return Center(child: LoadingView());
-          }
-          else if (state is ErrorHomeViewState)
-           {
-            return StateView(
-             // imagePath:'lib/svgFiles/no_internet_connection.svg' ,
-             imagePath:'lib/svgFiles/something_wrong.svg' ,
-             imageHeader: 'حدث خطأ ما رجاءا إعادة المحاولة',
-             iconRefresh: true,
-             //imageDescription: 'no_wifi_description',
-             function: () {
-              // BlocProvider.of<HomeViewBloc>(context)
-              //  .add(LoadingHomeViewEvent());
-              context.read<HomeViewBloc>().add(
-               LoadingHomeViewEvent(context: context),
-              );
-
-             },
-            );
-           }
-          else if (state is NoInternetHomeViewState)
+    child: ReactiveForm(
+     formGroup: globalFormGroup,
+     child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+    
+       search(),
+    
+       const SizedBox(height: 25),
+        cardPopularAcademy(),
+       const SizedBox(height: 20),
+    
+       //فلترة النصحسب البحث
+       BlocBuilder<HomeViewBloc, HomeViewState>(
+        builder: (context, state) {
+         if (state is LoadingHomeViewState) {
+           return Center(child: LoadingView());
+         }
+         else if (state is ErrorHomeViewState)
           {
            return StateView(
-             imagePath:'lib/svgFiles/no_internet_connection.svg' ,
+            // imagePath:'lib/svgFiles/no_internet_connection.svg' ,
+            imagePath:'lib/svgFiles/something_wrong.svg' ,
+            imageHeader: 'حدث خطأ ما رجاءا إعادة المحاولة',
+            iconRefresh: true,
+            //imageDescription: 'no_wifi_description',
             function: () {
              // BlocProvider.of<HomeViewBloc>(context)
              //  .add(LoadingHomeViewEvent());
              context.read<HomeViewBloc>().add(
               LoadingHomeViewEvent(context: context),
              );
-
+    
             },
            );
           }
-          else if (state is GetAllDataHomeViewState)
-           {
-            print("state.homeViewModel.doc ${state.homeViewModel.doc}");
-            List<Doc> academies = List.from(state.homeViewModel.doc ?? []);
-            if(academies.isEmpty)
-             {
-              return StateView(
-               imagePath: 'lib/svgFiles/no_classes.svg',
-                imageHeader: 'لا يوجد معاهد',
-               // imageDescription: 'no_meal_description',
-              );
-             }
-            else
-             {
-              return academyListCards(academies, showAll);
-             }
-           }
-          return Center(child: LoadingView());
-  },
-),
-       ],
-      ),
+         else if (state is NoInternetHomeViewState)
+         {
+          return StateView(
+            imagePath:'lib/svgFiles/no_internet_connection.svg' ,
+           function: () {
+            // BlocProvider.of<HomeViewBloc>(context)
+            //  .add(LoadingHomeViewEvent());
+            context.read<HomeViewBloc>().add(
+             LoadingHomeViewEvent(context: context),
+            );
+    
+           },
+          );
+         }
+         else if (state is GetAllDataHomeViewState)
+          {
+           print("state.homeViewModel.doc ${state.homeViewModel.doc}");
+           List<Doc> academies = List.from(state.homeViewModel.doc ?? []);
+           if(academies.isEmpty)
+            {
+             return StateView(
+              imagePath: 'lib/svgFiles/no_classes.svg',
+               imageHeader: 'لا يوجد معاهد',
+              // imageDescription: 'no_meal_description',
+             );
+            }
+           else
+            {
+             return Expanded(child: academyListCards(academies, showAll));
+            }
+          }
+         return Center(child: LoadingView());
+      },
+    ),
+      ],
      ),
     ),
+),
    )
        :
    currentIndex == 1
@@ -247,7 +247,12 @@ class _HomeScreenViewState extends ConsumerState<HomeScreenView> {
 
 
  Widget search() {
-  return Container(
+  print("globalFormGroup.control('search').value.toString().isNotEmpty"
+      " ${globalFormGroup.control('search').value.toString().isNotEmpty}");
+  return ReactiveValueListenableBuilder<String>(
+   formControlName: 'search',
+   builder: (context, control, child)  {
+    return Container(
    padding: const EdgeInsets.symmetric(horizontal: 16),
    decoration: BoxDecoration(
     color: Theme.of(context).colorScheme.onInverseSurface,
@@ -270,18 +275,23 @@ class _HomeScreenViewState extends ConsumerState<HomeScreenView> {
      fillColor:   Theme.of(context).colorScheme.onInverseSurface,
      border: InputBorder.none,
      prefixIcon:  Icon(Icons.search,color: Theme.of(context).colorScheme.secondary,),
-     suffixIcon: globalFormGroup.control('search').value.toString().isNotEmpty
+     suffixIcon: (control.value ?? '').isNotEmpty
          ? IconButton(
-      icon:  Icon(Icons.close,
-       color: Theme.of(context).colorScheme.secondary ,),
+      icon: Icon(
+       Icons.close,
+       color: Theme.of(context).colorScheme.secondary,
+      ),
       onPressed: () {
-       globalFormGroup.control('search').value = '';
+       control.value = '';
       },
      )
          : null,
+
     ),
    ),
   );
+  },
+);
  }
 
  Widget cardPopularAcademy() {
@@ -400,95 +410,127 @@ class _HomeScreenViewState extends ConsumerState<HomeScreenView> {
      return name.contains(search) ||region.contains(search) ||
          location.contains(search);
     }).toList()
-        : showAll
-        ? academies
-        : [...academies]
-     ..sort(
-          (a, b) => (b.ratingsAverage ?? 0)
-          .compareTo(a.ratingsAverage ?? 0),
-     );
+         : showAll
+    ? academies
+        : ([...academies]
+    ..sort(
+    (a, b) => (b.ratingsAverage ?? 0)
+        .compareTo(a.ratingsAverage ?? 0),
+    ))
+        .take(3)
+        .toList();
 
-    return Column(
-     children: [
-      Row(
-       mainAxisAlignment:
-       MainAxisAlignment.spaceBetween,
-       children: [
-        Text(
-         hasSearch
-             ? "نتائج البحث"
-             : showAll
-             ? "كل المعاهد"
-             : "المعاهد الأكثر تقييماً",
-         style: TextStyle(
-          color: Theme.of(context)
-              .colorScheme
-              .primary,
-          fontSize: 22,
-          fontWeight: FontWeight.bold,
-         ),
-        ),
-        if (!hasSearch)
-         InkWell(
-          onTap: () {
-           ref
-               .read(
-            showAllProvider.notifier,
-           )
-               .state = !showAll;
-          },
-          child: Text(
-           showAll
-               ? "إخفاء"
-               : "عرض الكل",
-           style: TextStyle(
-            color: gold,
-            fontWeight:
-            FontWeight.bold,
-           ),
+    return RefreshIndicator (
+     onRefresh: refreshAcademies,
+      child: SingleChildScrollView(
+       padding: const EdgeInsets.all(1),
+        child: Column(
+         children: [
+          Row(
+           mainAxisAlignment:
+           MainAxisAlignment.spaceBetween,
+           children: [
+            Text(
+             hasSearch
+                 ? "نتائج البحث"
+                 : showAll
+                 ? "كل المعاهد"
+                 : "المعاهد الأكثر تقييماً",
+             style: TextStyle(
+              color: Theme.of(context)
+                  .colorScheme
+                  .primary,
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+             ),
+            ),
+            if (!hasSearch && academies.length > 3)
+             InkWell(
+              onTap: () {
+               ref
+                   .read(
+                showAllProvider.notifier,
+               )
+                   .state = !showAll;
+              },
+              child: Text(
+               showAll
+                   ? "إخفاء"
+                   : "عرض الكل",
+               style: TextStyle(
+                color: gold,
+                fontWeight:
+                FontWeight.bold,
+               ),
+              ),
+             ),
+           ],
           ),
-         ),
-       ],
-      ),
-
-      const SizedBox(height: 20),
-
-      if (filteredInstitutes.isEmpty)
-       Padding(
-        padding:
-        const EdgeInsets.symmetric(
-         vertical: 10,
+        
+          const SizedBox(height: 20),
+        
+          if (filteredInstitutes.isEmpty)
+           Padding(
+            padding:
+            const EdgeInsets.symmetric(
+             vertical: 10,
+            ),
+            child: SvgPicture.asset('lib/svgFiles/no_search_results.svg',
+        
+                semanticsLabel: 'school'),
+           )
+          else Column(
+            children:
+            filteredInstitutes
+                .asMap()
+                .entries
+                .map((entry) {
+             final index = entry.key;
+             final academy = entry.value;
+        
+             return instituteCard(
+              ref: ref,
+              context: context,
+              name: academy.name??"",
+              academyId: academy.id??"",
+              location: "${academy.region ?? ""} - ${academy.location ?? ""}",
+              rating: academy.ratingsAverage??0,
+              image: "${academy.photo}"??"",
+              index: index,
+             );
+            }).toList(),
+           ),
+         ],
         ),
-        child: SvgPicture.asset('lib/svgFiles/no_search_results.svg',
-
-            semanticsLabel: 'school'),
-       )
-      else
-       Column(
-        children:
-        filteredInstitutes
-            .asMap()
-            .entries
-            .map((entry) {
-         final index = entry.key;
-         final academy = entry.value;
-
-         return instituteCard(
-          ref: ref,
-          context: context,
-          name: academy.name??"",
-          academyId: academy.id??"",
-          location: "${academy.region ?? ""} - ${academy.location ?? ""}",
-          rating: academy.ratingsAverage??0,
-          image: "${academy.photo}"??"",
-          index: index,
-         );
-        }).toList(),
-       ),
-     ],
+      ),
     );
    },
   );
+ }
+
+ Future<void> refreshAcademies() async {
+  context.read<HomeViewBloc>().add(
+
+  LoadingHomeViewEvent(context: context),
+
+ );
+
+ final userId = prov.Provider.of<GlobalVariableProvider>(
+
+  context,
+
+  listen: false,
+
+ ).configClass?.userLogin?.user?.id;
+ if (userId != null) {
+  context.read<FavoritesViewBloc>().add(
+   LoadingFavoritesViewEvent(
+    context: context,
+    userID: userId,
+   ),
+  );
+ }
+ await Future.delayed(const Duration(milliseconds: 500));
  }
 }
 

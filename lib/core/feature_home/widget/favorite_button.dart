@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
+import 'package:scholar/core/feature_favorites/presentation/delete_favorite_bloc/delete_favorite_bloc.dart';
 import 'package:scholar/helper/SharedPreferencesHelper.dart';
 
 import '../../../helper/global_variable_provide.dart';
@@ -42,18 +43,22 @@ class _FavoriteButtonState extends State<FavoriteButton> {
   @override
   Widget build(BuildContext context) {
 
-    return BlocListener<AddFavoriteBloc, AddFavoriteState>(
+    return BlocListener<DeleteFavoriteBloc, DeleteFavoriteState>(
       listener: (context, state) {
-
-        if (state is SuccessAddFavoriteState) {
+        if (state is SuccessDeleteFavoriteState) {
 
           loadFavorite();
 
         }
-
+      },
+  child: BlocListener<AddFavoriteBloc, AddFavoriteState>(
+      listener: (context, state) {
+        if (state is SuccessAddFavoriteState) {
+          loadFavorite();
+        }
       },
       child: IconButton(
-        onPressed: () {
+        onPressed: () async {
 
           final userId =
               Provider.of<GlobalVariableProvider>(
@@ -61,30 +66,44 @@ class _FavoriteButtonState extends State<FavoriteButton> {
                 listen: false,
               ).configClass?.userLogin?.user?.id;
 
-
-          if(userId == null){
+          if (userId == null) {
             return;
           }
 
+          if (isFav) {
+            print("Delete isFav $isFav");
+            // Delete
+            final favorites = await SharedPreferencesHelper.getFavorite();
 
-          context.read<AddFavoriteBloc>().add(
-            AddFavoriteViewEvent(
-              context: context,
-              academyId: widget.academyId,
-              userId: userId,
-            ),
-          );
+            final favorite = favorites.firstWhere(
+                  (e) => e.academyId?.id == widget.academyId,
+            );
+
+            context.read<DeleteFavoriteBloc>().add(
+              DeleteFavoriteViewEvent(
+                context: context,
+                favoriteId: favorite.id!,
+              ),
+            );
+          } else {
+            print("add isFav $isFav");
+            context.read<AddFavoriteBloc>().add(
+              AddFavoriteViewEvent(
+                context: context,
+                academyId: widget.academyId,
+                userId: userId,
+              ),
+            );
+
+          }
 
         },
         icon: Icon(
-          isFav
-              ? Icons.favorite
-              : Icons.favorite_border,
-          color: Theme.of(context)
-              .colorScheme
-              .error,
+          isFav ? Icons.favorite : Icons.favorite_border,
+          color: Theme.of(context).colorScheme.error,
         ),
       ),
-    );
+    ),
+);
   }
 }
