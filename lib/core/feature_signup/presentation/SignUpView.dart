@@ -144,13 +144,15 @@ class _SignUpViewState extends State<SignUpView>  {
                 children: [
                   ReactiveTextField<String>(
                     style: TextStyle(color: Theme.of(context).colorScheme.surface),
-
+                    cursorColor: Theme.of(context).colorScheme.onPrimary,
+                    cursorRadius: Radius.circular(10),
+                    cursorOpacityAnimates: true,
                     formControlName: 'name',
                     decoration:  InputDecoration(
                       fillColor: Theme.of(context).colorScheme.primary,
                       filled: true,
-                      labelText: 'الاسم',
-                      labelStyle: TextStyle(color: Theme.of(context).colorScheme.surface,),
+                      hintText: 'الاسم',
+                      hintStyle: TextStyle(color: Theme.of(context).colorScheme.surface,),
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.only(topLeft:  Radius.circular(120)
@@ -168,6 +170,9 @@ class _SignUpViewState extends State<SignUpView>  {
                   //phone
                   ReactiveTextField<String>(
                     formControlName: 'number',
+                    cursorColor: Theme.of(context).colorScheme.onPrimary,
+                    cursorRadius: Radius.circular(10),
+                    cursorOpacityAnimates: true,
                     keyboardType: TextInputType.phone,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.surface,
@@ -175,8 +180,8 @@ class _SignUpViewState extends State<SignUpView>  {
                     decoration: InputDecoration(
                       fillColor: Theme.of(context).colorScheme.primary,
                       filled: true,
-                      labelText: 'رقم الهاتف',
-                      labelStyle: TextStyle(
+                      hintText: 'رقم الهاتف',
+                      hintStyle: TextStyle(
                         color: Theme.of(context).colorScheme.surface,
                       ),
 
@@ -212,11 +217,14 @@ class _SignUpViewState extends State<SignUpView>  {
                     style: TextStyle(color: Theme.of(context).colorScheme.surface),
 
                     formControlName: 'signUpEmail',
+                    cursorColor: Theme.of(context).colorScheme.onPrimary,
+                    cursorRadius: Radius.circular(10),
+                    cursorOpacityAnimates: true,
                     decoration:  InputDecoration(
                       fillColor: Theme.of(context).colorScheme.primary,
                       filled: true,
-                      labelText: 'البريد الإلكتروني',
-                      labelStyle: TextStyle(color: Theme.of(context).colorScheme.surface),
+                      hintText: 'البريد الإلكتروني',
+                      hintStyle: TextStyle(color: Theme.of(context).colorScheme.surface),
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.only(topLeft:  Radius.circular(120)
@@ -244,13 +252,16 @@ class _SignUpViewState extends State<SignUpView>  {
                          style: TextStyle(color: Theme.of(context).colorScheme.surface),
 
                     formControlName: 'signUpPassword',
+                            cursorColor: Theme.of(context).colorScheme.onPrimary,
+                            cursorRadius: Radius.circular(10),
+                            cursorOpacityAnimates: true,
                     obscureText: !values.passwordIsLookAtPassword,
                    focusNode: passwordFocus,
                     decoration:  InputDecoration(
                       fillColor: Theme.of(context).colorScheme.primary,
                       filled: true,
-                      labelText: 'كلمة المرور',
-                      labelStyle: TextStyle(color: Theme.of(context).colorScheme.surface,),
+                      hintText: 'كلمة المرور',
+                      hintStyle: TextStyle(color: Theme.of(context).colorScheme.surface,),
                       suffixIcon:passwordFocus.hasFocus || hasText? Padding(
                         padding: const EdgeInsets.only(left:8.0),
                         child: IconButton(
@@ -266,7 +277,8 @@ class _SignUpViewState extends State<SignUpView>  {
                             values.passwordIsLookAtPassword
                                 ? Icons.visibility_off
                                 : Icons.visibility,
-                            color: hasText ? Colors.white : Colors.grey,
+                            color: hasText ? Theme.of(context).colorScheme.surface
+                                : Theme.of(context).colorScheme.outlineVariant,
                             size: 20,
                           ),
                         ),
@@ -301,13 +313,16 @@ class _SignUpViewState extends State<SignUpView>  {
                         style: TextStyle(color: Theme.of(context).colorScheme.surface),
 
                         formControlName: 'confirm',
+                           cursorColor: Theme.of(context).colorScheme.onPrimary,
+                           cursorRadius: Radius.circular(10),
+                           cursorOpacityAnimates: true,
                         obscureText: !values1.confirmIsLookAtPassword,
                         focusNode: passwordConfirmFocus,
                         decoration:  InputDecoration(
                           fillColor: Theme.of(context).colorScheme.primary,
                           filled: true,
-                          labelText: 'التحقق من كلمة المرور',
-                          labelStyle: TextStyle(color: Theme.of(context).colorScheme.surface),
+                          hintText: 'التحقق من كلمة المرور',
+                          hintStyle: TextStyle(color: Theme.of(context).colorScheme.surface),
                           suffixIcon:passwordConfirmFocus.hasFocus || hasText? Padding(
                             padding: const EdgeInsets.only(left:8.0),
                             child: IconButton(
@@ -320,7 +335,8 @@ class _SignUpViewState extends State<SignUpView>  {
                                 values1.confirmIsLookAtPassword
                                     ? Icons.visibility_off
                                     : Icons.visibility,
-                                color: hasText ? Colors.white : Colors.grey,
+                                color: hasText ?Theme.of(context).colorScheme.surface
+                                    : Theme.of(context).colorScheme.outlineVariant,
                                 size: 20,
                               ),
                             ),
@@ -343,7 +359,6 @@ class _SignUpViewState extends State<SignUpView>  {
                    );
   },
 ),
-                  const SizedBox(height: 18),
 
                   // اختيار مستخدم او مدير
                   Material(
@@ -364,11 +379,9 @@ class _SignUpViewState extends State<SignUpView>  {
                     ),
                   ),
 
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 8),
                   // Login Button
-                  SignupButton(),
-                  const SizedBox(height: 18),
-                  TextButton(onPressed: (){
+                  SignupButton(), TextButton(onPressed: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=> LogInView()));
                   }, child: Text('هل قمت بإنشاء حساب مسبقاً ؟ انقر هنا ..'))
                 ],

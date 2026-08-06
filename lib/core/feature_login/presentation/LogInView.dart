@@ -10,6 +10,7 @@ import '../../../helper/text_field_provider.dart';
 import '../../feature_home/presentation/home_screen_view.dart';
 import '../../feature_login/presentation/login_form.dart' show logFormGroup;
 import '../../presentation/screens/home_screen.dart';
+import 'forgot_password_view.dart';
 import 'bloc/log_in_bloc.dart';
 
 
@@ -144,11 +145,14 @@ class _LogInViewState extends State<LogInView>  {
                     ReactiveTextField<String>(
                       style: TextStyle(color: Theme.of(context).colorScheme.surface),
                       formControlName: 'logInEmail',
+                      cursorColor: Theme.of(context).colorScheme.onPrimary,
+                      cursorRadius: Radius.circular(10),
+                      cursorOpacityAnimates: true,
                       decoration:  InputDecoration(
                         fillColor: Theme.of(context).colorScheme.primary,
                         filled: true,
-                        labelText: 'البريد الإلكتروني',
-                        labelStyle: TextStyle(color: Theme.of(context).colorScheme.surface),
+                        hintText: 'البريد الإلكتروني',
+                        hintStyle: TextStyle(color: Theme.of(context).colorScheme.surface),
                         border: OutlineInputBorder(
                           borderSide: BorderSide.none,
                           borderRadius: BorderRadius.only(topLeft:  Radius.circular(120)
@@ -175,16 +179,19 @@ class _LogInViewState extends State<LogInView>  {
                               style: TextStyle(
                                 color: Theme.of(context).colorScheme.surface,
                               ),
+                              cursorColor: Theme.of(context).colorScheme.onPrimary,
+                              cursorRadius: Radius.circular(10),
+                              cursorOpacityAnimates: true,
                               focusNode: passwordFocus,
                               formControlName: 'logInPassword',
                               obscureText: !values.passwordIsLookAtPassword,
                               decoration: InputDecoration(
                                 fillColor: Theme.of(context).colorScheme.primary,
                                 filled: true,
-                                labelStyle: TextStyle(
+                                hintStyle: TextStyle(
                                   color: Theme.of(context).colorScheme.surface,
                                 ),
-                                labelText: 'كلمة المرور',
+                                hintText: 'كلمة المرور',
 
                                 suffixIconConstraints: const BoxConstraints(
                                   minWidth: 48,
@@ -206,7 +213,8 @@ class _LogInViewState extends State<LogInView>  {
                                       values.passwordIsLookAtPassword
                                           ? Icons.visibility_off
                                           : Icons.visibility,
-                                      color: hasText ? Colors.white : Colors.grey,
+                                      color: hasText ? Theme.of(context).colorScheme.surface
+                                          : Theme.of(context).colorScheme.outlineVariant,
                                       size: 20,
                                     ),
                                   ),
@@ -230,10 +238,24 @@ class _LogInViewState extends State<LogInView>  {
                         );
                       },
                     ),
-                    TextButton(onPressed: (){},
-                        child: Text('هل نسيت كلمة المرور !؟',)),
+
+
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ForgotPasswordView(),
+                          ),
+                        );
+                      },
+                      child: const Text('هل نسيت كلمة المرور؟'),
+                    ),
 
                     const SizedBox(height: 40),
+
+
+
                     logInButton(),
                     const SizedBox(height: 20),
                     TextButton(onPressed: (){
