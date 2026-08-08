@@ -15,6 +15,7 @@ import 'core/feature_favorites/presentation/add_favorite_bloc/add_favorite_bloc.
 import 'core/feature_favorites/presentation/favorites_bloc/favorites_view_bloc.dart';
 import 'core/feature_home/presentation/academies_bloc/home_view_bloc.dart';
 import 'core/feature_login/presentation/bloc/log_in_bloc.dart';
+import 'core/feature_login/presentation/forgot_password_bloc/forgot_password_bloc.dart';
 import 'core/feature_user_profile/cubit_profile/profile_cubit.dart';
 import 'core/feature_user_profile/get_profile_cubit/get_profile_cubit.dart';
 import 'core/feature_user_profile/provider/profile_provider.dart';
@@ -30,6 +31,9 @@ void main() {
           ),
           BlocProvider(
             create: (_) => SignUpBloc()..add(SignUpInit()),
+          ),
+          BlocProvider(
+            create: (_) => ForgotPasswordBloc(),
           ),
           BlocProvider<HomeViewBloc>(
             //PrefDetailBloc

@@ -90,6 +90,7 @@ class _LogInViewState extends State<LogInView>  {
                     }
                   },
                   child: BlocBuilder<LogInBloc, LogInState>(
+
                     builder: (context, state) {
                       return Stack(
                         children: [
