@@ -2,128 +2,108 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:connectivity_plus/connectivity_plus.dart' show Connectivity, ConnectivityResult;
+import 'package:connectivity_plus/connectivity_plus.dart'
+    show Connectivity, ConnectivityResult;
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:scholar/core/feature_home/data/home_view_api.dart';
 import 'package:scholar/core/feature_home/data/home_view_model.dart';
+import 'package:scholar/helper/SharedPreferencesHelper.dart';
 
 import '../../../../helper/show_message.dart';
 part 'home_view_event.dart';
 part 'home_view_state.dart';
 
-
 class HomeViewBloc extends Bloc<HomeViewEvent, HomeViewState> {
-
   HomeViewBloc() : super(HomeViewInitial()) {
-   print("bloc created");
+    print("bloc created");
     on<LoadingHomeViewEvent>((event, emit) async {
       print("event recived");
       var connectivityResult = await Connectivity().checkConnectivity();
 
       if (connectivityResult.contains(ConnectivityResult.mobile) ||
           connectivityResult.contains(ConnectivityResult.wifi) ||
-          connectivityResult.contains(ConnectivityResult.ethernet))
-        {
+          connectivityResult.contains(ConnectivityResult.ethernet)) {
+        emit(LoadingHomeViewState());
 
+        try {
+          HomeViewModel homeViewModel = await HomeViewApi.getAllAcademies(
+            event.context,
+          );
 
-          emit(LoadingHomeViewState());
+          print("HomeViewBloc homeViewModel ${homeViewModel.status}");
 
-          try {
-            HomeViewModel homeViewModel =
-            await HomeViewApi.getAllAcademies(event.context);
+          if (homeViewModel.status == "success") {
+            print("HomeViewBloc GetAllDataHomeViewState");
+            await SharedPreferencesHelper.saveHomeAcademies(homeViewModel);
+            emit(GetAllDataHomeViewState(homeViewModel: homeViewModel));
+          } else {
+            print("HomeViewBloc ErrorHomeViewState");
 
-            print("HomeViewBloc homeViewModel ${homeViewModel.status}");
-
-            if (homeViewModel.status == "success") {
-
-              print("HomeViewBloc GetAllDataHomeViewState");
-
-              emit(
-                GetAllDataHomeViewState(
-                  homeViewModel: homeViewModel,
-                ),
-              );
-
-            } else {
-
-              print("HomeViewBloc ErrorHomeViewState");
-
-              emit(ErrorHomeViewState());
-
-            }
-
+            emit(ErrorHomeViewState());
           }
-          on SocketException {
-            print("HomeViewBloc SocketException NoInternetHomeViewState");
+        } on SocketException {
+          print("HomeViewBloc SocketException");
 
-            emit(NoInternetHomeViewState());
-          } on TimeoutException {
-            print("HomeViewBloc TimeoutException NoInternetHomeViewState");
+          final cachedHome = await SharedPreferencesHelper.getHomeAcademies();
 
+          if (cachedHome != null &&
+              cachedHome.doc != null &&
+              cachedHome.doc!.isNotEmpty) {
+            print("Home Cache Found after SocketException");
+
+            emit(GetAllDataHomeViewState(homeViewModel: cachedHome));
+          } else {
             emit(NoInternetHomeViewState());
-          } catch (e) {
-            print("HomeViewBloc catch ErrorHomeViewState $e ");
+          }
+        } on TimeoutException {
+          print("HomeViewBloc TimeoutException");
+
+          final cachedHome = await SharedPreferencesHelper.getHomeAcademies();
+
+          if (cachedHome != null &&
+              cachedHome.doc != null &&
+              cachedHome.doc!.isNotEmpty) {
+            print("Home Cache Found after Timeout");
+
+            emit(GetAllDataHomeViewState(homeViewModel: cachedHome));
+          } else {
+            emit(NoInternetHomeViewState());
+          }
+        } catch (e) {
+          print("HomeViewBloc Error => $e");
+
+          final cachedHome = await SharedPreferencesHelper.getHomeAcademies();
+
+          if (cachedHome != null &&
+              cachedHome.doc != null &&
+              cachedHome.doc!.isNotEmpty) {
+            print("Home Cache Found after Error");
+
+            emit(GetAllDataHomeViewState(homeViewModel: cachedHome));
+          } else {
             emit(ErrorHomeViewState());
           }
         }
-      else
-        {
-          showMessage(event.context,"تحقق من اتصال الإنترنت", true);
+      } else {
+        print("Home Offline - Loading from cache");
+
+        final cachedHome = await SharedPreferencesHelper.getHomeAcademies();
+
+        if (cachedHome != null &&
+            cachedHome.doc != null &&
+            cachedHome.doc!.isNotEmpty) {
+          print("Home Cache Found");
+
+          emit(GetAllDataHomeViewState(homeViewModel: cachedHome));
+        } else {
+          print("Home Cache Empty");
+
+          showMessage(event.context, "تحقق من اتصال الإنترنت", true);
+
           emit(NoInternetHomeViewState());
         }
-
+      }
     });
-
   }
 }
-
-// class HomeViewBloc extends Bloc<HomeViewEvent, HomeViewState>  {
-//   HomeViewBloc() : super(HomeViewInitial());
-//
-//   @override
-//   Stream<HomeViewState> mapEventToState(HomeViewEvent event) async* {
-//     if (event is LoadingHomeViewEvent) {
-//       yield LoadingHomeViewState();
-//       HomeViewModel homeViewModel = await HomeViewApi.getAllAcademies();
-//       print("HomeViewBloc homeViewModel ${homeViewModel.status}");
-//       try {
-//         if (homeViewModel.status == "success") {
-//           print("HomeViewBloc  GetAllDataHomeViewState");
-//           yield GetAllDataHomeViewState(homeViewModel: homeViewModel);
-//         } else {
-//           print("HomeViewBloc  ErrorHomeViewState");
-//           yield ErrorHomeViewState();
-//         }
-//       } catch (e) {
-//         print("HomeViewBloc catch ErrorHomeViewState");
-//         yield ErrorHomeViewState();
-//       }
-//     }
-//     // if(event is FetchFilterEvent)
-//     // {
-//     //
-//     //   var connectivityResult = await (Connectivity().checkConnectivity());
-//     //
-//     //   if (connectivityResult == ConnectivityResult.wifi ||
-//     //       connectivityResult == ConnectivityResult.mobile)
-//     //   {
-//     //     yield LoadingHomeViewState();
-//     //
-//     //     FilterFoodApi filterFoodApi = FilterFoodApi();
-//     //
-//     //     FilterModel filterModel = await filterFoodApi.getFilter(event.context,event.idsCategory, event.minPrice, event.maxPrice);
-//     //     if(filterModel.status == "OK")
-//     //       yield SuccessFilterState(filterModel);
-//     //     else
-//     //       yield ErrorHomeViewState();
-//     //   }
-//     //   else
-//     //     {
-//     //       showMessage(getTextLanguage(event.context.locale, "check internet connection", "Überprüfen Sie die Internetverbindung", "internet bağlantısını kontrol et", "تحقق من اتصال الإنترنت"), true);
-//     //       yield ErrorHomeViewState();
-//     //     }
-//     //
-//     // }
-//   }
-// }

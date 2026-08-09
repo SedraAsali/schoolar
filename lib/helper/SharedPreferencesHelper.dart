@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
 
 import '../core/feature_favorites/data/GetFavoriteModel.dart';
+import '../core/feature_home/data/home_view_model.dart';
 
 
 class SharedPreferencesHelper {
@@ -36,7 +37,40 @@ class SharedPreferencesHelper {
     sharedPreferences.setBool("isShowedOnBoarding", value);
   }
 
+///Academies
+  static Future<void> saveHomeAcademies(
+      HomeViewModel homeViewModel,
+      ) async {
+    final prefs = await SharedPreferences.getInstance();
 
+    final data = jsonEncode(
+      homeViewModel.toJson(),
+    );
+
+    await prefs.setString(
+      "HomeAcademies",
+      data,
+    );
+
+    print("Home Academies Saved");
+  }
+
+
+  static Future<HomeViewModel?> getHomeAcademies() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final data = prefs.getString("HomeAcademies");
+
+    print("Home Academies From Cache => $data");
+
+    if (data == null) {
+      return null;
+    }
+
+    return HomeViewModel.fromJson(
+      jsonDecode(data),
+    );
+  }
 
   ///Favorite
   static Future<void> setFavorite(List<Favorite> value) async {
