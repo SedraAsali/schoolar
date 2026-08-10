@@ -69,37 +69,18 @@ class _HomeScreenViewState extends ConsumerState<HomeScreenView> {
  Widget build(BuildContext context) {
   var currentIndex= ref.watch(homeNavigationProvider);
   final   showAll=ref.watch(showAllProvider);
-  //لائحة المعاهد من اجل عملية فلترة البحث
-  // final institutes = [
-  //  {
-  //   "name": "معهد النخبة",
-  //   "location": "السبيل-قرب جامع الرحمن",
-  //   "rating": "4.0",
-  //   "image":
-  //   "h ttps://tse4.mm.bing.net/th/id/OIP.bTUquEP24f1MhL_EMSq0RgHaHf?rs=1&pid=ImgDetMain&o=7&rm=3",
-  //  },
-  //  {
-  //   "name": "أكاديمية رويال",
-  //   "location": "الفرقان-أمام باب الاقتصاد",
-  //   "rating": "2.3",
-  //   "image":
-  //   "https://th.bing.com/th/id/OIP.-7TM23FZ8KhK8h3V3rq8gAHaHa?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3",
-  //  },
-  //  {
-  //   "name": " معهد التفوق",
-  //   "location": "حلب الجديدة",
-  //   "rating": "4.3",
-  //   "image":
-  //   "h ttps://th.bing.com/th/id/OIP.-7TM23FZ8KhK8h3V3rq8gAHaHa?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3",
-  //  },
-  //  {
-  //   "name": "معهد المتنبي",
-  //   "location": "الحمدانية_لحي 3",
-  //   "rating": "1.3",
-  //   "image":
-  //   "h ttps://th.bing.com/th/id/OIP.-7TM23FZ8KhK8h3V3rq8gAHaHa?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3",
-  //  },
-  // ];
+  final user = prov.Provider.of<GlobalVariableProvider>(
+   context,
+   listen: false,
+  ).configClass?.userLogin?.user;
+
+  final String? role = user?.role;
+  final bool isManager = role == "MANAGER";
+  if (isManager && currentIndex > 1) {
+   WidgetsBinding.instance.addPostFrameCallback((_) {
+    ref.read(homeNavigationProvider.notifier).state = 0;
+   });
+  }
   return Scaffold(
    extendBody: true,
    body: currentIndex==0?
@@ -183,6 +164,7 @@ class _HomeScreenViewState extends ConsumerState<HomeScreenView> {
 ),
    )
        :
+   isManager? ProfilePageView():
    currentIndex == 1
        ?
    BlocProvider(
@@ -192,54 +174,95 @@ class _HomeScreenViewState extends ConsumerState<HomeScreenView> {
        :
    ProfilePageView(),
 
-
    bottomNavigationBar: CurvedNavigationBar(
-
     backgroundColor: Colors.transparent,
-
-    color:   Theme.of(context).colorScheme.onInverseSurface,
-
+    color: Theme.of(context).colorScheme.onInverseSurface,
     buttonBackgroundColor: gold,
-
     height: 60,
-
     animationDuration: const Duration(milliseconds: 400),
 
-    index: currentIndex,
+    index: isManager
+        ? (currentIndex > 1 ? 0 : currentIndex)
+        : currentIndex,
 
     items: [
-
      Icon(
-      size: 30,
       Icons.home_filled,
+      size: 30,
       color: currentIndex == 0
           ? Theme.of(context).colorScheme.surface
           : Theme.of(context).colorScheme.outlineVariant,
      ),
 
-     Icon(
-      size: 30,
-      Icons.favorite,
-      color: currentIndex == 1
-          ? Theme.of(context).colorScheme.surface
-          : Theme.of(context).colorScheme.outlineVariant,
-     ),
+     if (!isManager)
+      Icon(
+       Icons.favorite,
+       size: 30,
+       color: currentIndex == 1
+           ? Theme.of(context).colorScheme.surface
+           : Theme.of(context).colorScheme.outlineVariant,
+      ),
 
      Icon(
       Icons.person,
       size: 30,
-      color: currentIndex == 2
+      color: currentIndex == (isManager ? 1 : 2)
           ? Theme.of(context).colorScheme.surface
           : Theme.of(context).colorScheme.outlineVariant,
      ),
     ],
 
     onTap: (index) {
-
      ref.read(homeNavigationProvider.notifier).state = index;
-
     },
    ),
+   // bottomNavigationBar: CurvedNavigationBar(
+   //
+   //  backgroundColor: Colors.transparent,
+   //
+   //  color:   Theme.of(context).colorScheme.onInverseSurface,
+   //
+   //  buttonBackgroundColor: gold,
+   //
+   //  height: 60,
+   //
+   //  animationDuration: const Duration(milliseconds: 400),
+   //
+   //  index: currentIndex,
+   //
+   //  items: [
+   //
+   //   Icon(
+   //    size: 30,
+   //    Icons.home_filled,
+   //    color: currentIndex == 0
+   //        ? Theme.of(context).colorScheme.surface
+   //        : Theme.of(context).colorScheme.outlineVariant,
+   //   ),
+   //
+   //   Icon(
+   //    size: 30,
+   //    Icons.favorite,
+   //    color: currentIndex == 1
+   //        ? Theme.of(context).colorScheme.surface
+   //        : Theme.of(context).colorScheme.outlineVariant,
+   //   ),
+   //
+   //   Icon(
+   //    Icons.person,
+   //    size: 30,
+   //    color: currentIndex == 2
+   //        ? Theme.of(context).colorScheme.surface
+   //        : Theme.of(context).colorScheme.outlineVariant,
+   //   ),
+   //  ],
+   //
+   //  onTap: (index) {
+   //
+   //   ref.read(homeNavigationProvider.notifier).state = index;
+   //
+   //  },
+   // ),
 
   );
  }
@@ -490,6 +513,7 @@ class _HomeScreenViewState extends ConsumerState<HomeScreenView> {
         
              return instituteCard(
               ref: ref,
+              academy:academy,
               context: context,
               name: academy.name??"",
               academyId: academy.id??"",

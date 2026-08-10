@@ -2,14 +2,18 @@
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart'as prov;
 import 'package:scholar/core/feature_home/presentation/institute_details.dart';
 import '../../../helper/constant.dart';
+import '../../../helper/global_variable_provide.dart';
 import '../../feature_favorites/provider/favorites_provider.dart';
+import '../data/home_view_model.dart';
 import 'favorite_button.dart';
 
 Widget instituteCard({
 required BuildContext context,
 required WidgetRef ref,
+required Doc academy,
 required String academyId,
 required String name,
 required String location,
@@ -19,13 +23,17 @@ required String image,
 }) {
  final favorites = ref.watch(favoritesProvider);
  final isFav = favorites.any((e) => e['name'] == name);
-
+ final role =prov. Provider.of<GlobalVariableProvider>(
+  context,
+  listen: false,
+ ).configClass?.userLogin?.user?.role;
+ print("role fav btn $role");
  return InkWell(
   onTap: () {
    Navigator.push(
     context,
     MaterialPageRoute(
-     builder: (context) => const InstituteDetailsScreen(),
+     builder: (context) => InstituteDetailsScreen(academy: academy,),
     ),
    );
   },
@@ -119,31 +127,11 @@ required String image,
             ),
            ),
 
-           FavoriteButton(
+          role!="MANAGER"? FavoriteButton(
             academyId: academyId,
             context: context,
-           ),
-           // IconButton(
-           //  onPressed: () {
-           //   ref
-           //       .read(favoritesProvider.notifier)
-           //       .toggle({
-           //    "name": name,
-           //    "location": location,
-           //    "rating": rating,
-           //    "image": image,
-           //   });
-           //  },
-           //  icon: Icon(
-           //   isFav
-           //       ? Icons.favorite
-           //       : Icons.favorite_border,
-           //   color: Theme
-           //       .of(context)
-           //       .colorScheme
-           //       .error,
-           //  ),
-           // ),
+           ):Container(),
+
           ],
          ),
 

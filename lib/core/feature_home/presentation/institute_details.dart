@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:scholar/core/feature_home/data/home_view_model.dart';
 import '../../../helper/constant.dart';
 import '../data/details_model.dart';
 
 class InstituteDetailsScreen extends StatefulWidget {
-  const InstituteDetailsScreen({super.key});
+  final Doc academy;
+  const InstituteDetailsScreen({super.key,required this.academy});
 
   @override
   State<InstituteDetailsScreen> createState() =>
@@ -16,7 +19,7 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final department = institute.departments[selectedIndex];
+   final department = institute.departments[selectedIndex];
     return Scaffold(
       body: SafeArea(
       child: Column(
@@ -44,7 +47,7 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
               children: [
 
                 Text(
-                  institute.name,
+                  widget.academy.name?? "",
                   style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -64,7 +67,7 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
 
                     Expanded(
                       child: Text(
-                        institute.location,
+                        "${widget.academy.region ?? ""} - ${widget.academy.location ?? ""}",
                         style:  TextStyle(
                           color: Theme.of(context).colorScheme.surface.withAlpha(120),
                           fontSize: 14,
@@ -84,7 +87,7 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      "مدير المعهد: ${institute.managerPhone}",
+                      "مدير المعهد: ${ widget.academy.managerId?.phone?? ""}",
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.surface.withAlpha(120),
                         fontSize: 14,
@@ -102,7 +105,7 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
                     ),
                     const SizedBox(width: 5),
                     Text(
-                      institute.rating.toString(),
+                      widget.academy.ratingsAverage.toString()?? "",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -125,7 +128,7 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
             child:  Image.network(
               width: 120,
               height: 120,
-              institute.image,
+              widget.academy.photo?? "",
               fit: BoxFit.cover,
               errorBuilder: (_, _, _) {
                 return Container(
@@ -134,9 +137,15 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
                       .colorScheme
                       .outlineVariant,
                   child: Center(
-                    child: Icon(Icons.broken_image, size: 120,
-                      color: Theme.of(context).colorScheme.onInverseSurface,
-                    ),
+                      child:SvgPicture.asset('lib/svgFiles/school.svg',
+                          height: 120,
+                          semanticsLabel: 'school')
+                    // Icon(Icons.broken_image, size: 120,
+                    //  color: Theme
+                    //      .of(context)
+                    //      .colorScheme
+                    //      .onInverseSurface,
+                    // ),
                   ),
                 );
               },
