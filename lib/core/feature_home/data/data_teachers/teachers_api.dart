@@ -52,7 +52,11 @@ class TeachersApi {
 
       // نجاح
       if (response.statusCode == 200) {
-        return teachersModelFromJson(response.body);
+        final teachersModel = teachersModelFromJson(response.body);
+
+        teachersModel.statusCode = response.statusCode;
+
+        return teachersModel;
       }
       // خطأ من Backend
       else {

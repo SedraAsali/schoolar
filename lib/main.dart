@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart' hide ChangeNotifierProvi
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:scholar/core/feature_favorites/presentation/delete_favorite_bloc/delete_favorite_bloc.dart';
+import 'package:scholar/core/feature_home/presentation/teachers_bloc/teachers_bloc.dart';
 import 'package:scholar/core/feature_signup/presentation/bloc/sign_up_bloc.dart';
 import 'package:scholar/core/presentation/providers/theme_provider.dart';
 import 'package:scholar/helper/global_variable_provide.dart';
@@ -35,10 +36,14 @@ void main() {
           BlocProvider(
             create: (_) => ForgotPasswordBloc(),
           ),
-          BlocProvider<HomeViewBloc>(
+          BlocProvider<TeachersViewBloc>(
             //PrefDetailBloc
             create: (context) =>
-            HomeViewBloc()),
+                TeachersViewBloc()),
+          BlocProvider<HomeViewBloc>(
+            //PrefDetailBloc
+              create: (context) =>
+                  HomeViewBloc()),
           BlocProvider(
             create: (context) => AddFavoriteBloc(),
           ),
