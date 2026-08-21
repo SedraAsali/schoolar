@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:scholar/core/feature_home/data/data_teachers/teachers_model.dart';
 import 'package:scholar/helper/ConfigClass.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
@@ -68,6 +69,81 @@ class SharedPreferencesHelper {
     }
 
     return HomeViewModel.fromJson(
+      jsonDecode(data),
+    );
+  }
+
+  /// Teachers
+
+  static Future<void> saveTeachersForAcademy(String academyId, TeachersModel teachersModel,) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final data = jsonEncode(
+      teachersModel.toJson(),
+    );
+
+    await prefs.setString(
+      "Teachers_$academyId",
+      data,
+    );
+
+    print("Teachers for academy $academyId Saved");
+  }
+
+  static Future<TeachersModel?> getTeachersForAcademy(String academyId,) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final data = prefs.getString(
+      "Teachers_$academyId",
+    );
+
+    print(
+      "Teachers for academy $academyId From Cache => $data",
+    );
+
+    if (data == null) {
+      return null;
+    }
+
+    return TeachersModel.fromJson(
+      jsonDecode(data),
+    );
+  }
+
+
+  /// Manager Teachers
+
+  static Future<void> saveManagerTeachers(TeachersModel teachersModel,) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final data = jsonEncode(
+      teachersModel.toJson(),
+    );
+
+    await prefs.setString(
+      "ManagerTeachers",
+      data,
+    );
+
+    print("Manager Teachers Saved");
+  }
+
+  static Future<TeachersModel?> getManagerTeachers() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final data = prefs.getString(
+      "ManagerTeachers",
+    );
+
+    print(
+      "Manager Teachers From Cache => $data",
+    );
+
+    if (data == null) {
+      return null;
+    }
+
+    return TeachersModel.fromJson(
       jsonDecode(data),
     );
   }

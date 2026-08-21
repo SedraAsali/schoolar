@@ -479,12 +479,14 @@ double academyRating=0;
                   final teachers = state.teachersModel.doc ?? [];
 
                   if (teachers.isEmpty) {
-                    return const Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Center(
-                        child: Text('لا يوجد أساتذة'),
+                    return   Center(
+                      child: StateView(
+                        imagePath: 'lib/svgFiles/no_teachers.svg',
+                       // imageHeader: 'لا يوجد معاهد',
+                        // imageDescription: 'no_meal_description',
                       ),
                     );
+
                   }
 
                   // =========================
@@ -728,7 +730,7 @@ double academyRating=0;
                                         const SizedBox(height: 8),
 
                                         // =================
-                                        // الأساتذة جنب بعض
+                                        // الألاساتذة جنب بعض
                                         // =================
 
                                         Wrap(
