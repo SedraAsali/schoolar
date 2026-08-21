@@ -14,6 +14,9 @@ class InstituteDetailsScreen extends StatefulWidget {
 class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
   int selectedIndex = 0;
 
+
+
+
   @override
   Widget build(BuildContext context) {
     final department = institute.departments[selectedIndex];
@@ -481,6 +484,9 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
       ],
       ),
       ),
+
+
+
     );
   }
 }

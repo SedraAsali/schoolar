@@ -23,6 +23,8 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
  // int selectedIndex = 0;
   String selectedCategory = 'بكلوريا علمي';
 
+double academyRating=0;
+
   final List<String> teacherCategories = [
     'بكلوريا علمي',
     'بكلوريا أدبي',
@@ -45,6 +47,150 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
       );
     });
   }
+
+
+//تابع البتم شييت للتقييم
+    void _showRatingBottomSheet() {
+    double tempRating = academyRating;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return Container(
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 30),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(30),
+                ),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 65,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.outlineVariant,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+
+                  const SizedBox(height: 25),
+
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.star_rounded,
+                      size: 40,
+                      color: gold,
+                    ),
+                  ),
+
+                  const SizedBox(height: 15),
+
+                  Text(
+                    'قيّم المعهد',
+                    style: TextStyle(
+                      fontSize: 21,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  Text(
+                    'شاركنا رأيك عن هذا المعهد',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Theme.of(context).colorScheme.outlineVariant,
+                    ),
+                  ),
+
+                  const SizedBox(height: 25),
+
+                  RatingBar.builder(
+                    initialRating: tempRating,
+                    minRating: 0.5,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemSize: 42,
+                    itemPadding:
+                    const EdgeInsets.symmetric(horizontal: 4),
+                    itemBuilder: (context, _) {
+                      return Icon(
+                        Icons.star_rounded,
+                        color: gold,
+                      );
+                    },
+                    onRatingUpdate: (rating) {
+                      setModalState(() {
+                        tempRating = rating;
+                      });
+                    },
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  if (tempRating > 0)
+                    Text(
+                      '${tempRating} / 5',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+
+                  const SizedBox(height: 25),
+
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: tempRating == 0
+                          ? null
+                          : () {
+                        setState(() {
+                          academyRating = tempRating;
+                        });
+                         Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
+                      child: const Text(
+                        'إرسال التقييم',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -955,6 +1101,16 @@ class _InstituteDetailsScreenState extends State<InstituteDetailsScreen> {
           ],
         ),
       ),
+
+
+//زر للتقييم
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showRatingBottomSheet,
+        child: const Icon(Icons.star),
+      ),
+
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+
     );
   }
 }
