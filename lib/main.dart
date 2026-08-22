@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart' hide ChangeNotifierProvi
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:scholar/core/feature_favorites/presentation/delete_favorite_bloc/delete_favorite_bloc.dart';
+import 'package:scholar/core/feature_home/presentation/rating_bloc/rating_bloc.dart';
 import 'package:scholar/core/feature_home/presentation/teachers_bloc/teachers_bloc.dart';
 import 'package:scholar/core/feature_signup/presentation/bloc/sign_up_bloc.dart';
 import 'package:scholar/core/presentation/providers/theme_provider.dart';
@@ -44,6 +45,10 @@ void main() {
             //PrefDetailBloc
               create: (context) =>
                   HomeViewBloc()),
+          BlocProvider<RatingViewBloc>(
+            //PrefDetailBloc
+              create: (context) =>
+                  RatingViewBloc()),
           BlocProvider(
             create: (context) => AddFavoriteBloc(),
           ),

@@ -17,13 +17,13 @@ required Doc academy,
 required String academyId,
 required String name,
 required String location,
-required int rating,
+required double rating,
 required String image,
  required int index,
 }) {
  final favorites = ref.watch(favoritesProvider);
  final isFav = favorites.any((e) => e['name'] == name);
- final role =prov. Provider.of<GlobalVariableProvider>(
+ final String? role =prov. Provider.of<GlobalVariableProvider>(
   context,
   listen: false,
  ).configClass?.userLogin?.user?.role;
@@ -33,7 +33,7 @@ required String image,
    Navigator.push(
     context,
     MaterialPageRoute(
-     builder: (context) => InstituteDetailsScreen(academy: academy,),
+     builder: (context) => InstituteDetailsScreen(academy: academy,role: role),
     ),
    );
   },

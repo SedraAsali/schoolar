@@ -216,53 +216,7 @@ class _HomeScreenViewState extends ConsumerState<HomeScreenView> {
      ref.read(homeNavigationProvider.notifier).state = index;
     },
    ),
-   // bottomNavigationBar: CurvedNavigationBar(
-   //
-   //  backgroundColor: Colors.transparent,
-   //
-   //  color:   Theme.of(context).colorScheme.onInverseSurface,
-   //
-   //  buttonBackgroundColor: gold,
-   //
-   //  height: 60,
-   //
-   //  animationDuration: const Duration(milliseconds: 400),
-   //
-   //  index: currentIndex,
-   //
-   //  items: [
-   //
-   //   Icon(
-   //    size: 30,
-   //    Icons.home_filled,
-   //    color: currentIndex == 0
-   //        ? Theme.of(context).colorScheme.surface
-   //        : Theme.of(context).colorScheme.outlineVariant,
-   //   ),
-   //
-   //   Icon(
-   //    size: 30,
-   //    Icons.favorite,
-   //    color: currentIndex == 1
-   //        ? Theme.of(context).colorScheme.surface
-   //        : Theme.of(context).colorScheme.outlineVariant,
-   //   ),
-   //
-   //   Icon(
-   //    Icons.person,
-   //    size: 30,
-   //    color: currentIndex == 2
-   //        ? Theme.of(context).colorScheme.surface
-   //        : Theme.of(context).colorScheme.outlineVariant,
-   //   ),
-   //  ],
-   //
-   //  onTap: (index) {
-   //
-   //   ref.read(homeNavigationProvider.notifier).state = index;
-   //
-   //  },
-   // ),
+
 
   );
  }
