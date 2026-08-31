@@ -39,7 +39,7 @@ class HomeViewModel {
 }
 
 class Doc {
-  double? ratingsAverage;
+  int? ratingsAverage;
   int? ratingsQuantity;
   String? id;
   ManagerId? managerId;
@@ -64,7 +64,7 @@ class Doc {
   });
 
   factory Doc.fromJson(Map<String, dynamic> json) => Doc(
-    ratingsAverage: (json["ratingsAverage"] as num?)?.toDouble(),
+    ratingsAverage: (json["ratingsAverage"] as num?)?.toInt(),
     ratingsQuantity: json["ratingsQuantity"],
     id: json["_id"],
     managerId: json["managerId"] == null ? null : ManagerId.fromJson(json["managerId"]),

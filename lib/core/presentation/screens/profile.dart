@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:scholar/core/feature_user_profile/presentation/support_screen.dart';
 import 'package:scholar/core/presentation/screens/logIn.dart';
 import 'package:scholar/core/presentation/screens/support_screen.dart';
 import '../providers/favorites_provider.dart';
@@ -212,7 +213,7 @@ class ProfilePage extends ConsumerWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const SupportPage(),
+                              builder: (_) => const SupportPageView(),
                             ),
                           );
                       },

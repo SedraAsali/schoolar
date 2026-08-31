@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:scholar/core/presentation/screens/reportBug_screen.dart';
+import 'package:scholar/core/feature_user_profile/presentation/report_screen_.dart' show ReportBugPageView;
 
 import '../widgets/support_widget.dart';
 import 'fag_screen.dart';
@@ -218,7 +218,7 @@ class SupportPage extends StatelessWidget {
               title: "الإبلاغ عن مشكلة",
               subtitle: "أخبرنا عن أي خطأ في التطبيق",
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> ReportBugPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> ReportBugPageView()));
 
               },
 

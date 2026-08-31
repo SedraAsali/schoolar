@@ -17,7 +17,7 @@ required Doc academy,
 required String academyId,
 required String name,
 required String location,
-required double rating,
+required int rating,
 required String image,
  required int index,
 }) {

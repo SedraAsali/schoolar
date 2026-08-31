@@ -5,6 +5,7 @@ import 'package:provider/provider.dart' as prov;
 import 'package:scholar/core/feature_user_profile/cubit_profile/profile_cubit.dart';
 import 'package:scholar/core/feature_user_profile/get_profile_cubit/get_profile_cubit.dart';
 import 'package:scholar/core/feature_user_profile/presentation/editPassWord.dart';
+import 'package:scholar/core/feature_user_profile/presentation/support_screen.dart';
 import 'package:scholar/core/feature_user_profile/provider/profile_provider.dart';
 import 'package:scholar/helper/widgets/cached_network_image_view.dart';
 
@@ -289,7 +290,7 @@ class _ProfilePageViewState extends ConsumerState<ProfilePageView> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => const SupportPage(),
+                            builder: (_) => const SupportPageView(),
                           ),
                         );
                       },

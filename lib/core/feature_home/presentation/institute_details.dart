@@ -76,7 +76,7 @@ double academyRating=0;
               // تحديث التقييم مباشرة بصفحة تفاصيل المعهد
               setState(() {
                 academyRating = tempRating;
-                widget.academy.ratingsAverage=tempRating ;
+                widget.academy.ratingsAverage=tempRating.toInt();
               });
 
               // تحديث قائمة المعاهد
@@ -237,7 +237,7 @@ double academyRating=0;
 
               minRating: 0.5,
 
-              allowHalfRating: true,
+              allowHalfRating: false,
 
               itemCount: 5,
 

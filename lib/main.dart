@@ -8,6 +8,7 @@ import 'package:scholar/core/feature_favorites/presentation/delete_favorite_bloc
 import 'package:scholar/core/feature_home/presentation/rating_bloc/rating_bloc.dart';
 import 'package:scholar/core/feature_home/presentation/teachers_bloc/teachers_bloc.dart';
 import 'package:scholar/core/feature_signup/presentation/bloc/sign_up_bloc.dart';
+import 'package:scholar/core/feature_user_profile/presentation/report_bloc/report_bloc.dart';
 import 'package:scholar/core/presentation/providers/theme_provider.dart';
 import 'package:scholar/helper/global_variable_provide.dart';
 import 'package:scholar/router.dart';
@@ -37,6 +38,7 @@ void main() {
           BlocProvider(
             create: (_) => ForgotPasswordBloc(),
           ),
+
           BlocProvider<TeachersViewBloc>(
             //PrefDetailBloc
             create: (context) =>
@@ -63,6 +65,9 @@ void main() {
           ),
           BlocProvider<ProfileCubit>(
             create: (context) => ProfileCubit(),
+          ),
+          BlocProvider<ReportViewBloc>(
+            create: (context) => ReportViewBloc(),
           ),
           // BlocProvider(
           //   create: (_) => HomeViewBloc(),
