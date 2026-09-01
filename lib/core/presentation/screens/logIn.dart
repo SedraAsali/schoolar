@@ -135,7 +135,8 @@ class LogIn extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 20),
                                 TextButton(onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context)=> SignUp()));
+                                  Navigator.push(context, MaterialPageRoute(
+                                      builder: (context)=> SignUp()));
                                 }, child: Text('إذا كنت لا تمتلك حساب مسبق ؟ انقر هنا ..'))
                               ],
                             ),

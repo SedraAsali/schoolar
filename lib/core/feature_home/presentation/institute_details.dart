@@ -458,13 +458,15 @@ double academyRating=0;
                               ).colorScheme.surface.withAlpha(120),
                             ),
                             const SizedBox(width: 6),
-                            Text(
-                              "مدير المعهد: ${widget.academy.managerId?.phone ?? ""}",
-                              style: TextStyle(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.surface.withAlpha(120),
-                                fontSize: 14,
+                            Expanded(
+                              child: Text(
+                                "مدير المعهد: ${widget.academy.managerId?.phone ?? ""}",
+                                style: TextStyle(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.surface.withAlpha(120),
+                                  fontSize: 14,
+                                ),
                               ),
                             ),
                           ],
@@ -491,31 +493,34 @@ double academyRating=0;
                   const SizedBox(width: 15),
 
                   // صورة المعهد
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(25),
-                    child: Image.network(
-                      width: 120,
-                      height: 120,
-                      widget.academy.photo ?? "",
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, _, _) {
-                        return Container(
-                          color: Theme.of(context).colorScheme.outlineVariant,
-                          child: Center(
-                            child: SvgPicture.asset(
-                              'lib/svgFiles/school.svg',
-                              height: 120,
-                              semanticsLabel: 'school',
+                  SizedBox(
+                    width: 120,
+                    height: 120,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(25),
+                      child: Image.network(
+
+                        widget.academy.photo ?? "",
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, _, _) {
+                          return Container(
+                            color: Theme.of(context).colorScheme.outlineVariant,
+                            child: Center(
+                              child: SvgPicture.asset(
+                                'lib/svgFiles/school.svg',
+                                height: 120,
+                                semanticsLabel: 'school',
+                              ),
+                              // Icon(Icons.broken_image, size: 120,
+                              //  color: Theme
+                              //      .of(context)
+                              //      .colorScheme
+                              //      .onInverseSurface,
+                              // ),
                             ),
-                            // Icon(Icons.broken_image, size: 120,
-                            //  color: Theme
-                            //      .of(context)
-                            //      .colorScheme
-                            //      .onInverseSurface,
-                            // ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ],

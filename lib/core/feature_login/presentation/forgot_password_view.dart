@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:scholar/core/feature_login/presentation/resetPassWord.dart';
 import '../../../helper/show_message.dart';
 import '../../../helper/widgets/loading_view.dart';
 import 'forgotPassWord_form.dart';
@@ -64,6 +65,11 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
 
         child: bodyForgotPassword(context),
       ),
+
+      floatingActionButton: FloatingActionButton(onPressed: (){
+        Navigator.push(context, MaterialPageRoute(
+            builder: (context)=> ResetPasswordPage()));
+      }),
     );
   }
 
