@@ -96,7 +96,7 @@ class _ProfilePageViewState extends ConsumerState<ProfilePageView> {
                           "", //$${configClass.userLogin?.user?.name}
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.primary,
-                        fontSize: 20,
+                        fontSize: 23,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -106,12 +106,12 @@ class _ProfilePageViewState extends ConsumerState<ProfilePageView> {
                       _profileProvider.userObject.user?.email ??
                           "", //$${configClass.userLogin?.user?.email}
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 18,
                         color: Theme.of(context).colorScheme.outline,
                       ),
                     ),
 
-                    SizedBox(height: 35),
+                 /*   SizedBox(height: 35),
 
                     /// احصائيات بسيطة
                     Row(
@@ -124,7 +124,7 @@ class _ProfilePageViewState extends ConsumerState<ProfilePageView> {
                         ),
                         buildInfoCard("0", "تمت زيارتها", context),
                       ],
-                    ),
+                    ),*/
 
                     SizedBox(height: 35),
 
